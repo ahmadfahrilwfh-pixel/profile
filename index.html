@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GarmentTech - Premium Textile Solutions</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Warna Dasar (Dark Mode Default) */
+            --primary-color: #d4af37; /* Gold */
+            --primary-glow: rgba(212, 175, 55, 0.6);
+            --bg-color: #0a0a0f;
+            --glass-bg: rgba(15, 15, 20, 0.65);
+            --glass-border: rgba(212, 175, 55, 0.3);
+            --text-main: #f0f0f0;
+            --text-muted: #b0b0b0;
+            --card-bg: rgba(20, 20, 25, 0.8);
+        }
+
+        /* LIGHT MODE VARIABLES */
+        body.light-mode {
+            --bg-color: #f4f6f9;
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(212, 175, 55, 0.5);
+            --text-main: #1a1a24;
+            --text-muted: #4a4a5a;
+            --card-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        /* --- LOADING SCREEN --- */
+        #loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100vh;
+            background: #0a0a0f;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary-color);
+            transition: opacity 0.5s ease-out;
+        }
+
+        .loader-icons {
+            font-size: 50px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 20px;
+            animation: pulse 1.5s infinite alternate;
+        }
+
+        #loader h2 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        #loader p {
+            font-size: 14px;
+            color: #fff;
+            letter-spacing: 2px;
+            opacity: 0.8;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); text-shadow: 0 0 10px rgba(212,175,55,0.2); }
+            100% { transform: scale(1.1); text-shadow: 0 0 30px rgba(212,175,55,0.8); }
+        }
+
+        /* --- BACKGROUND ANIMATION --- */
+        #canvas-container {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+        }
+
+        /* --- NAVBAR --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 20px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000; transition: 0.3s;
+        }
+
+        .logo {
+            font-family: 'Rajdhani', sans-serif; font-size: 28px; font-weight: 700;
+            color: var(--primary-color); text-transform: uppercase; letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .nav-menu { display: flex; align-items: center; gap: 30px; }
+        
+        .nav-links { list-style: none; display: flex; gap: 30px; }
+        .nav-links li a {
+            text-decoration: none; color: var(--text-main); font-size: 14px;
+            font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+            position: relative; transition: 0.3s;
+        }
+        .nav-links li a::after {
+            content: ''; position: absolute; bottom: -5px; left: 0;
+            width: 0%; height: 2px; background: var(--primary-color);
+            transition: 0.3s; box-shadow: 0 0 8px var(--primary-color);
+        }
+        .nav-links li a:hover::after { width: 100%; }
+        .nav-links li a:hover { color: var(--primary-color); }
+
+        /* Theme Toggle & Hamburger */
+        .controls { display: flex; align-items: center; gap: 20px; }
+        .theme-btn, .menu-toggle {
+            background: transparent; border: none; color: var(--text-main);
+            font-size: 20px; cursor: pointer; transition: 0.3s;
+        }
+        .theme-btn:hover { color: var(--primary-color); transform: rotate(15deg); }
+        .menu-toggle { display: none; }
+
+        /* --- HERO SECTION --- */
+        section { min-height: 100vh; padding: 120px 10% 80px; display: flex; flex-direction: column; justify-content: center; }
+        #home { align-items: flex-start; text-align: left; position: relative; }
+        
+        .experience-badge {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 10px 20px; background: var(--glass-bg);
+            border: 1px solid var(--primary-color); border-radius: 30px;
+            color: var(--primary-color); font-weight: 600; letter-spacing: 1px;
+            margin-bottom: 30px; box-shadow: 0 0 20px var(--primary-glow);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 { font-family: 'Rajdhani', sans-serif; font-size: 64px; line-height: 1.1; margin-bottom: 20px; font-weight: 700; text-transform: uppercase; }
+        h1 span { color: var(--primary-color); text-shadow: 0 0 20px var(--primary-glow); }
+        p.subtitle { font-size: 18px; color: var(--text-muted); max-width: 600px; line-height: 1.6; margin-bottom: 40px; }
+
+        .btn {
+            padding: 15px 40px; background: transparent; border: 2px solid var(--primary-color);
+            color: var(--primary-color); font-weight: 600; font-size: 16px; letter-spacing: 2px;
+            text-transform: uppercase; cursor: pointer; position: relative; transition: 0.4s;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); text-decoration: none; display: inline-block;
+        }
+        .btn:hover { background: var(--primary-color); color: #fff; box-shadow: 0 0 30px var(--primary-glow); }
+
+        /* --- SECTION HEADERS --- */
+        .section-title { font-family: 'Rajdhani', sans-serif; font-size: 42px; text-align: center; color: var(--primary-color); margin-bottom: 60px; text-transform: uppercase; letter-spacing: 3px; }
+
+        /* --- ABOUT SECTION --- */
+        .about-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center;
+            background: var(--card-bg); padding: 50px; border-radius: 20px;
+            border: 1px solid var(--glass-border); backdrop-filter: blur(10px);
+        }
+        .about-text p { line-height: 1.8; color: var(--text-muted); margin-bottom: 20px; font-size: 16px; }
+        .highlight-text { font-size: 20px; font-weight: 800; color: var(--primary-color); display: block; margin: 20px 0; border-left: 4px solid var(--primary-color); padding-left: 15px; }
+        
+        .about-image {
+            width: 100%; height: 400px;
+            background-image: url('https://images.unsplash.com/photo-1558769132-cb1fac084092?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+            background-size: cover; background-position: center; border-radius: 10px;
+            border: 2px solid var(--primary-color); box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        /* --- CATALOG SECTION --- */
+        .catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .catalog-item { position: relative; height: 400px; border-radius: 15px; overflow: hidden; cursor: pointer; border: 1px solid var(--glass-border); }
+        .catalog-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .catalog-item::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to top, rgba(10,10,15,0.95), transparent); opacity: 0.8; transition: 0.4s;
+        }
+        .catalog-item:hover img { transform: scale(1.1); }
+        .catalog-item:hover::after { opacity: 1; }
+        .item-info { position: absolute; bottom: -50px; left: 20px; z-index: 2; transition: 0.4s; }
+        .catalog-item:hover .item-info { bottom: 20px; }
+        .item-info h3 { font-family: 'Rajdhani', sans-serif; color: var(--primary-color); font-size: 24px; margin-bottom: 5px; }
+        .item-info p { color: #fff; font-size: 14px; } /* Selalu putih agar terbaca di atas gambar gelap */
+
+        /* --- MAPS SECTION --- */
+        .map-container {
+            width: 100%; height: 450px; border-radius: 20px; overflow: hidden;
+            border: 2px solid var(--glass-border); box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+
+        /* --- FOOTER --- */
+        footer { background: var(--card-bg); border-top: 1px solid var(--glass-border); padding: 60px 10% 20px; text-align: center; }
+        .social-links { margin: 30px 0; display: flex; justify-content: center; gap: 20px; }
+        .social-links a {
+            display: flex; align-items: center; justify-content: center; width: 50px; height: 50px;
+            border-radius: 50%; background: var(--glass-bg); color: var(--text-main); font-size: 20px;
+            text-decoration: none; border: 1px solid var(--glass-border); transition: 0.4s;
+        }
+        .social-links a:hover { background: var(--primary-color); color: #fff; box-shadow: 0 0 20px var(--primary-glow); transform: translateY(-5px); }
+        
+        .footer-bottom {
+            margin-top: 50px; padding-top: 20px; border-top: 1px solid var(--glass-border);
+            display: flex; flex-direction: column; gap: 10px;
+        }
+        .copyright { color: var(--text-muted); font-size: 14px; }
+        .developer-tag { color: var(--primary-color); font-weight: 600; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; }
+
+        /* --- RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 992px) {
+            h1 { font-size: 48px; }
+            .about-grid { grid-template-columns: 1fr; }
+            .about-image { height: 300px; }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 36px; }
+            .menu-toggle { display: block; }
+            .nav-links {
+                position: absolute; top: 100%; left: 0; width: 100%;
+                background: var(--card-bg); flex-direction: column; gap: 0;
+                text-align: center; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out;
+            }
+            .nav-links.active { max-height: 300px; border-bottom: 1px solid var(--glass-border); }
+            .nav-links li { padding: 15px 0; border-top: 1px solid rgba(255,255,255,0.05); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. LOADING SCREEN (5 Detik) -->
+    <div id="loader">
+        <div class="loader-icons">
+            <i class="fas fa-tshirt"></i>
+            <i class="fas fa-drafting-compass"></i>
+        </div>
+        <h2>Welcome to company profile garmen ini</h2>
+        <p>developed by Amdf</p>
+    </div>
+
+    <!-- Canvas untuk Background Animasi -->
+    <canvas id="canvas-container"></canvas>
+
+    <!-- 2. NAVIGATION (Responsive & Theme Toggle) -->
+    <nav>
+        <div class="logo">GRMNT.<span>TECH</span></div>
+        <div class="nav-menu">
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">Profile</a></li>
+                <li><a href="#catalog">Catalog</a></li>
+                <li><a href="#location">Lokasi</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="controls">
+                <button class="theme-btn" id="themeToggle" title="Toggle Light/Dark Mode">
+                    <i class="fas fa-sun"></i>
+                </button>
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home">
+        <!-- 3. Highlight 20 Tahun -->
+        <div class="experience-badge">
+            <i class="fas fa-award"></i> 20 Tahun Berpengalaman & Profesional
+        </div>
+        
+        <h1>Menenun Masa Depan<br><span>Tekstil & Garmen</span></h1>
+        <p class="subtitle">Kami memadukan presisi mesin berteknologi tinggi dengan kualitas benang premium untuk menghasilkan garmen kelas dunia. Solusi tekstil elegan untuk kebutuhan korporat dan fashion global.</p>
+        <a href="#catalog" class="btn">Lihat Koleksi</a>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2 class="section-title">Company Profile</h2>
+        <div class="about-grid">
+            <div class="about-text">
+                <h3 style="color: var(--primary-color); margin-bottom: 15px; font-family: 'Rajdhani', sans-serif; font-size: 28px;">Inovasi dalam Setiap Helai</h3>
+                <p>GRMNT.TECH adalah perusahaan manufaktur garmen terkemuka yang berdedikasi pada kualitas tanpa kompromi. Dengan fasilitas produksi modern, kami melayani pesanan skala besar mulai dari seragam korporat eksklusif hingga lini pakaian retail.</p>
+                
+                <!-- Penjelasan Menonjol 20 Tahun -->
+                <span class="highlight-text">Telah Berdiri Profesional Selama Lebih Dari 20 Tahun di Industri Manufaktur Garmen.</span>
+                
+                <p>Reputasi 2 dekade kami dibangun di atas visi untuk menjadi pionir dalam industri tekstil yang mengusung konsep berkelanjutan dan teknologi presisi tinggi.</p>
+            </div>
+            <div class="about-image"></div>
+        </div>
+    </section>
+
+    <!-- Catalog Section -->
+    <section id="catalog">
+        <h2 class="section-title">Katalog Produk</h2>
+        <div class="catalog-grid">
+            <div class="catalog-item">
+                <img src="https://images.unsplash.com/photo-1594938298595-0e06571bb214?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Executive Shirt">
+                <div class="item-info">
+                    <h3>Executive Wear</h3>
+                    <p>Kemeja formal dengan bahan anti-kusut premium.</p>
+                </div>
+            </div>
+            <div class="catalog-item">
+                <img src="https://images.unsplash.com/photo-1578932750294-f5075e85f44a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Casual Fabric">
+                <div class="item-info">
+                    <h3>Casual Fabric</h3>
+                    <p>Koleksi bahan kasual yang sejuk dan dinamis.</p>
+                </div>
+            </div>
+            <div class="catalog-item">
+                <img src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Corporate Uniform">
+                <div class="item-info">
+                    <h3>Corporate Uniform</h3>
+                    <p>Seragam perusahaan dengan detail bordir presisi tinggi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Location Section (3D Maps Preview) -->
+    <section id="location">
+        <h2 class="section-title">Lokasi Pusat Operasional</h2>
+        <!-- Ganti URL embed di bawah dengan URL Map asli Anda. Parameter &t=k memastikan tampilan Satelit/3D -->
+        <div class="map-container">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15813.064516769997!2d110.4201!3d-7.7613!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwNDUnNDAuNyJTIDExMMKwMjUnMTIuNCJF!5e1!3m2!1sen!2sid!4v1700000000000!5m2!1sen!2sid&t=k" 
+                width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+    </section>
+
+    <!-- Footer / Contact -->
+    <footer id="contact">
+        <h2 class="section-title" style="margin-bottom: 20px;">Hubungi Kami</h2>
+        <p style="color: var(--text-muted); margin-bottom: 20px;">Diskusikan kebutuhan produksi garmen Anda bersama tim ahli kami.</p>
+        
+        <div class="social-links">
+            <a href="https://wa.me/6280000000000" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://instagram.com/akun_ig" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="mailto:info@grmnt.tech" target="_blank" title="Email"><i class="far fa-envelope"></i></a>
+            <a href="https://linkedin.com" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        
+        <!-- 5. Copyright Developed By -->
+        <div class="footer-bottom">
+            <div class="copyright">&copy; 2026 GRMNT.TECH. All Rights Reserved.</div>
+            <div class="developer-tag">developed by Ahmad Fahril</div>
+        </div>
+    </footer>
+
+    <!-- SCRIPT UTAMA -->
+    <script>
+        // --- 1. LOADING SCREEN LOGIC ---
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                setTimeout(() => { loader.style.display = 'none'; }, 500);
+            }, 5000); // 5 Detik delay
+        });
+
+        // --- 2. MOBILE MENU LOGIC ---
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // --- 3. THEME TOGGLE LOGIC ---
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = themeToggle.querySelector('i');
+        // Variabel untuk warna pudar kanvas (disesuaikan dengan tema)
+        let canvasFadeColor = 'rgba(10, 10, 15, 0.2)'; 
+
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            
+            if (document.body.classList.contains('light-mode')) {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                // Warna terang untuk efek trail agar kanvas tidak menjadi hitam
+                canvasFadeColor = 'rgba(244, 246, 249, 0.2)'; 
+            } else {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                // Warna gelap untuk efek trail
+                canvasFadeColor = 'rgba(10, 10, 15, 0.2)';
+            }
+        });
+
+        // --- 4. CANVAS BACKGROUND ANIMATION ---
+        const canvas = document.getElementById('canvas-container');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles;
+
+        function init() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            particles = [];
+            const particleCount = Math.floor(width / 15); // Responsif menyesuaikan lebar
+            
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.8;
+                this.vy = (Math.random() - 0.5) * 0.8;
+                this.baseRadius = Math.random() * 1.5 + 0.5;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.baseRadius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(212, 175, 55, 0.8)';
+                ctx.fill();
+            }
+        }
+
+        function animate() {
+            // Menggunakan variabel warna fade yang dikontrol oleh Theme Toggle
+            ctx.fillStyle = canvasFadeColor;
+            ctx.fillRect(0, 0, width, height);
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                for (let j = i; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 120) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(212, 175, 55, ${1 - distance/120})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            // Re-inisiasi kanvas agar tidak pecah saat layar di-resize
+            init();
+        });
+        
+        init();
+        animate();
+    </script>
+</body>
+</html>
