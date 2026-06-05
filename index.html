@@ -245,103 +245,75 @@
             margin-bottom: 15px;
         }
 
-        /* --- FABRIC INFO SECTION --- */
+       /* --- FABRIC INFO SECTION (UPDATED) --- */
         .fabric-info-section {
             background: var(--card-bg);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
-            padding: 50px;
+            padding: 40px;
             margin-top: 40px;
             backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
         }
 
         .fabric-header {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 30px;
+            display: flex; align-items: center; gap: 20px; margin-bottom: 15px;
         }
 
         .fabric-header h3 {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 32px;
-            color: var(--primary-color);
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            font-family: 'Rajdhani', sans-serif; font-size: 32px; color: var(--primary-color);
+            margin: 0; text-transform: uppercase; letter-spacing: 1.5px;
         }
 
         .fabric-description {
-            color: var(--text-muted);
-            line-height: 1.8;
-            font-size: 16px;
-            margin-bottom: 30px;
+            color: var(--text-muted); line-height: 1.6; font-size: 15px;
+            margin-bottom: 30px; border-left: 3px solid var(--primary-color); padding-left: 15px;
         }
 
-        .fabric-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
+        .fabric-section-title {
+            font-family: 'Rajdhani', sans-serif; font-size: 22px; color: var(--text-main);
+            margin-bottom: 15px; margin-top: 30px; display: flex; align-items: center; gap: 10px;
         }
 
-        .feature-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 15px;
-            padding: 20px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            transition: 0.3s;
+        .fabric-scroll-container {
+            display: flex; gap: 15px; overflow-x: auto; padding-bottom: 15px;
+            scroll-snap-type: x mandatory; scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) var(--glass-bg);
         }
 
-        .feature-item:hover {
-            border-color: var(--primary-color);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+        .fabric-scroll-container::-webkit-scrollbar { height: 8px; }
+        .fabric-scroll-container::-webkit-scrollbar-track { background: var(--glass-bg); border-radius: 10px; }
+        .fabric-scroll-container::-webkit-scrollbar-thumb { background-color: var(--primary-color); border-radius: 10px; }
+
+        .fabric-box-item {
+            flex: 0 0 auto; min-width: 220px; background: var(--glass-bg);
+            border: 1px solid var(--glass-border); border-radius: 12px; padding: 20px;
+            scroll-snap-align: start; transition: all 0.3s ease;
+            display: flex; flex-direction: column; gap: 10px;
         }
 
-        .feature-icon {
-            font-size: 28px;
-            color: var(--primary-color);
-            min-width: 40px;
+        .fabric-box-item:hover {
+            border-color: var(--primary-color); transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.15);
         }
 
-        .feature-text h4 {
-            color: var(--text-main);
-            font-size: 16px;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-
-        .feature-text p {
-            color: var(--text-muted);
-            font-size: 13px;
-            line-height: 1.5;
-        }
+        .fabric-box-icon { font-size: 24px; color: var(--primary-color); }
+        .fabric-box-title { font-size: 16px; font-weight: 600; color: var(--text-main); margin: 0; }
+        .fabric-box-desc { font-size: 13px; color: var(--text-muted); margin: 0; line-height: 1.5; }
+        
+        .fabric-box-stat { min-width: 130px; text-align: center; align-items: center; justify-content: center; }
+        .fabric-stat-value { font-size: 36px; font-weight: 700; font-family: 'Rajdhani', sans-serif; color: var(--primary-color); margin: 5px 0; }
 
         .color-selection-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            padding: 18px 45px;
-            background: var(--primary-color);
-            color: #fff;
-            font-weight: 700;
-            font-size: 16px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: 0.4s;
-            box-shadow: 0 0 25px var(--primary-glow);
+            display: inline-flex; align-items: center; gap: 12px; padding: 18px 45px;
+            background: var(--primary-color); color: #fff; font-weight: 700;
+            font-size: 16px; text-transform: uppercase; letter-spacing: 2px;
+            border: none; border-radius: 30px; cursor: pointer; text-decoration: none;
+            transition: 0.4s; box-shadow: 0 0 25px var(--primary-glow); margin-top: 20px;
         }
 
         .color-selection-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 0 40px var(--primary-glow);
+            transform: translateY(-3px); box-shadow: 0 0 40px var(--primary-glow);
         }
 
         /* --- MAPS SECTION --- */
@@ -690,68 +662,92 @@
 
         </div>
 
-        <!-- Fabric Information Section -->
         <div class="fabric-info-section">
             <div class="fabric-header">
-                <i class="fas fa-tshirt" style="font-size: 40px; color: var(--primary-color);"></i>
+                <i class="fas fa-gem" style="font-size: 35px; color: var(--primary-color);"></i>
                 <h3>Cotton Combed Pique Diamond</h3>
             </div>
             
             <p class="fabric-description">
-                <strong>Cotton Combed Pique Diamond</strong> adalah jenis kain premium yang dibuat dari serat kapas 100% yang telah melalui proses combing (penyisiran) untuk menghilangkan serat kasar dan pendek, menghasilkan kain yang lebih halus, kuat, dan nyaman dipakai. Tekstur pique diamond memberikan pola berlian khas yang tidak hanya estetis tetapi juga meningkatkan sirkulasi udara, membuat pakaian lebih sejuk dan breathable. Kain ini sangat ideal untuk polo shirt, kaos kerah, dan pakaian formal yang membutuhkan tampilan elegan dengan kenyamanan maksimal.
+                Terbuat dari <strong>100% Cotton Combed</strong> dengan corak rajutan berlian <i>(diamond)</i>. Memiliki daya serap keringat yang sangat baik, tekstur lembut, dan perawatan yang mudah. Sangat direkomendasikan untuk bahan baku utama kaos polo berkualitas tinggi. Dilengkapi dengan aksesoris pendukung berupa <strong>Kerah & Manset</strong>.
             </p>
 
-            <div class="fabric-features">
-                <div class="feature-item">
-                    <i class="fas fa-feather-alt feature-icon"></i>
-                    <div class="feature-text">
-                        <h4>Super Halus</h4>
-                        <p>Serat kapas combed yang disisir sempurna untuk tekstur lembut di kulit</p>
-                    </div>
+            <div class="fabric-section-title"><i class="fas fa-star" style="color: var(--primary-color);"></i> Keunggulan Kain</div>
+            <div class="fabric-scroll-container">
+                <div class="fabric-box-item">
+                    <i class="fas fa-award fabric-box-icon"></i>
+                    <h4 class="fabric-box-title">Berkualitas Premium</h4>
+                    <p class="fabric-box-desc">Kualitas kain tingkat premium, lebih baik dari Pique Cotton pada umumnya.</p>
                 </div>
-                <div class="feature-item">
-                    <i class="fas fa-wind feature-icon"></i>
-                    <div class="feature-text">
-                        <h4>Breathable</h4>
-                        <p>Tekstur pique diamond memaksimalkan sirkulasi udara</p>
-                    </div>
+                <div class="fabric-box-item">
+                    <i class="fas fa-compress-alt fabric-box-icon"></i>
+                    <h4 class="fabric-box-title">Susut Terjamin</h4>
+                    <p class="fabric-box-desc">Meski berbahan 100% katun, tingkat penyusutan kain sudah terjamin aman.</p>
                 </div>
-                <div class="feature-item">
-                    <i class="fas fa-shield-alt feature-icon"></i>
-                    <div class="feature-text">
-                        <h4>Tahan Lama</h4>
-                        <p>Benang berkualitas tinggi yang kuat dan tidak mudah sobek</p>
-                    </div>
+                <div class="fabric-box-item">
+                    <i class="fas fa-wind fabric-box-icon"></i>
+                    <h4 class="fabric-box-title">Sensasi Sejuk</h4>
+                    <p class="fabric-box-desc">Terasa sejuk, nyaman, dan bertekstur halus saat bersentuhan dengan kulit.</p>
                 </div>
-                <div class="feature-item">
-                    <i class="fas fa-tint feature-icon"></i>
-                    <div class="feature-text">
-                        <h4>Absorbensi Tinggi</h4>
-                        <p>Menyerap keringat dengan cepat untuk kenyamanan maksimal</p>
-                    </div>
+                <div class="fabric-box-item">
+                    <i class="fas fa-vector-square fabric-box-icon"></i>
+                    <h4 class="fabric-box-title">Motif Unik</h4>
+                    <p class="fabric-box-desc">Memiliki corak rajut eksklusif berbentuk segi empat atau diamond.</p>
                 </div>
-                <div class="feature-item">
-                    <i class="fas fa-gem feature-icon"></i>
-                    <div class="feature-text">
-                        <h4>Tekstur Diamond</h4>
-                        <p>Pola berlian khas yang memberikan tampilan premium</p>
-                    </div>
+            </div>
+
+            <div class="fabric-section-title"><i class="fas fa-cogs" style="color: var(--primary-color);"></i> Spesifikasi Teknis (1 Kg Kain)</div>
+            <div class="fabric-scroll-container">
+                <div class="fabric-box-item">
+                    <h4 class="fabric-box-title">Lebar Kain</h4>
+                    <p class="fabric-box-desc"><strong>45" (Tubular)</strong><br>Bentuk nyarung (melingkar).</p>
                 </div>
-                <div class="feature-item">
-                    <i class="fas fa-leaf feature-icon"></i>
-                    <div class="feature-text">
-                        <h4>100% Cotton</h4>
-                        <p>Bahan alami yang aman dan nyaman untuk kulit sensitif</p>
-                    </div>
+                <div class="fabric-box-item">
+                    <h4 class="fabric-box-title">Ketebalan</h4>
+                    <p class="fabric-box-desc"><strong>30s</strong><br>Ideal untuk iklim tropis.</p>
+                </div>
+                <div class="fabric-box-item">
+                    <h4 class="fabric-box-title">Gramasi</h4>
+                    <p class="fabric-box-desc"><strong>± 180 - 190 gsm</strong><br>Ketebalan yang pas, tidak menerawang.</p>
+                </div>
+                <div class="fabric-box-item">
+                    <h4 class="fabric-box-title">Panjang Kain</h4>
+                    <p class="fabric-box-desc"><strong>± 2,30 - 2,43 Meter</strong><br>Estimasi panjang per 1 kilogram.</p>
+                </div>
+                <div class="fabric-box-item">
+                    <h4 class="fabric-box-title">Kebutuhan Aksesoris</h4>
+                    <p class="fabric-box-desc"><strong>± 4 Kerah & 4 Manset</strong><br>Cukup untuk ±4 kaos polo.</p>
+                </div>
+            </div>
+
+            <div class="fabric-section-title"><i class="fas fa-tshirt" style="color: var(--primary-color);"></i> Hasil Jadi Kaos Polo (per 1 Kg)</div>
+            <div class="fabric-scroll-container">
+                <div class="fabric-box-item fabric-box-stat">
+                    <h4 class="fabric-box-title">Ukuran S</h4>
+                    <div class="fabric-stat-value">6</div>
+                    <p class="fabric-box-desc">Pcs Kaos Polo</p>
+                </div>
+                <div class="fabric-box-item fabric-box-stat">
+                    <h4 class="fabric-box-title">Ukuran M</h4>
+                    <div class="fabric-stat-value">5</div>
+                    <p class="fabric-box-desc">Pcs Kaos Polo</p>
+                </div>
+                <div class="fabric-box-item fabric-box-stat">
+                    <h4 class="fabric-box-title">Ukuran L</h4>
+                    <div class="fabric-stat-value">4</div>
+                    <p class="fabric-box-desc">Pcs Kaos Polo</p>
+                </div>
+                <div class="fabric-box-item fabric-box-stat">
+                    <h4 class="fabric-box-title">Ukuran XL</h4>
+                    <div class="fabric-stat-value">3</div>
+                    <p class="fabric-box-desc">Pcs Kaos Polo</p>
                 </div>
             </div>
 
             <a href="warna-kain.html" class="color-selection-btn">
-                <i class="fas fa-palette"></i>
-                Pilih Warna Kain
+                <i class="fas fa-palette"></i> Pilih Warna Kain
             </a>
         </div>
-    </section>
 
 <section id="location">
         <h2 class="section-title">Lokasi Workshop</h2>
