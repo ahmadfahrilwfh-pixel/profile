@@ -3,14 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GarmentTech - Premium Textile Solutions</title>
+    
+    <title>CV. Djavu Indonesia - Jasa Konveksi & Garment Profesional</title>
+    <meta name="description" content="CV. Djavu Indonesia adalah penyedia jasa pembuatan pakaian, kaos sablon, kemeja PDL, PDH, jas, polo shirt, dan jaket dengan kualitas standar garment premium di Indonesia.">
+    <meta name="keywords" content="konveksi, garment, jasa pembuatan pakaian, buat kaos, kemeja PDL, seragam PDH, jas almamater, jaket bomber, seragam kantor, sablon, bordir, CV Djavu Indonesia, konveksi terdekat">
+    <meta name="author" content="Ahmad Fahril">
+    <meta name="robots" content="index, follow">
+    
+    <meta property="og:title" content="CV. Djavu Indonesia - Jasa Konveksi & Garment">
+    <meta property="og:description" content="Pusat pembuatan seragam, PDL, PDH, Kaos, dan Jaket dengan kualitas terbaik.">
+    <meta property="og:image" content="./logo.webp">
+    <meta property="og:type" content="website">
+
+    <link rel="icon" type="image/png" href="./favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="./favicon/favicon.svg" />
+    <link rel="shortcut icon" href="./favicon/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="./favicon/site.webmanifest" />
+
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            /* Warna Dasar (Dark Mode Default) */
-            --primary-color: #d4af37; /* Gold */
+            /* Warna Dasar Djavu (Emas & Gelap) */
+            --primary-color: #d4af37; 
             --primary-glow: rgba(212, 175, 55, 0.6);
             --bg-color: #0a0a0f;
             --glass-bg: rgba(15, 15, 20, 0.65);
@@ -20,7 +37,7 @@
             --card-bg: rgba(20, 20, 25, 0.8);
         }
 
-        /* LIGHT MODE VARIABLES */
+        /* LIGHT MODE */
         body.light-mode {
             --bg-color: #f4f6f9;
             --glass-bg: rgba(255, 255, 255, 0.75);
@@ -55,21 +72,21 @@
             padding: 20px;
         }
 
-        .loader-icons {
-            font-size: 50px;
+        .loader-logo {
+            width: 180px; /* Ukuran logo disesuaikan */
             margin-bottom: 20px;
-            display: flex;
-            gap: 20px;
             animation: pulse 1.5s infinite alternate;
+            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.4));
         }
 
         #loader h2 {
             font-family: 'Rajdhani', sans-serif;
-            font-size: 24px;
+            font-size: 28px;
             text-transform: uppercase;
             letter-spacing: 3px;
             margin-bottom: 10px;
             text-align: center;
+            color: var(--primary-color);
         }
 
         #loader p {
@@ -77,19 +94,16 @@
             color: #fff;
             letter-spacing: 2px;
             opacity: 0.8;
+            margin-top: 5px;
         }
 
         @keyframes pulse {
-            0% { transform: scale(0.9); text-shadow: 0 0 10px rgba(212,175,55,0.2); }
-            100% { transform: scale(1.1); text-shadow: 0 0 30px rgba(212,175,55,0.8); }
+            0% { transform: scale(0.95); }
+            100% { transform: scale(1.05); }
         }
 
         /* --- BACKGROUND ANIMATION --- */
-        #canvas-container {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1;
-        }
+        #canvas-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; }
 
         /* --- NAVBAR --- */
         nav {
@@ -108,7 +122,6 @@
         }
 
         .nav-menu { display: flex; align-items: center; gap: 30px; }
-        
         .nav-links { list-style: none; display: flex; gap: 30px; }
         .nav-links li a {
             text-decoration: none; color: var(--text-main); font-size: 14px;
@@ -123,7 +136,6 @@
         .nav-links li a:hover::after { width: 100%; }
         .nav-links li a:hover { color: var(--primary-color); }
 
-        /* Controls */
         .controls { display: flex; align-items: center; gap: 20px; }
         .theme-btn, .menu-toggle {
             background: transparent; border: none; color: var(--text-main);
@@ -132,13 +144,12 @@
         .theme-btn:hover { color: var(--primary-color); transform: rotate(15deg); }
         .menu-toggle { display: none; }
 
-        /* --- SECTION HEADERS --- */
-        .section-title { font-family: 'Rajdhani', sans-serif; font-size: 42px; text-align: center; color: var(--primary-color); margin-bottom: 60px; text-transform: uppercase; letter-spacing: 3px; }
-
         /* --- SECTIONS SETUP --- */
+        .section-title { font-family: 'Rajdhani', sans-serif; font-size: 42px; text-align: center; color: var(--primary-color); margin-bottom: 60px; text-transform: uppercase; letter-spacing: 3px; }
         section { min-height: 100vh; padding: 140px 10% 80px; display: flex; flex-direction: column; justify-content: center; }
-        #home { align-items: flex-start; text-align: left; position: relative; }
         
+        /* --- HOME SECTION --- */
+        #home { align-items: flex-start; text-align: left; position: relative; }
         .experience-badge {
             display: inline-flex; align-items: center; gap: 10px;
             padding: 10px 20px; background: var(--glass-bg);
@@ -147,11 +158,7 @@
             margin-bottom: 30px; box-shadow: 0 0 20px var(--primary-glow);
             animation: float 3s ease-in-out infinite;
         }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
         h1 { font-family: 'Rajdhani', sans-serif; font-size: 64px; line-height: 1.1; margin-bottom: 20px; font-weight: 700; text-transform: uppercase; }
         h1 span { color: var(--primary-color); text-shadow: 0 0 20px var(--primary-glow); }
@@ -175,26 +182,29 @@
         .highlight-text { font-size: 20px; font-weight: 800; color: var(--primary-color); display: block; margin: 20px 0; border-left: 4px solid var(--primary-color); padding-left: 15px; }
         
         .about-image {
-            width: 100%; height: 400px;
-            background-image: url('https://images.unsplash.com/photo-1558769132-cb1fac084092?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
-            background-size: cover; background-position: center; border-radius: 10px;
-            border: 2px solid var(--primary-color); box-shadow: 0 0 20px var(--primary-glow);
+            width: 100%; height: 350px;
+            background-image: url('./logo.webp');
+            background-size: contain; 
+            background-repeat: no-repeat;
+            background-position: center; 
         }
 
         /* --- CATALOG SECTION --- */
-        .catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
-        .catalog-item { position: relative; height: 400px; border-radius: 15px; overflow: hidden; cursor: pointer; border: 1px solid var(--glass-border); }
+        .catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        .catalog-item { position: relative; height: 350px; border-radius: 15px; overflow: hidden; cursor: pointer; border: 1px solid var(--glass-border); background: #111; }
         .catalog-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
         .catalog-item::after {
             content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(to top, rgba(10,10,15,0.95), transparent); opacity: 0.8; transition: 0.4s;
+            background: linear-gradient(to top, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.4) 50%, transparent 100%); opacity: 0.9; transition: 0.4s;
         }
         .catalog-item:hover img { transform: scale(1.1); }
         .catalog-item:hover::after { opacity: 1; }
-        .item-info { position: absolute; bottom: -50px; left: 20px; z-index: 2; transition: 0.4s; }
-        .catalog-item:hover .item-info { bottom: 20px; }
-        .item-info h3 { font-family: 'Rajdhani', sans-serif; color: var(--primary-color); font-size: 24px; margin-bottom: 5px; }
-        .item-info p { color: #fff; font-size: 14px; }
+        .item-info { position: absolute; bottom: 20px; left: 20px; z-index: 2; transition: 0.4s; }
+        .item-info h3 { font-family: 'Rajdhani', sans-serif; color: var(--primary-color); font-size: 22px; margin-bottom: 5px; }
+        .item-info p { color: #fff; font-size: 13px; opacity: 0.9; }
+        
+        /* Kategori Heading */
+        .catalog-category-title { grid-column: 1 / -1; font-family: 'Rajdhani', sans-serif; color: var(--text-main); font-size: 24px; margin-top: 20px; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; }
 
         /* --- MAPS SECTION --- */
         .map-container {
@@ -219,24 +229,18 @@
         .copyright { color: var(--text-muted); font-size: 14px; }
         .developer-tag { color: var(--primary-color); font-weight: 600; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; }
 
-        /* ======================================================== */
-        /* --- MEDIA QUERIES (OPTIMASI RESPONSIVE ULTRA-SMOOTH) --- */
-        /* ======================================================== */
-        
-        /* 1. Monitor Sedang & Tablet Landscape */
+        /* --- MEDIA QUERIES --- */
         @media (max-width: 1024px) {
             section { padding: 120px 5% 60px; }
             h1 { font-size: 52px; }
             .about-grid { gap: 30px; padding: 35px; }
         }
 
-        /* 2. Tablet Portrait & HP Lebar */
         @media (max-width: 768px) {
             h1 { font-size: 42px; }
             .section-title { font-size: 34px; margin-bottom: 40px; }
             .menu-toggle { display: block; }
             
-            /* Animasi Dropdown Menu Mobile */
             .nav-links {
                 position: absolute; top: 100%; left: 0; width: 100%;
                 background: var(--card-bg); flex-direction: column; gap: 0;
@@ -247,65 +251,52 @@
             .nav-links.active { max-height: 350px; border-bottom: 1px solid var(--glass-border); }
             .nav-links li { padding: 18px 0; border-top: 1px solid rgba(255,255,255,0.05); }
             
-            /* Pembenahan grid yang wagu/terhimpit */
             .about-grid { grid-template-columns: 1fr; padding: 30px 20px; gap: 35px; }
-            .about-image { height: 320px; }
+            .about-image { height: 250px; }
             .map-container { height: 350px; }
         }
 
-        /* 3. HP Kecil (Layar Super Sempit / Potrait Mobile) */
         @media (max-width: 480px) {
-            section { padding: 100px 15px 50px; } /* Sisi luar dilebarkan maksimal agar tidak terhimpit */
+            section { padding: 100px 15px 50px; }
             h1 { font-size: 32px; text-align: center; width: 100%; }
             #home { align-items: center; text-align: center; }
             p.subtitle { font-size: 15px; text-align: center; margin-bottom: 30px; }
             
             .experience-badge { font-size: 12px; padding: 8px 15px; text-align: center; margin-bottom: 20px; }
             .btn { width: 100%; text-align: center; padding: 14px 20px; font-size: 15px; }
-            
             .section-title { font-size: 28px; }
             
-            /* Box Profile dibuat bernapas lega */
             .about-grid { padding: 25px 15px; border-radius: 12px; }
             .about-text h3 { font-size: 22px; text-align: center; }
             .about-text p { font-size: 14px; line-height: 1.6; text-align: justify; }
             .highlight-text { font-size: 16px; padding-left: 10px; margin: 15px 0; }
-            .about-image { height: 240px; }
-
-            /* Grid Katalog Dirombak agar kotak-kotak luas */
-            .catalog-grid { grid-template-columns: 1fr; gap: 25px; }
-            .catalog-item { height: 320px; border-radius: 12px; }
-            .item-info { left: 15px; }
-            .item-info h3 { font-size: 20px; }
             
+            .catalog-grid { grid-template-columns: 1fr; gap: 20px; }
+            .catalog-item { height: 300px; border-radius: 12px; }
             .map-container { height: 280px; border-radius: 12px; }
             footer { padding: 40px 15px 20px; }
-            .social-links a { width: 45px; height: 45px; font-size: 18px; }
         }
     </style>
 </head>
 <body>
 
     <div id="loader">
-        <div class="loader-icons">
-            <i class="fas fa-tshirt"></i>
-            <i class="fas fa-drafting-compass"></i>
-        </div>
-        <h2>Welcome to company profile garmen ini</h2>
+        <img src="./logo.webp" alt="Logo DJ Djavu" class="loader-logo">
+        <h2>DEJAVU INDONESIA</h2>
         <p>developed by Amdf</p>
     </div>
 
     <canvas id="canvas-container"></canvas>
 
     <nav>
-        <div class="logo">GRMNT.<span>TECH</span></div>
+        <div class="logo">CV. <span>DJAVU</span></div>
         <div class="nav-menu">
             <ul class="nav-links" id="navLinks">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#about">Profile</a></li>
-                <li><a href="#catalog">Catalog</a></li>
+                <li><a href="#catalog">Katalog</a></li>
                 <li><a href="#location">Lokasi</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="#contact">Kontak</a></li>
             </ul>
             <div class="controls">
                 <button class="theme-btn" id="themeToggle" title="Toggle Light/Dark Mode">
@@ -320,61 +311,142 @@
 
     <section id="home">
         <div class="experience-badge">
-            <i class="fas fa-award"></i> 20 Tahun Berpengalaman & Profesional
+            <i class="fas fa-award"></i> Ahli Manufaktur Garment Profesional
         </div>
         
-        <h1>Menenun Masa Depan<br><span>Tekstil & Garmen</span></h1>
-        <p class="subtitle">Kami memadukan presisi mesin berteknologi tinggi dengan kualitas benang premium untuk menghasilkan garmen kelas dunia. Solusi tekstil elegan untuk kebutuhan korporat dan fashion global.</p>
-        <a href="#catalog" class="btn">Lihat Koleksi</a>
+        <h1>Kualitas Premium<br><span>Untuk Seragam Anda</span></h1>
+        <p class="subtitle">CV. Djavu Indonesia melayani jasa pembuatan pakaian, kaos, kemeja PDL, PDH, jas almamater, hingga seragam korporat. Memadukan teknologi terkini dan material pilihan untuk hasil garment presisi tinggi.</p>
+        <a href="#catalog" class="btn">Lihat Portofolio</a>
     </section>
 
     <section id="about">
         <h2 class="section-title">Company Profile</h2>
         <div class="about-grid">
             <div class="about-text">
-                <h3 style="color: var(--primary-color); margin-bottom: 15px; font-family: 'Rajdhani', sans-serif; font-size: 28px;">Inovasi dalam Setiap Helai</h3>
-                <p>GRMNT.TECH adalah perusahaan manufaktur garmen terkemuka yang berdedikasi pada kualitas tanpa kompromi. Dengan fasilitas produksi modern, kami melayani pesanan skala besar mulai dari seragam korporat exclusif hingga lini pakaian retail.</p>
+                <h3 style="color: var(--primary-color); margin-bottom: 15px; font-family: 'Rajdhani', sans-serif; font-size: 28px;">CV. Djavu Indonesia</h3>
+                <p>Kami adalah perusahaan yang bergerak di bidang industri kreatif manufaktur pakaian (Garment & Konveksi). Fokus utama kami adalah menciptakan sandang yang tidak hanya nyaman, tapi juga mencerminkan identitas dan profesionalisme instansi Anda.</p>
                 
-                <span class="highlight-text">Telah Berdiri Profesional Selama Lebih Dari 20 Tahun di Industri Manufaktur Garmen.</span>
+                <span class="highlight-text">Spesialis Kaos Sablon, Kemeja PDL, PDH, dan Pakaian Dinas Harian.</span>
                 
-                <p>Reputasi 2 dekade kami dibangun di atas visi untuk menjadi pionir dalam industri tekstil yang mengusung konsep berkelanjutan dan teknologi presisi tinggi.</p>
+                <p>Berkomitmen pada *quality control* ketat di setiap lini produksi, dari pemilihan benang, proses *cutting*, *stitching*, aplikasi sablon/bordir, hingga ke *finishing*.</p>
             </div>
-            <div class="about-image"></div>
+            <div class="about-image" title="Logo CV Djavu Indonesia"></div>
         </div>
     </section>
 
     <section id="catalog">
         <h2 class="section-title">Katalog Produk</h2>
         <div class="catalog-grid">
+            
+            <h3 class="catalog-category-title">Jas & Pakaian Formal</h3>
             <div class="catalog-item">
-                <img src="https://images.unsplash.com/photo-1594938298595-0e06571bb214?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Executive Shirt">
+                <img src="./1.webp" alt="Jas Almamater dan Blazer">
                 <div class="item-info">
-                    <h3>Executive Wear</h3>
-                    <p>Kemeja formal dengan bahan anti-kusut premium.</p>
+                    <h3>Jas Almamater / Blazer</h3>
+                    <p>Potongan elegan untuk civitas akademika & instansi.</p>
+                </div>
+            </div>
+
+            <h3 class="catalog-category-title">Kemeja PDL / PDH (Seragam Kerja)</h3>
+            <div class="catalog-item">
+                <img src="./2.webp" alt="Kemeja PDL Lapangan">
+                <div class="item-info">
+                    <h3>Kemeja PDL Tactical</h3>
+                    <p>Durabilitas tinggi untuk seragam kerja lapangan.</p>
+                </div>
+            </div>
+
+            <h3 class="catalog-category-title">Polo Shirt & Seragam Semi-Formal</h3>
+            <div class="catalog-item">
+                <img src="./3.webp" alt="Polo Shirt Kombinasi Kuning Merah">
+                <div class="item-info">
+                    <h3>Polo Kombinasi Klasik</h3>
+                    <p>Tampilan energik untuk event dan komunitas.</p>
                 </div>
             </div>
             <div class="catalog-item">
-                <img src="https://images.unsplash.com/photo-1578932750294-f5075e85f44a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Casual Fabric">
+                <img src="./4.webp" alt="Polo Uniform Korporat">
                 <div class="item-info">
-                    <h3>Casual Fabric</h3>
-                    <p>Koleksi bahan kasual yang sejuk dan dinamis.</p>
+                    <h3>Polo Uniform Korporat</h3>
+                    <p>Standar seragam karyawan restoran/retail.</p>
                 </div>
             </div>
             <div class="catalog-item">
-                <img src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Corporate Uniform">
+                <img src="./5.webp" alt="Polo Lengan Panjang">
                 <div class="item-info">
-                    <h3>Corporate Uniform</h3>
-                    <p>Seragam perusahaan dengan detail bordir presisi tinggi.</p>
+                    <h3>Polo Lengan Panjang</h3>
+                    <p>Gaya santai dan perlindungan ekstra.</p>
                 </div>
             </div>
+            <div class="catalog-item">
+                <img src="./7.webp" alt="Polo Two-Tone Modern">
+                <div class="item-info">
+                    <h3>Polo Two-Tone Biru</h3>
+                    <p>Desain modern dengan variasi warna presisi.</p>
+                </div>
+            </div>
+            <div class="catalog-item">
+                <img src="./8.webp" alt="Polo Shirt Custom Grafis">
+                <div class="item-info">
+                    <h3>Polo Custom Grafis</h3>
+                    <p>Aksen dinamis untuk identitas brand yang kuat.</p>
+                </div>
+            </div>
+            <div class="catalog-item">
+                <img src="./12.webp" alt="Polo Asimetris">
+                <div class="item-info">
+                    <h3>Polo Desain Asimetris</h3>
+                    <p>Gaya kontemporer untuk gaya semi-formal.</p>
+                </div>
+            </div>
+            <div class="catalog-item">
+                <img src="./13.webp" alt="Polo Shirt Basic">
+                <div class="item-info">
+                    <h3>Polo Shirt Basic</h3>
+                    <p>Elegan, simpel, dengan bordir logo detail.</p>
+                </div>
+            </div>
+
+            <h3 class="catalog-category-title">Kaos / T-Shirt</h3>
+            <div class="catalog-item">
+                <img src="./9.webp" alt="Kaos Sablon Premium Graphic">
+                <div class="item-info">
+                    <h3>Kaos Sablon Premium</h3>
+                    <p>Tinta sablon pekat, awet, dan kain adem.</p>
+                </div>
+            </div>
+            <div class="catalog-item">
+                <img src="./10.webp" alt="Kaos Olahraga Seragam">
+                <div class="item-info">
+                    <h3>Kaos Olahraga</h3>
+                    <p>Bahan *dry-fit* menyerap keringat maksimal.</p>
+                </div>
+            </div>
+
+            <h3 class="catalog-category-title">Jaket & Outerwear</h3>
+            <div class="catalog-item">
+                <img src="./6.webp" alt="Jaket Olahraga Racing">
+                <div class="item-info">
+                    <h3>Jaket Sport / Racing</h3>
+                    <p>Aksen *sporty* untuk tim balap dan komunitas.</p>
+                </div>
+            </div>
+            <div class="catalog-item">
+                <img src="./11.webp" alt="Jaket Bomber Eksklusif">
+                <div class="item-info">
+                    <h3>Jaket Bomber Eksklusif</h3>
+                    <p>Material *windproof* untuk gaya tangguh & rapi.</p>
+                </div>
+            </div>
+
         </div>
     </section>
 
     <section id="location">
-        <h2 class="section-title">Lokasi Pusat Operasional</h2>
+        <h2 class="section-title">Lokasi Workshop</h2>
         <div class="map-container">
             <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15814.735624510526!2d110.5986!3d-7.6145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMzYnNTIuMiJTIDExMMKwMzYnMDcuMiJF!5e1!3m2!1sen!2sid!4v1680000000000!5m2!1sen!2sid&t=k" 
+                src="https://maps.google.com/maps?q=Surakarta,+Central+Java&t=&z=13&ie=UTF8&iwloc=&output=embed" 
                 width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
             </iframe>
         </div>
@@ -382,18 +454,17 @@
 
     <footer id="contact">
         <h2 class="section-title" style="margin-bottom: 20px;">Hubungi Kami</h2>
-        <p style="color: var(--text-muted); margin-bottom: 20px;">Diskusikan kebutuhan produksi garmen Anda bersama tim ahli kami.</p>
+        <p style="color: var(--text-muted); margin-bottom: 20px;">Wujudkan seragam impian dengan konsultasi gratis bersama CV. Djavu Indonesia.</p>
         
         <div class="social-links">
             <a href="https://wa.me/6280000000000" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-            <a href="https://instagram.com/akun_ig" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="mailto:info@grmnt.tech" target="_blank" title="Email"><i class="far fa-envelope"></i></a>
-            <a href="https://linkedin.com" target="_blank" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://instagram.com/djavu.id" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="mailto:info@djavu.id" target="_blank" title="Email"><i class="far fa-envelope"></i></a>
         </div>
         
         <div class="footer-bottom">
-            <div class="copyright">© 2026 GRMNT.TECH. All Rights Reserved.</div>
-            <div class="developer-tag">developed by Ahmad Fahril</div>
+            <div class="copyright">© 2026 CV. Djavu Indonesia. All Rights Reserved.</div>
+            <div class="developer-tag">developed by Amdf</div>
         </div>
     </footer>
 
@@ -404,7 +475,7 @@
                 const loader = document.getElementById('loader');
                 loader.style.opacity = '0';
                 setTimeout(() => { loader.style.display = 'none'; }, 500);
-            }, 5000); 
+            }, 2500); // Dipercepat menjadi 2.5 detik agar user tidak bosan
         });
 
         // --- 2. MOBILE MENU LOGIC ---
@@ -414,7 +485,6 @@
             navLinks.classList.toggle('active');
         });
 
-        // Menutup menu otomatis saat link diklik (Bagus untuk UX Mobile)
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 navLinks.classList.remove('active');
@@ -450,8 +520,7 @@
             height = canvas.height = window.innerHeight;
             particles = [];
             
-            // Mengurangi densitas partikel di layar HP agar performa ringan
-            const baseDivisor = width < 768 ? 25 : 15;
+            const baseDivisor = width < 768 ? 35 : 20;
             const particleCount = Math.floor(width / baseDivisor); 
             
             for (let i = 0; i < particleCount; i++) {
@@ -484,7 +553,6 @@
             ctx.fillStyle = canvasFadeColor;
             ctx.fillRect(0, 0, width, height);
 
-            // Jarak sensitivitas jaring mengecil di mobile agar tidak terlalu ruwet
             const connectionDistance = width < 480 ? 80 : 120;
 
             for (let i = 0; i < particles.length; i++) {
@@ -510,7 +578,6 @@
         }
 
         window.addEventListener('resize', init);
-        
         init();
         animate();
     </script>
