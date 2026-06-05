@@ -189,11 +189,39 @@
             background-position: center; 
         }
 
-        /* --- CATALOG SECTION --- */
-        .catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
-        .catalog-item { position: relative; height: 350px; border-radius: 15px; overflow: hidden; cursor: pointer; border: 1px solid var(--glass-border); background: #111; }
+        /* --- CATALOG SECTION (UPDATED FOR SCROLL) --- */
+        .catalog-container { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 40px; 
+        }
         
-        /* Flex layout untuk menjejerkan dua gambar (Model & Real Pick) secara berdampingan */
+        .catalog-scroll-row {
+            display: flex;
+            overflow-x: auto;
+            gap: 25px;
+            padding-bottom: 20px;
+            scroll-snap-type: x mandatory; 
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) var(--glass-bg);
+        }
+
+        .catalog-scroll-row::-webkit-scrollbar { height: 8px; }
+        .catalog-scroll-row::-webkit-scrollbar-track { background: var(--glass-bg); border-radius: 10px; }
+        .catalog-scroll-row::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
+
+        .catalog-item { 
+            position: relative; 
+            height: 350px; 
+            flex: 0 0 300px; /* Menjaga ukuran item tetap konstan */
+            border-radius: 15px; 
+            overflow: hidden; 
+            cursor: pointer; 
+            border: 1px solid var(--glass-border); 
+            background: #111;
+            scroll-snap-align: start;
+        }
+        
         .catalog-images { display: flex; width: 100%; height: 100%; }
         .catalog-images img { width: 50%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
         
@@ -208,8 +236,14 @@
         .item-info h3 { font-family: 'Rajdhani', sans-serif; color: var(--primary-color); font-size: 22px; margin-bottom: 5px; }
         .item-info p { color: #fff; font-size: 13px; opacity: 0.9; }
         
-        /* Kategori Heading */
-        .catalog-category-title { grid-column: 1 / -1; font-family: 'Rajdhani', sans-serif; color: var(--text-main); font-size: 24px; margin-top: 20px; border-bottom: 1px solid var(--glass-border); padding-bottom: 10px; }
+        .catalog-category-title { 
+            font-family: 'Rajdhani', sans-serif; 
+            color: var(--text-main); 
+            font-size: 24px; 
+            border-bottom: 1px solid var(--glass-border); 
+            padding-bottom: 10px; 
+            margin-bottom: 15px;
+        }
 
         /* --- MAPS SECTION --- */
         .map-container {
@@ -279,9 +313,8 @@
         }
 
         @media (max-width: 768px) {
-            /* Perbaikan jarak min-height untuk memangkas kekosongan */
             section { min-height: auto; padding: 100px 5% 50px; justify-content: flex-start; }
-            #home { padding-top: 130px; } /* Jarak pass di bawah navbar */
+            #home { padding-top: 130px; } 
 
             h1 { font-size: 42px; }
             .section-title { font-size: 34px; margin-bottom: 40px; }
@@ -303,7 +336,6 @@
         }
 
         @media (max-width: 480px) {
-            /* Jarak disesuaikan untuk layar HP agar tidak ada blank space berlebih */
             section { padding: 80px 15px 40px; min-height: auto; justify-content: flex-start; }
             #home { padding-top: 100px; padding-bottom: 30px; text-align: center; align-items: center; }
             
@@ -319,8 +351,10 @@
             .about-text p { font-size: 14px; line-height: 1.6; text-align: justify; }
             .highlight-text { font-size: 16px; padding-left: 10px; margin: 15px 0; }
             
-            .catalog-grid { grid-template-columns: 1fr; gap: 20px; }
-            .catalog-item { height: 300px; border-radius: 12px; }
+            .catalog-container { gap: 30px; }
+            .catalog-item { flex: 0 0 260px; height: 300px; }
+            .catalog-scroll-row { gap: 15px; }
+
             .map-container { height: 280px; border-radius: 12px; }
             footer { padding: 40px 15px 20px; }
 
@@ -390,169 +424,165 @@
 
     <section id="catalog">
         <h2 class="section-title">Katalog Produk</h2>
-        <div class="catalog-grid">
+        <div class="catalog-container">
             
             <h3 class="catalog-category-title">Jas & Pakaian Formal</h3>
-            
-            <div class="catalog-item" data-title="Jas Almamater / Blazer" data-img1="./1.webp" data-img2="./real_1.webp">
-                <div class="catalog-images">
-                    <img src="./1.webp" alt="Model Jas Almamater">
-                    <img src="./real_1.webp" alt="Real Pick Jas Almamater">
-                </div>
-                <div class="item-info">
-                    <h3>Jas Almamater / Blazer</h3>
-                    <p>Potongan elegan untuk civitas akademika & instansi.</p>
+            <div class="catalog-scroll-row">
+                <div class="catalog-item" data-title="Jas Almamater / Blazer" data-img1="./1.webp" data-img2="./real_1.webp">
+                    <div class="catalog-images">
+                        <img src="./1.webp" alt="Model Jas Almamater">
+                        <img src="./real_1.webp" alt="Real Pick Jas Almamater">
+                    </div>
+                    <div class="item-info">
+                        <h3>Jas Almamater / Blazer</h3>
+                        <p>Potongan elegan untuk civitas akademika & instansi.</p>
+                    </div>
                 </div>
             </div>
 
             <h3 class="catalog-category-title">Kemeja PDL / PDH (Seragam Kerja)</h3>
-            
-            <div class="catalog-item" data-title="Kemeja PDL Tactical" data-img1="./2.webp" data-img2="./real_2.webp">
-                <div class="catalog-images">
-                    <img src="./2.webp" alt="Model Kemeja PDL">
-                    <img src="./real_2.webp" alt="Real Pick Kemeja PDL">
-                </div>
-                <div class="item-info">
-                    <h3>Kemeja PDL Tactical</h3>
-                    <p>Durabilitas tinggi untuk seragam kerja lapangan.</p>
+            <div class="catalog-scroll-row">
+                <div class="catalog-item" data-title="Kemeja PDL Tactical" data-img1="./2.webp" data-img2="./real_2.webp">
+                    <div class="catalog-images">
+                        <img src="./2.webp" alt="Model Kemeja PDL">
+                        <img src="./real_2.webp" alt="Real Pick Kemeja PDL">
+                    </div>
+                    <div class="item-info">
+                        <h3>Kemeja PDL Tactical</h3>
+                        <p>Durabilitas tinggi untuk seragam kerja lapangan.</p>
+                    </div>
                 </div>
             </div>
 
             <h3 class="catalog-category-title">Polo Shirt & Seragam Semi-Formal</h3>
-            
-            <div class="catalog-item" data-title="Polo Kombinasi Klasik" data-img1="./3.webp" data-img2="./real_3.webp">
-                <div class="catalog-images">
-                    <img src="./3.webp" alt="Model Polo Kombinasi">
-                    <img src="./real_3.webp" alt="Real Pick Polo Kombinasi">
+            <div class="catalog-scroll-row">
+                <div class="catalog-item" data-title="Polo Kombinasi Klasik" data-img1="./3.webp" data-img2="./real_3.webp">
+                    <div class="catalog-images">
+                        <img src="./3.webp" alt="Model Polo Kombinasi">
+                        <img src="./real_3.webp" alt="Real Pick Polo Kombinasi">
+                    </div>
+                    <div class="item-info">
+                        <h3>Polo Kombinasi Klasik</h3>
+                        <p>Tampilan energik untuk event dan komunitas.</p>
+                    </div>
                 </div>
-                <div class="item-info">
-                    <h3>Polo Kombinasi Klasik</h3>
-                    <p>Tampilan energik untuk event dan komunitas.</p>
+                <div class="catalog-item" data-title="Polo Uniform Korporat" data-img1="./4.webp" data-img2="./real_4.webp">
+                    <div class="catalog-images">
+                        <img src="./4.webp" alt="Model Polo Uniform">
+                        <img src="./real_4.webp" alt="Real Pick Polo Uniform">
+                    </div>
+                    <div class="item-info">
+                        <h3>Polo Uniform Korporat</h3>
+                        <p>Standar seragam karyawan restoran/retail.</p>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="catalog-item" data-title="Polo Uniform Korporat" data-img1="./4.webp" data-img2="./real_4.webp">
-                <div class="catalog-images">
-                    <img src="./4.webp" alt="Model Polo Uniform">
-                    <img src="./real_4.webp" alt="Real Pick Polo Uniform">
+                <div class="catalog-item" data-title="Polo Lengan Panjang" data-img1="./5.webp" data-img2="./real_5.webp">
+                    <div class="catalog-images">
+                        <img src="./5.webp" alt="Model Polo Lengan Panjang">
+                        <img src="./real_5.webp" alt="Real Pick Polo Lengan Panjang">
+                    </div>
+                    <div class="item-info">
+                        <h3>Polo Lengan Panjang</h3>
+                        <p>Gaya santai dan perlindungan ekstra.</p>
+                    </div>
                 </div>
-                <div class="item-info">
-                    <h3>Polo Uniform Korporat</h3>
-                    <p>Standar seragam karyawan restoran/retail.</p>
+                <div class="catalog-item" data-title="Polo Two-Tone Biru" data-img1="./7.webp" data-img2="./real_7.webp">
+                    <div class="catalog-images">
+                        <img src="./7.webp" alt="Model Polo Two-Tone">
+                        <img src="./real_7.webp" alt="Real Pick Polo Two-Tone">
+                    </div>
+                    <div class="item-info">
+                        <h3>Polo Two-Tone Biru</h3>
+                        <p>Desain modern dengan variasi warna presisi.</p>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="catalog-item" data-title="Polo Lengan Panjang" data-img1="./5.webp" data-img2="./real_5.webp">
-                <div class="catalog-images">
-                    <img src="./5.webp" alt="Model Polo Lengan Panjang">
-                    <img src="./real_5.webp" alt="Real Pick Polo Lengan Panjang">
+                <div class="catalog-item" data-title="Polo Custom Grafis" data-img1="./8.webp" data-img2="./real_8.webp">
+                    <div class="catalog-images">
+                        <img src="./8.webp" alt="Model Polo Custom">
+                        <img src="./real_8.webp" alt="Real Pick Polo Custom">
+                    </div>
+                    <div class="item-info">
+                        <h3>Polo Custom Grafis</h3>
+                        <p>Aksen dinamis untuk identitas brand yang kuat.</p>
+                    </div>
                 </div>
-                <div class="item-info">
-                    <h3>Polo Lengan Panjang</h3>
-                    <p>Gaya santai dan perlindungan ekstra.</p>
+                <div class="catalog-item" data-title="Polo Desain Asimetris" data-img1="./12.webp" data-img2="./real_12.webp">
+                    <div class="catalog-images">
+                        <img src="./12.webp" alt="Model Polo Asimetris">
+                        <img src="./real_12.webp" alt="Real Pick Polo Asimetris">
+                    </div>
+                    <div class="item-info">
+                        <h3>Polo Desain Asimetris</h3>
+                        <p>Gaya kontemporer untuk gaya semi-formal.</p>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="catalog-item" data-title="Polo Two-Tone Biru" data-img1="./7.webp" data-img2="./real_7.webp">
-                <div class="catalog-images">
-                    <img src="./7.webp" alt="Model Polo Two-Tone">
-                    <img src="./real_7.webp" alt="Real Pick Polo Two-Tone">
-                </div>
-                <div class="item-info">
-                    <h3>Polo Two-Tone Biru</h3>
-                    <p>Desain modern dengan variasi warna presisi.</p>
-                </div>
-            </div>
-            
-            <div class="catalog-item" data-title="Polo Custom Grafis" data-img1="./8.webp" data-img2="./real_8.webp">
-                <div class="catalog-images">
-                    <img src="./8.webp" alt="Model Polo Custom">
-                    <img src="./real_8.webp" alt="Real Pick Polo Custom">
-                </div>
-                <div class="item-info">
-                    <h3>Polo Custom Grafis</h3>
-                    <p>Aksen dinamis untuk identitas brand yang kuat.</p>
-                </div>
-            </div>
-            
-            <div class="catalog-item" data-title="Polo Desain Asimetris" data-img1="./12.webp" data-img2="./real_12.webp">
-                <div class="catalog-images">
-                    <img src="./12.webp" alt="Model Polo Asimetris">
-                    <img src="./real_12.webp" alt="Real Pick Polo Asimetris">
-                </div>
-                <div class="item-info">
-                    <h3>Polo Desain Asimetris</h3>
-                    <p>Gaya kontemporer untuk gaya semi-formal.</p>
-                </div>
-            </div>
-            
-            <div class="catalog-item" data-title="Polo Shirt Basic" data-img1="./13.webp" data-img2="./real_13.webp">
-                <div class="catalog-images">
-                    <img src="./13.webp" alt="Model Polo Basic">
-                    <img src="./real_13.webp" alt="Real Pick Polo Basic">
-                </div>
-                <div class="item-info">
-                    <h3>Polo Shirt Basic</h3>
-                    <p>Elegan, simpel, dengan bordir logo detail.</p>
+                <div class="catalog-item" data-title="Polo Shirt Basic" data-img1="./13.webp" data-img2="./real_13.webp">
+                    <div class="catalog-images">
+                        <img src="./13.webp" alt="Model Polo Basic">
+                        <img src="./real_13.webp" alt="Real Pick Polo Basic">
+                    </div>
+                    <div class="item-info">
+                        <h3>Polo Shirt Basic</h3>
+                        <p>Elegan, simpel, dengan bordir logo detail.</p>
+                    </div>
                 </div>
             </div>
 
             <h3 class="catalog-category-title">Kaos / T-Shirt</h3>
-            
-            <div class="catalog-item" data-title="Kaos Sablon Premium" data-img1="./9.webp" data-img2="./real_9.webp">
-                <div class="catalog-images">
-                    <img src="./9.webp" alt="Model Kaos Sablon">
-                    <img src="./real_9.webp" alt="Real Pick Kaos Sablon">
+            <div class="catalog-scroll-row">
+                <div class="catalog-item" data-title="Kaos Sablon Premium" data-img1="./9.webp" data-img2="./real_9.webp">
+                    <div class="catalog-images">
+                        <img src="./9.webp" alt="Model Kaos Sablon">
+                        <img src="./real_9.webp" alt="Real Pick Kaos Sablon">
+                    </div>
+                    <div class="item-info">
+                        <h3>Kaos Sablon Premium</h3>
+                        <p>Tinta sablon pekat, awet, dan kain adem.</p>
+                    </div>
                 </div>
-                <div class="item-info">
-                    <h3>Kaos Sablon Premium</h3>
-                    <p>Tinta sablon pekat, awet, dan kain adem.</p>
+                <div class="catalog-item" data-title="Kaos Olahraga" data-img1="./10.webp" data-img2="./real_10.webp">
+                    <div class="catalog-images">
+                        <img src="./10.webp" alt="Model Kaos Olahraga">
+                        <img src="./real_10.webp" alt="Real Pick Kaos Olahraga">
+                    </div>
+                    <div class="item-info">
+                        <h3>Kaos Olahraga</h3>
+                        <p>Bahan dry-fit menyerap keringat maksimal.</p>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="catalog-item" data-title="Kaos Olahraga" data-img1="./10.webp" data-img2="./real_10.webp">
-                <div class="catalog-images">
-                    <img src="./10.webp" alt="Model Kaos Olahraga">
-                    <img src="./real_10.webp" alt="Real Pick Kaos Olahraga">
-                </div>
-                <div class="item-info">
-                    <h3>Kaos Olahraga</h3>
-                    <p>Bahan dry-fit menyerap keringat maksimal.</p>
+                <div class="catalog-item" data-title="Kaos santai" data-img1="./14.webp" data-img2="./real_14.webp">
+                    <div class="catalog-images">
+                        <img src="./14.webp" alt="Model kaos santai">
+                        <img src="./real_14.webp" alt="Real Pick kaos santai">
+                    </div>
+                    <div class="item-info">
+                        <h3>Kaos santai Eksklusif</h3>
+                        <p>Material catoon combad 100% untuk gaya tangguh & rapi.</p>
+                    </div>
                 </div>
             </div>
 
             <h3 class="catalog-category-title">Jaket & Outerwear</h3>
-            
-            <div class="catalog-item" data-title="Jaket Sport / Racing" data-img1="./6.webp" data-img2="./real_6.webp">
-                <div class="catalog-images">
-                    <img src="./6.webp" alt="Model Jaket Sport">
-                    <img src="./real_6.webp" alt="Real Pick Jaket Sport">
+            <div class="catalog-scroll-row">
+                <div class="catalog-item" data-title="Jaket Sport / Racing" data-img1="./6.webp" data-img2="./real_6.webp">
+                    <div class="catalog-images">
+                        <img src="./6.webp" alt="Model Jaket Sport">
+                        <img src="./real_6.webp" alt="Real Pick Jaket Sport">
+                    </div>
+                    <div class="item-info">
+                        <h3>Jaket Sport / Racing</h3>
+                        <p>Aksen sporty untuk tim balap dan komunitas.</p>
+                    </div>
                 </div>
-                <div class="item-info">
-                    <h3>Jaket Sport / Racing</h3>
-                    <p>Aksen sporty untuk tim balap dan komunitas.</p>
-                </div>
-            </div>
-            
-            <div class="catalog-item" data-title="Jaket Bomber Eksklusif" data-img1="./11.webp" data-img2="./real_11.webp">
-                <div class="catalog-images">
-                    <img src="./11.webp" alt="Model Jaket Bomber">
-                    <img src="./real_11.webp" alt="Real Pick Jaket Bomber">
-                </div>
-                <div class="item-info">
-                    <h3>Jaket Bomber Eksklusif</h3>
-                    <p>Material windproof untuk gaya tangguh & rapi.</p>
-                </div>
-            </div>
-
-            <div class="catalog-item" data-title="Kaos santai" data-img1="./14.webp" data-img2="./real_14.webp">
-                <div class="catalog-images">
-                    <img src="./14.webp" alt="Model kaos santai">
-                    <img src="./real_14.webp" alt="Real Pick kaos santai">
-                </div>
-                <div class="item-info">
-                    <h3>Kaos santai Eksklusif</h3>
-                    <p>Material catoon combad 100% untuk gaya tangguh & rapi.</p>
+                <div class="catalog-item" data-title="Jaket Bomber Eksklusif" data-img1="./11.webp" data-img2="./real_11.webp">
+                    <div class="catalog-images">
+                        <img src="./11.webp" alt="Model Jaket Bomber">
+                        <img src="./real_11.webp" alt="Real Pick Jaket Bomber">
+                    </div>
+                    <div class="item-info">
+                        <h3>Jaket Bomber Eksklusif</h3>
+                        <p>Material windproof untuk gaya tangguh & rapi.</p>
+                    </div>
                 </div>
             </div>
 
@@ -587,7 +617,7 @@
 
     <div id="productModal" class="modal">
         <div class="modal-content">
-            <span class="close-modal">&times;</span>
+            <span class="close-modal">×</span>
             <h3 id="modalTitle" style="color: var(--primary-color); font-family: 'Rajdhani', sans-serif; font-size: 24px; margin-bottom: 5px;">Judul Produk</h3>
             
             <div class="modal-images">
