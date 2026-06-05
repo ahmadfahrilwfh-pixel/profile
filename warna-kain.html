@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Pilihan Warna Kain - CV. Djavu Indonesia</title>
+    <meta name="description" content="Pilih warna kain Cotton Combed Pique Diamond untuk seragam Anda">
+    
+    <link rel="icon" type="image/png" href="./favicon/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="./favicon/favicon.svg" />
+    <link rel="shortcut icon" href="./favicon/favicon.ico" />
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #d4af37; 
+            --primary-glow: rgba(212, 175, 55, 0.6);
+            --bg-color: #0a0a0f;
+            --glass-bg: rgba(15, 15, 20, 0.65);
+            --glass-border: rgba(212, 175, 55, 0.3);
+            --text-main: #f0f0f0;
+            --text-muted: #b0b0b0;
+            --card-bg: rgba(20, 20, 25, 0.8);
+        }
+
+        body.light-mode {
+            --bg-color: #f4f6f9;
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(212, 175, 55, 0.5);
+            --text-main: #1a1a24;
+            --text-muted: #4a4a5a;
+            --card-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        /* --- NAVBAR --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 20px 5%;
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: 'Rajdhani', sans-serif; font-size: 24px; font-weight: 700;
+            color: var(--primary-color); text-transform: uppercase; letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .back-btn {
+            padding: 12px 30px; background: transparent; border: 2px solid var(--primary-color);
+            color: var(--primary-color); font-weight: 600; font-size: 14px; letter-spacing: 1px;
+            text-transform: uppercase; cursor: pointer; text-decoration: none;
+            border-radius: 30px; transition: 0.4s;
+        }
+        .back-btn:hover { background: var(--primary-color); color: #fff; }
+
+        /* --- MAIN CONTENT --- */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 120px 5% 60px;
+        }
+
+        .page-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 42px;
+            color: var(--primary-color);
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 16px;
+            margin-bottom: 50px;
+        }
+
+        /* --- MOCKUP SECTION --- */
+        .mockup-section {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        .mockup-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .tshirt-mockup {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
+            transition: fill 0.5s ease;
+        }
+
+        .selected-color-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--glass-bg);
+            border-radius: 10px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .selected-color-info h4 {
+            color: var(--primary-color);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .selected-color-info p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* --- COLOR SELECTION GRID --- */
+        .color-section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 28px;
+            color: var(--text-main);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 20px;
+        }
+
+        .color-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .color-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .color-shape {
+            width: 80px;
+            height: 90px;
+            border-radius: 10px 10px 5px 5px;
+            position: relative;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .color-shape::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 15px;
+            background: inherit;
+            border-radius: 0 0 15px 15px;
+        }
+
+        .color-shape::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 8px;
+            background: inherit;
+            border-radius: 0 0 10px 10px;
+        }
+
+        .color-item:hover .color-shape {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .color-item.active .color-shape {
+            transform: scale(1.15);
+            box-shadow: 0 0 20px var(--primary-glow);
+            border: 3px solid var(--primary-color);
+        }
+
+        .color-name {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* --- WA BUTTON --- */
+        .wa-section {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .wa-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #25D366;
+            color: #fff;
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .wa-btn:hover {
+            background: #1ebd5a;
+            box-shadow: 0 0 20px rgba(37,211,102,0.4);
+            transform: translateY(-3px);
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .page-title { font-size: 32px; }
+            .color-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
+            .color-shape { width: 60px; height: 70px; }
+            .mockup-section { padding: 25px; }
+        }
+
+        @media (max-width: 480px) {
+            .page-title { font-size: 26px; }
+            .color-grid { grid-template-columns: repeat(3, 1fr); gap: 15px; }
+            .color-shape { width: 50px; height: 60px; }
+            .color-name { font-size: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">CV. <span>DJAVU INDONESIA</span></div>
+        <a href="index1.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
+    </nav>
+
+    <div class="container">
+        <h1 class="page-title">Pilihan Warna Kain</h1>
+        <p class="page-subtitle">Pilih warna Cotton Combed Pique Diamond untuk seragam impian Anda</p>
+
+        <!-- Mockup Section -->
+        <div class="mockup-section">
+            <h3 style="color: var(--primary-color); font-family: 'Rajdhani', sans-serif; font-size: 24px; margin-bottom: 20px;">Preview Mockup</h3>
+            <div class="mockup-container">
+                <svg class="tshirt-mockup" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg">
+                    <!-- T-Shirt Shape -->
+                    <path id="tshirtBody" d="M40,50 L20,70 L30,85 L40,75 L40,200 L160,200 L160,75 L170,85 L180,70 L160,50 C160,50 140,30 100,30 C60,30 40,50 40,50 Z" 
+                          fill="#1a1a2e" stroke="rgba(212,175,55,0.3)" stroke-width="2"/>
+                    <!-- Collar -->
+                    <path d="M70,50 Q100,70 130,50" 
+                          fill="none" stroke="rgba(212,175,55,0.5)" stroke-width="3"/>
+                    <!-- Sleeves details -->
+                    <path d="M30,85 L40,75" fill="none" stroke="rgba(212,175,55,0.3)" stroke-width="1"/>
+                    <path d="M160,75 L170,85" fill="none" stroke="rgba(212,175,55,0.3)" stroke-width="1"/>
+                </svg>
+            </div>
+            <div class="selected-color-info">
+                <h4 id="selectedColorName">Pilih Warna</h4>
+                <p id="selectedColorCode">Klik pada warna untuk melihat preview</p>
+            </div>
+        </div>
+
+        <!-- Color Selection Section -->
+        <div class="color-section">
+            <h3 class="section-title">Warna Tersedia</h3>
+            <div class="color-grid" id="colorGrid">
+                <!-- Colors will be added by JavaScript -->
+            </div>
+        </div>
+
+        <!-- WhatsApp Button -->
+        <div class="wa-section">
+            <a id="waBtn" href="#" target="_blank" class="wa-btn">
+                <i class="fab fa-whatsapp"></i> Pesan Warna Ini
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Fabric colors data - RGB values based on common fabric colors
+        const fabricColors = [
+            { name: "Hitam", rgb: "rgb(26, 26, 46)", hex: "#1a1a2e" },
+            { name: "Putih", rgb: "rgb(255, 255, 255)", hex: "#ffffff" },
+            { name: "Navy Blue", rgb: "rgb(0, 32, 96)", hex: "#002060" },
+            { name: "Merah Maroon", rgb: "rgb(128, 0, 32)", hex: "#800020" },
+            { name: "Abu-abu", rgb: "rgb(112, 112, 112)", hex: "#707070" },
+            { name: "Biru Muda", rgb: "rgb(135, 206, 250)", hex: "#87cefa" },
+            { name: "Hijau Army", rgb: "rgb(85, 107, 47)", hex: "#556b2f" },
+            { name: "Krem", rgb: "rgb(245, 245, 220)", hex: "#f5f5dc" },
+            { name: "Coklat Tua", rgb: "rgb(101, 67, 33)", hex: "#654321" },
+            { name: "Ungu", rgb: "rgb(75, 0, 130)", hex: "#4b0082" },
+            { name: "Pink", rgb: "rgb(255, 182, 193)", hex: "#ffb6c1" },
+            { name: "Kuning", rgb: "rgb(255, 215, 0)", hex: "#ffd700" },
+            { name: "Oranye", rgb: "rgb(255, 140, 0)", hex: "#ff8c00" },
+            { name: "Biru Royal", rgb: "rgb(65, 105, 225)", hex: "#4169e1" },
+            { name: "Tosca", rgb: "rgb(64, 224, 208)", hex: "#40e0d0" },
+            { name: "Coklat Muda", rgb: "rgb(210, 180, 140)", hex: "#d2b48c" }
+        ];
+
+        let selectedColor = null;
+
+        // Generate color grid
+        const colorGrid = document.getElementById('colorGrid');
+        const tshirtBody = document.getElementById('tshirtBody');
+        const selectedColorName = document.getElementById('selectedColorName');
+        const selectedColorCode = document.getElementById('selectedColorCode');
+        const waBtn = document.getElementById('waBtn');
+
+        fabricColors.forEach((color, index) => {
+            const colorItem = document.createElement('div');
+            colorItem.className = 'color-item';
+            colorItem.innerHTML = `
+                <div class="color-shape" style="background-color: ${color.rgb};"></div>
+                <span class="color-name">${color.name}</span>
+            `;
+            
+            colorItem.addEventListener('click', () => {
+                // Remove active class from all items
+                document.querySelectorAll('.color-item').forEach(item => item.classList.remove('active'));
+                // Add active class to clicked item
+                colorItem.classList.add('active');
+                
+                // Update mockup color
+                tshirtBody.style.fill = color.rgb;
+                
+                // Update selected color info
+                selectedColorName.textContent = color.name;
+                selectedColorCode.textContent = `Kode: ${color.hex}`;
+                
+                // Update WhatsApp button
+                selectedColor = color;
+                const waText = encodeURIComponent(`Halo admin CV. Djavu Indonesia, saya tertarik dengan kain Cotton Combed Pique Diamond warna ${color.name} (${color.hex}). Mohon informasi lebih lanjut.`);
+                waBtn.href = `https://wa.me/6281369602596?text=${waText}`;
+            });
+            
+            colorGrid.appendChild(colorItem);
+        });
+
+        // Set default color
+        if (fabricColors.length > 0) {
+            const defaultColor = fabricColors[0];
+            tshirtBody.style.fill = defaultColor.rgb;
+            selectedColorName.textContent = defaultColor.name;
+            selectedColorCode.textContent = `Kode: ${defaultColor.hex}`;
+            selectedColor = defaultColor;
+            const waText = encodeURIComponent(`Halo admin CV. Djavu Indonesia, saya tertarik dengan kain Cotton Combed Pique Diamond warna ${defaultColor.name} (${defaultColor.hex}). Mohon informasi lebih lanjut.`);
+            waBtn.href = `https://wa.me/6281369602596?text=${waText}`;
+            
+            // Set first item as active
+            document.querySelector('.color-item').classList.add('active');
+        }
+    </script>
+</body>
+</html>
