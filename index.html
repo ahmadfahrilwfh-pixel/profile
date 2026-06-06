@@ -144,7 +144,7 @@
         .theme-btn:hover { color: var(--primary-color); transform: rotate(15deg); }
         .menu-toggle { display: none; }
 
-        /* --- SECTIONS SETUP (Diperbarui untuk meminimalisir space) --- */
+        /* --- SECTIONS SETUP --- */
         .section-title { font-family: 'Rajdhani', sans-serif; font-size: 32px; text-align: center; color: var(--primary-color); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; }
         section { min-height: auto; padding: 100px 10% 40px; display: flex; flex-direction: column; justify-content: center; }
         
@@ -190,140 +190,138 @@
         }
 
         /* --- CATALOG SECTION --- */
-/* --- CATALOG SECTION --- */
-.catalog-container { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 30px; 
-}
+        .catalog-container { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 30px; 
+        }
 
-.catalog-desc {
-    text-align: center; 
-    color: var(--text-muted); 
-    max-width: 700px; 
-    margin: -15px auto 30px; 
-    font-size: 15px; 
-    line-height: 1.6;
-}
+        .catalog-desc {
+            text-align: center; 
+            color: var(--text-muted); 
+            max-width: 700px; 
+            margin: -15px auto 30px; 
+            font-size: 15px; 
+            line-height: 1.6;
+        }
 
-.catalog-scroll-row {
-    display: flex;
-    overflow-x: auto;
-    gap: 20px;
-    padding-bottom: 15px;
-    scroll-snap-type: x mandatory; 
-    scrollbar-width: thin;
-    scrollbar-color: var(--primary-color) var(--glass-bg);
-}
+        .catalog-scroll-row {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding-bottom: 15px;
+            scroll-snap-type: x mandatory; 
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) var(--glass-bg);
+        }
 
-.catalog-scroll-row::-webkit-scrollbar { height: 6px; }
-.catalog-scroll-row::-webkit-scrollbar-track { background: var(--glass-bg); border-radius: 10px; }
-.catalog-scroll-row::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
+        .catalog-scroll-row::-webkit-scrollbar { height: 6px; }
+        .catalog-scroll-row::-webkit-scrollbar-track { background: var(--glass-bg); border-radius: 10px; }
+        .catalog-scroll-row::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
 
-.catalog-item { 
-    position: relative; 
-    height: 360px; /* Sedikit ditinggikan agar proporsi card vertikalnya pas */
-    flex: 0 0 280px;
-    border-radius: 12px; 
-    overflow: hidden; 
-    cursor: pointer; 
-    border: 1px solid var(--glass-border); 
-    background: #111;
-    scroll-snap-align: start;
-}
+        .catalog-item { 
+            position: relative; 
+            height: 360px; 
+            flex: 0 0 280px;
+            border-radius: 12px; 
+            overflow: hidden; 
+            cursor: pointer; 
+            border: 1px solid var(--glass-border); 
+            background: #111;
+            scroll-snap-align: start;
+        }
 
-.catalog-images { 
-    position: relative;
-    width: 100%; 
-    height: 100%; 
-}
+        .catalog-images { 
+            position: relative;
+            width: 100%; 
+            height: 100%; 
+        }
 
-/* Gambar Utama (Model) - Memenuhi seluruh background card */
-.catalog-images .img-model { 
-    width: 100%; 
-    height: 100%; 
-    object-fit: cover; 
-    transition: transform 0.6s ease; 
-}
+        /* Gambar Utama (Model) */
+        .catalog-images .img-model { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            transition: transform 0.6s ease; 
+        }
 
-/* Gambar Kecil (Real/Detail) - Melayang di pojok kanan bawah */
-.catalog-images .img-real {
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
-    width: 85px;
-    height: 85px;
-    object-fit: cover;
-    border-radius: 10px;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-    z-index: 4; /* Berada di paling atas luar overlay */
-    transition: transform 0.4s ease, border-color 0.4s ease;
-}
+        /* Gambar Kecil (Real/Detail) */
+        .catalog-images .img-real {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            width: 85px;
+            height: 85px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            z-index: 4; 
+            transition: transform 0.4s ease, border-color 0.4s ease;
+        }
 
-/* Gradient Gelap di bawah agar teks & gambar detail mudah dibaca */
-.catalog-item::after {
-    content: ''; 
-    position: absolute; 
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(to top, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.4) 40%, transparent 100%); 
-    opacity: 0.9; 
-    transition: 0.4s; 
-    pointer-events: none;
-    z-index: 2;
-}
+        /* Gradient Gelap di bawah */
+        .catalog-item::after {
+            content: ''; 
+            position: absolute; 
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to top, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.4) 40%, transparent 100%); 
+            opacity: 0.9; 
+            transition: 0.4s; 
+            pointer-events: none;
+            z-index: 2;
+        }
 
-/* Efek Hover */
-.catalog-item:hover .img-model { 
-    transform: scale(1.05); 
-}
+        /* Efek Hover */
+        .catalog-item:hover .img-model { 
+            transform: scale(1.05); 
+        }
 
-.catalog-item:hover .img-real { 
-    transform: scale(1.08); 
-    border-color: var(--primary-color); /* Berubah warna border saat card di-hover */
-}
+        .catalog-item:hover .img-real { 
+            transform: scale(1.08); 
+            border-color: var(--primary-color); 
+        }
 
-.catalog-item:hover::after { 
-    opacity: 1; 
-}
+        .catalog-item:hover::after { 
+            opacity: 1; 
+        }
 
-/* Informasi Produk (Pojok Kiri Bawah) */
-.item-info { 
-    position: absolute; 
-    bottom: 15px; 
-    left: 15px; 
-    z-index: 3; 
-    transition: 0.4s; 
-    pointer-events: none; 
-    padding-right: 5px;
-    /* Mencegah teks memanjang ke kanan dan menutupi gambar detail */
-    max-width: calc(100% - 120px); 
-}
+        /* Informasi Produk */
+        .item-info { 
+            position: absolute; 
+            bottom: 15px; 
+            left: 15px; 
+            z-index: 3; 
+            transition: 0.4s; 
+            pointer-events: none; 
+            padding-right: 5px;
+            max-width: calc(100% - 120px); 
+        }
 
-.item-info h3 { 
-    font-family: 'Rajdhani', sans-serif; 
-    color: var(--primary-color); 
-    font-size: 20px; 
-    margin-bottom: 4px; 
-}
+        .item-info h3 { 
+            font-family: 'Rajdhani', sans-serif; 
+            color: var(--primary-color); 
+            font-size: 20px; 
+            margin-bottom: 4px; 
+        }
 
-.item-info p { 
-    color: #fff; 
-    font-size: 12px; 
-    opacity: 0.9; 
-    line-height: 1.4; 
-}
+        .item-info p { 
+            color: #fff; 
+            font-size: 12px; 
+            opacity: 0.9; 
+            line-height: 1.4; 
+        }
 
-.catalog-category-title { 
-    font-family: 'Rajdhani', sans-serif; 
-    color: var(--text-main); 
-    font-size: 22px; 
-    border-bottom: 1px solid var(--glass-border); 
-    padding-bottom: 8px; 
-    margin-bottom: 10px;
-}
+        .catalog-category-title { 
+            font-family: 'Rajdhani', sans-serif; 
+            color: var(--text-main); 
+            font-size: 22px; 
+            border-bottom: 1px solid var(--glass-border); 
+            padding-bottom: 8px; 
+            margin-bottom: 10px;
+        }
 
-       /* --- FABRIC INFO SECTION --- */
+        /* --- FABRIC INFO SECTION --- */
         .fabric-info-section {
             background: var(--card-bg);
             border: 1px solid var(--glass-border);
@@ -507,6 +505,20 @@
             .item-info h3 { font-size: 18px; }
             .item-info p { font-size: 11px; }
 
+            /* Menyesuaikan gambar detail agar pas di layar HP */
+            .catalog-images .img-real {
+                width: 65px;
+                height: 65px;
+                bottom: 10px;
+                right: 10px;
+                border-radius: 6px;
+            }
+            .item-info {
+                bottom: 10px;
+                left: 10px;
+                max-width: calc(100% - 90px);
+            }
+
             .fabric-info-section { padding: 20px 15px; }
             .fabric-header h3 { font-size: 20px; }
             .fabric-description { font-size: 13px; margin-bottom: 15px; text-align: justify; }
@@ -590,8 +602,8 @@
             <div class="catalog-scroll-row">
                 <div class="catalog-item" data-title="Jas Almamater / Blazer" data-img1="./1.webp" data-img2="./real_1.webp">
                     <div class="catalog-images">
-                        <img src="./1.webp" alt="Model Jas Almamater">
-                        <img src="./real_1.webp" alt="Real Pick Jas Almamater">
+                        <img src="./1.webp" alt="Model Jas Almamater" class="img-model">
+                        <img src="./real_1.webp" alt="Real Pick Jas Almamater" class="img-real">
                     </div>
                     <div class="item-info">
                         <h3>Jas Almamater / Blazer</h3>
@@ -604,8 +616,8 @@
             <div class="catalog-scroll-row">
                 <div class="catalog-item" data-title="Kemeja PDL" data-img1="./2.webp" data-img2="./real_2.webp">
                     <div class="catalog-images">
-                        <img src="./2.webp" alt="Model Kemeja PDL">
-                        <img src="./real_2.webp" alt="Real Pick Kemeja PDL">
+                        <img src="./2.webp" alt="Model Kemeja PDL" class="img-model">
+                        <img src="./real_2.webp" alt="Real Pick Kemeja PDL" class="img-real">
                     </div>
                     <div class="item-info">
                         <h3>Kemeja PDL Lapangan</h3>
@@ -614,8 +626,8 @@
                 </div>
                 <div class="catalog-item" data-title="Polo Kombinasi Klasik" data-img1="./3.webp" data-img2="./real_3.webp">
                     <div class="catalog-images">
-                        <img src="./3.webp" alt="Model Polo Kombinasi">
-                        <img src="./real_3.webp" alt="Real Pick Polo Kombinasi">
+                        <img src="./3.webp" alt="Model Polo Kombinasi" class="img-model">
+                        <img src="./real_3.webp" alt="Real Pick Polo Kombinasi" class="img-real">
                     </div>
                     <div class="item-info">
                         <h3>Kemeja PDL Klasik</h3>
@@ -624,8 +636,8 @@
                 </div>
                 <div class="catalog-item" data-title="Polo Uniform Korporat" data-img1="./4.webp" data-img2="./real_4.webp">
                     <div class="catalog-images">
-                        <img src="./4.webp" alt="Model Polo Uniform">
-                        <img src="./real_4.webp" alt="Real Pick Polo Uniform">
+                        <img src="./4.webp" alt="Model Polo Uniform" class="img-model">
+                        <img src="./real_4.webp" alt="Real Pick Polo Uniform" class="img-real">
                     </div>
                     <div class="item-info">
                         <h3>Kemeja PDL Korporat</h3>
@@ -634,8 +646,8 @@
                 </div>
                 <div class="catalog-item" data-title="Polo Shirt Basic" data-img1="./13.webp" data-img2="./real_13.webp">
                     <div class="catalog-images">
-                        <img src="./13.webp" alt="Model Polo Basic">
-                        <img src="./real_13.webp" alt="Real Pick Polo Basic">
+                        <img src="./13.webp" alt="Model Polo Basic" class="img-model">
+                        <img src="./real_13.webp" alt="Real Pick Polo Basic" class="img-real">
                     </div>
                     <div class="item-info">
                         <h3>Kemeja PDL Basic</h3>
@@ -644,12 +656,12 @@
                 </div>
             </div>
 
-            <h3 class="catalog-category-title">Kaos  Krah Lacoste dan Catton</h3>
+            <h3 class="catalog-category-title">Kaos Krah Lacoste dan Catton</h3>
             <div class="catalog-scroll-row">
                 <div class="catalog-item" data-title="Kaos Kerah Lacoste Lengan Panjang" data-img1="./5.webp" data-img2="./real_5.webp">
                     <div class="catalog-images">
-                        <img src="./5.webp" alt="Model Polo Lengan Panjang">
-                        <img src="./real_5.webp" alt="Real Pick Polo Lengan Panjang">
+                        <img src="./5.webp" alt="Model Polo Lengan Panjang" class="img-model">
+                        <img src="./real_5.webp" alt="Real Pick Polo Lengan Panjang" class="img-real">
                     </div>
                     <div class="item-info">
                         <h3>Lacoste Lengan Panjang</h3>
@@ -658,8 +670,8 @@
                 </div>
                 <div class="catalog-item" data-title="Kaos Kerah Lacoste" data-img1="./7.webp" data-img2="./real_7.webp">
                     <div class="catalog-images">
-                        <img src="./7.webp" alt="Kaos Kerah Lacoste2">
-                        <img src="./real_7.webp" alt="Real Pick Kaos Kerah Lacoste2">
+                        <img src="./7.webp" alt="Kaos Kerah Lacoste2" class="img-model">
+                        <img src="./real_7.webp" alt="Real Pick Kaos Kerah Lacoste2" class="img-real">
                     </div>
                     <div class="item-info">
                         <h3>Kaos Kerah Lacoste</h3>
@@ -668,8 +680,8 @@
                 </div>
                 <div class="catalog-item" data-title="Kaos Kerah Cotton" data-img1="./8.webp" data-img2="./real_8.webp">
                     <div class="catalog-images">
-                        <img src="./8.webp" alt="Model Kaos Kerah Cotton">
-                        <img src="./real_8.webp" alt="Real Pick Kaos Kerah Cotton">
+                        <img src="./8.webp" alt="Model Kaos Kerah Cotton" class="img-model">
+                        <img src="./real_8.webp" alt="Real Pick Kaos Kerah Cotton" class="img-real">
                     </div>
                     <div class="item-info">
                         <h3>Kaos Kerah Cotton</h3>
@@ -678,8 +690,8 @@
                 </div>
                 <div class="catalog-item" data-title="Kaos Kerah Lacoste Premium" data-img1="./12.webp" data-img2="./real_12.webp">
                     <div class="catalog-images">
-                        <img src="./12.webp" alt="Model Kaos Kerah Lacoste">
-                        <img src="./real_12.webp" alt="Real Pick Kaos Kerah Lacoste">
+                        <img src="./12.webp" alt="Model Kaos Kerah Lacoste" class="img-model">
+                        <img src="./real_12.webp" alt="Real Pick Kaos Kerah Lacoste" class="img-real">
                     </div>
                     <div class="item-info">
                         <h3>Lacoste Lengan Panjang</h3>
@@ -688,8 +700,8 @@
                 </div>
                 <div class="catalog-item" data-title="Jaket Sport / Racing" data-img1="./6.webp" data-img2="./real_6.webp">
                     <div class="catalog-images">
-                        <img src="./6.webp" alt="Model Jaket Sport">
-                        <img src="./real_6.webp" alt="Real Pick Jaket Sport">
+                        <img src="./6.webp" alt="Model Jaket Sport" class="img-model">
+                        <img src="./real_6.webp" alt="Real Pick Jaket Sport" class="img-real">
                     </div>
                     <div class="item-info">
                         <h3>Lacoste Lengan Panjang</h3>
@@ -702,8 +714,8 @@
             <div class="catalog-scroll-row">
                 <div class="catalog-item" data-title="Kaos Sablon Premium" data-img1="./9.webp" data-img2="./real_9.webp">
                     <div class="catalog-images">
-                        <img src="./9.webp" alt="Model Kaos Sablon">
-                        <img src="./real_9.webp" alt="Real Pick Kaos Sablon">
+                        <img src="./9.webp" alt="Model Kaos Sablon" class="img-model">
+                        <img src="./real_9.webp" alt="Real Pick Kaos Sablon" class="img-real">
                     </div>
                     <div class="item-info">
                         <h3>Kaos Sablon Premium</h3>
@@ -712,8 +724,8 @@
                 </div>
                 <div class="catalog-item" data-title="Kaos Olahraga" data-img1="./10.webp" data-img2="./real_10.webp">
                     <div class="catalog-images">
-                        <img src="./10.webp" alt="Model Kaos Olahraga">
-                        <img src="./real_10.webp" alt="Real Pick Kaos Olahraga">
+                        <img src="./10.webp" alt="Model Kaos Olahraga" class="img-model">
+                        <img src="./real_10.webp" alt="Real Pick Kaos Olahraga" class="img-real">
                     </div>
                     <div class="item-info">
                         <h3>Kaos Olahraga Dry-Fit</h3>
@@ -722,8 +734,8 @@
                 </div>
                 <div class="catalog-item" data-title="Kaos Santai Eksklusif" data-img1="./14.webp" data-img2="./real_14.webp">
                     <div class="catalog-images">
-                        <img src="./14.webp" alt="Model kaos santai">
-                        <img src="./real_14.webp" alt="Real Pick kaos santai">
+                        <img src="./14.webp" alt="Model kaos santai" class="img-model">
+                        <img src="./real_14.webp" alt="Real Pick kaos santai" class="img-real">
                     </div>
                     <div class="item-info">
                         <h3>Kaos Santai Cotton Combed</h3>
@@ -736,8 +748,8 @@
             <div class="catalog-scroll-row">
                 <div class="catalog-item" data-title="Jaket Bomber" data-img1="./11.webp" data-img2="./real_11.webp">
                     <div class="catalog-images">
-                        <img src="./11.webp" alt="Model Jaket Bomber">
-                        <img src="./real_11.webp" alt="Real Pick Jaket Bomber">
+                        <img src="./11.webp" alt="Model Jaket Bomber" class="img-model">
+                        <img src="./real_11.webp" alt="Real Pick Jaket Bomber" class="img-real">
                     </div>
                     <div class="item-info">
                         <h3>Jaket Bomber Windproof</h3>
