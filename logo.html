@@ -16,7 +16,7 @@
             perspective: 1000px;
         }
 
-        /* Canvas dibuat memenuhi seluruh layar agar pecahan bisa terbang bebas */
+        /* Canvas full-screen agar serpihan batu bebas terbang keluar layar */
         canvas {
             position: fixed;
             top: 0;
@@ -28,7 +28,7 @@
             transition: filter 0.5s ease;
         }
 
-        /* Efek Kilatan Petir (Flash) di Seluruh Background Layar */
+        /* Efek Kilatan Petir (Flash) saat Logo Mulai Pecah */
         .lightning-flash {
             animation: flashTime 0.35s ease-out forwards;
         }
@@ -39,7 +39,7 @@
             100% { background-color: #0a0a0f; }
         }
 
-        /* Intense Glow di Akhir Animasi */
+        /* Intense Glow di Akhir Animasi saat Logo Utuh Kembali */
         .canvas-glow {
             filter: drop-shadow(0 0 30px #d4af37) drop-shadow(0 0 60px rgba(212, 175, 55, 0.6));
         }
@@ -53,7 +53,7 @@
         const canvas = document.getElementById('logoCanvas');
         const ctx = canvas.getContext('2d', { willReadFrequently: true });
 
-        // Fungsi mencocokkan dimensi internal canvas dengan layar browser
+        // Menyesuaikan ukuran canvas dengan resolusi layar browser
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
@@ -62,14 +62,13 @@
 
         let particles = [];
         let animationTimeline = 0;
-        let currentPhase = 0; // 0: Diam, 1: Shatter/Ash, 2: Reverse, 3: Intense Glow
+        let currentPhase = 0; // 0: Diam, 1: Shatter, 2: Reverse, 3: Glow
         let logoLoaded = false;
-
-        // Kordinat & Dimensi peletakan logo di tengah layar
         let logoRect = { x: 0, y: 0, w: 0, h: 0 };
 
+        // Load Aset Gambar Logo
         const logoImg = new Image();
-        logoImg.src = './logo.webp'; // Membaca file logo asli Anda
+        logoImg.src = './logo.webp'; // Pastikan file logo.webp ada di folder yang sama
 
         logoImg.onload = function() {
             logoLoaded = true;
@@ -78,11 +77,17 @@
             animate();
         };
 
-        // Menghitung rasio asli gambar agar tidak gepeng/distorsi
+        // Penanganan jika gambar logo tidak ditemukan atau gagal di-load
+        logoImg.onerror = function() {
+            ctx.fillStyle = '#ffffff';
+            ctx.font = "16px sans-serif";
+            ctx.textAlign = "center";
+            ctx.fillText("Gagal memuat gambar './logo.webp'. Periksa kembali jalur file Anda.", canvas.width / 2, canvas.height / 2);
+        };
+
+        // Menghitung proporsi letak logo di tengah layar tanpa merusak aspek rasio asli
         function calculateLogoPosition() {
-            // Membatasi ukuran maksimal penampilan logo di layar
             const maxBoundingSize = Math.min(window.innerWidth * 0.8, 380); 
-            
             let scale = Math.min(maxBoundingSize / logoImg.naturalWidth, maxBoundingSize / logoImg.naturalHeight);
             
             logoRect.w = logoImg.naturalWidth * scale;
@@ -91,50 +96,46 @@
             logoRect.y = (canvas.height - logoRect.h) / 2;
         }
 
-        // Class Fragment untuk mengatur bongkahan batu besar hasil pecahan
+        // Struktur object cetakan untuk mengontrol setiap bongkahan pecahan batu
         class Fragment {
             constructor(sx, sy, sw, sh, dx, dy, dw, dh) {
-                // Simpan data koordinat asal potongan gambar
                 this.sx = sx; this.sy = sy;
                 this.sw = sw; this.sh = sh;
                 
-                // Koordinat dinamis dan target reassemble
                 this.origX = dx; this.origY = dy;
                 this.x = dx; this.y = dy;
                 this.dw = dw; this.dh = dh;
 
-                // Set arah ledakan batu yang acak & bertenaga besar keluar layar
-                this.vx = (Math.random() - 0.5) * 22;
-                this.vy = (Math.random() - 0.5) * 22 - Math.random() * 8; 
+                // Kecepatan dorongan ledakan batu (Dibuat bertenaga agar meluncur jauh)
+                this.vx = (Math.random() - 0.5) * 24;
+                this.vy = (Math.random() - 0.5) * 24 - Math.random() * 8; 
                 
-                // Rotasi/Putaran batu agar terlihat abstrak saat melayang
+                // Efek putaran batu abstrak saat melayang
                 this.angle = 0;
                 this.va = (Math.random() - 0.5) * 0.25; 
 
                 this.alpha = 1;
-                this.burnProgress = 0; // Efek hangus terbakar
+                this.burnProgress = 0; 
             }
 
-            // Fase 1: Meledak & Membumihanguskan (Shatter + Disintegration)
+            // Update gerakan maju (Meledak keluar layar + Menjadi hangus)
             updateShatter() {
                 this.x += this.vx;
                 this.y += this.vy;
                 this.angle += this.va;
                 
-                // Hambatan udara dan efek gravitasi jatuh bebas
                 this.vx *= 0.98;
                 this.vy *= 0.98;
-                this.vy += 0.25; 
+                this.vy += 0.25; // Gravitasi agar serpihan batu perlahan jatuh ke bawah
 
-                // Perubahan abu & memudarkan bongkahan batu
+                // Efek Disintegration (Batu perlahan menggelap menjadi abu)
                 this.burnProgress += (1 - this.burnProgress) * 0.03;
                 this.alpha -= 0.006;
                 if (this.alpha < 0) this.alpha = 0;
             }
 
-            // Fase 2: Membalikkan Waktu (Time Reverse Reassemble)
+            // Update gerakan mundur (Time Reverse kembali menyatu ke tengah)
             updateReverse() {
-                // Rumus Easing menarik kembali pecahan dari posisi luar layar ke tengah
                 this.x += (this.origX - this.x) * 0.08;
                 this.y += (this.origY - this.y) * 0.08;
                 this.angle += (0 - this.angle) * 0.08;
@@ -145,19 +146,18 @@
 
             draw() {
                 ctx.save();
-                // Translasi titik pusat ke tengah-tengah pecahan batu untuk efek rotasi
                 ctx.translate(this.x + this.dw / 2, this.y + this.dh / 2);
                 ctx.rotate(this.angle);
                 ctx.globalAlpha = this.alpha;
 
-                // Menggambar pecahan tekstur logo asli di bongkahan batu ini
+                // Menggambar potongan tekstur logo asli di bongkahan batu ini
                 ctx.drawImage(
                     logoImg, 
                     this.sx, this.sy, this.sw, this.sh, 
                     -this.dw / 2, -this.dh / 2, this.dw, this.dh
                 );
 
-                // Overlay Efek Abu Hangus (Disintegration) di atas permukaan pecahan batu
+                // Lapisan abu gelap di atas batu saat meledak
                 if (this.burnProgress > 0) {
                     ctx.fillStyle = `rgba(20, 20, 25, ${this.burnProgress * 0.95})`;
                     ctx.fillRect(-this.dw / 2, -this.dh / 2, this.dw, this.dh);
@@ -167,16 +167,16 @@
             }
         }
 
-        // Fungsi membagi (slice) logo menjadi grid pecahan batu besar
+        // Fungsi membagi (slice) logo menjadi grid bongkahan batu abstrak (100 bagian)
         function createLogoParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(logoImg, logoRect.x, logoRect.y, logoRect.w, logoRect.h);
 
-            // Scan alpha untuk menghindari pembuatan objek kosong/transparan
-            const imgData = ctx.getContext('2d').getImageData(logoRect.x, logoRect.y, logoRect.w, logoRect.h);
+            // Perbaikan Bug: Memanggil getImageData langsung dari objek ctx asli
+            const imgData = ctx.getImageData(logoRect.x, logoRect.y, logoRect.w, logoRect.h);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Mengatur pembagian grid (10x10 = 100 Pecahan Batu Besar & Abstrak)
+            // Sistem Grid 10x10 menghasilkan potongan abstract batu yang pas
             const cols = 10;
             const rows = 10;
             
@@ -190,55 +190,54 @@
 
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
-                    // Cari titik tengah blok untuk mengecek apakah ada pixel logo di sana
                     let checkX = Math.floor((c + 0.5) * destBlockW);
                     let checkY = Math.floor((r + 0.5) * destBlockH);
                     let pixelIndex = (checkY * Math.floor(logoRect.w) + checkX) * 4;
 
-                    // Jika area tersebut solid/berwarna (bukan background transparan)
+                    // Mengabaikan ruang transparan di sekitar logo agar tidak memberatkan RAM
                     if (imgData.data[pixelIndex + 3] > 30) {
                         particles.push(new Fragment(
-                            c * srcBlockW, r * srcBlockH, srcBlockW, srcBlockH, // Sisi gambar asli
-                            logoRect.x + c * destBlockW, logoRect.y + r * destBlockH, destBlockW, destBlockH // Sisi penempatan layar
+                            c * srcBlockW, r * srcBlockH, srcBlockW, srcBlockH,
+                            logoRect.x + c * destBlockW, logoRect.y + r * destBlockH, destBlockW, destBlockH
                         ));
                     }
                 }
             }
         }
 
-        // Loop utama engine animasi
+        // Engine Utama Loop Animasi
         function animate() {
             if (!logoLoaded) return;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             animationTimeline++;
 
-            // --- TIMELINE RUNNER ---
+            // --- CONTROLLER TIMELINE ANIMASI ---
             if (animationTimeline === 1) {
-                currentPhase = 0; // Tampilan diam di awal
+                currentPhase = 0; // Fase Diam Awal
             } 
             else if (animationTimeline === 75) {
-                // PETIR MENYAMBAR! Logo hancur lebur memenuhi layar luar
+                // PETIR MENYAMBAR! Pecahan batu terlempar masif memenuhi layar
                 currentPhase = 1;
                 document.body.classList.add('lightning-flash');
                 setTimeout(() => document.body.classList.remove('lightning-flash'), 350);
             } 
             else if (animationTimeline === 210) {
-                // TIME REVERSE! Menarik kembali bongkahan batu dari luar layar
+                // TIME REVERSE! Batu ditarik balik masuk kembali ke tengah
                 currentPhase = 2;
             } 
             else if (animationTimeline === 285) {
-                // LOGO KEMBALI UTUH & MEMANCARKAN INTENSE GLOW
+                // UTUH SEMPURNA & BERCAHAYA EMAS GLOW
                 currentPhase = 3;
                 canvas.classList.add('canvas-glow');
             } 
             else if (animationTimeline > 385) {
-                // Reset loop timeline
+                // Reset perulangan timeline otomatis
                 animationTimeline = 0;
                 canvas.classList.remove('canvas-glow');
                 createLogoParticles();
             }
 
-            // --- PROSES RENDERING FASE ---
+            // --- PROSES DRAWING PER FASE ---
             if (currentPhase === 0 || currentPhase === 3) {
                 if (currentPhase === 3) {
                     ctx.shadowBlur = 25;
@@ -260,7 +259,7 @@
             requestAnimationFrame(animate);
         }
 
-        // Deteksi perubahan ukuran window browser agar posisi logo selalu presisi di tengah
+        // Responsif saat window browser di-resize nilainya disesuaikan ulang otomatis
         window.addEventListener('resize', () => {
             resizeCanvas();
             if (logoLoaded) {
