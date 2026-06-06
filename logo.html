@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinematic Logo Image Particle Animation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: #0a0a0f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        /* Container utama logo (Disesuaikan menjadi kotak proporsional) */
+        .logo-box {
+            position: relative;
+            width: 450px;
+            height: 450px;
+        }
+
+        /* Efek Kilatan Petir (Flash) di Background */
+        .lightning-flash {
+            animation: flashTime 0.35s ease-out forwards;
+        }
+        @keyframes flashTime {
+            0% { background-color: #0a0a0f; }
+            15% { background-color: #ffffff; filter: blur(4px); }
+            30% { background-color: #d4af37; }
+            100% { background-color: #0a0a0f; }
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            transition: filter 0.5s ease;
+        }
+
+        /* Intense Glow / Optical Flares di Akhir Animasi */
+        .canvas-glow {
+            filter: drop-shadow(0 0 25px #d4af37) drop-shadow(0 0 50px rgba(212, 175, 55, 0.6));
+        }
+    </style>
+</head>
+<body>
+
+    <div class="logo-box">
+        <canvas id="logoCanvas"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('logoCanvas');
+        const ctx = canvas.getContext('2d', { willReadFrequently: true });
+
+        // Set dimensi internal canvas
+        canvas.width = 450;
+        canvas.height = 450;
+
+        let particles = [];
+        let animationTimeline = 0;
+        let currentPhase = 0; // 0: Diam, 1: Shatter/Ash, 2: Reverse, 3: Intense Glow
+        let logoLoaded = false;
+
+        // Load Gambar Logo Asli Anda
+        const logoImg = new Image();
+        logoImg.src = './logo.webp'; // Otomatis membaca file logo di folder yang sama
+
+        logoImg.onload = function() {
+            logoLoaded = true;
+            createLogoParticles();
+            animate();
+        };
+
+        // Class untuk mengatur serpihan pixel gambar
+        class Fragment {
+            constructor(x, y, r, g, b, alpha) {
+                this.origX = x; // Koordinat asli tujuan reassemble
+                this.origY = y;
+                this.x = x;     // Koordinat dinamis saat meledak
+                this.y = y;
+                this.size = Math.random() * 2 + 1.5; // Ukuran serpihan pixel
+                
+                // Set arah dan kecepatan ledakan acak (Shatter Effect)
+                this.vx = (Math.random() - 0.5) * 12;
+                this.vy = (Math.random() - 0.5) * 12 - Math.random() * 4; 
+                
+                // Menyimpan warna asli dari pixel gambar tersebut
+                this.origR = r;
+                this.origG = g;
+                this.origB = b;
+                this.origAlpha = alpha / 255;
+
+                this.r = r;
+                this.g = g;
+                this.b = b;
+                this.alpha = this.origAlpha;
+            }
+
+            // Jalur 1 & 2: Shatter + Disintegration (Berubah jadi abu hancur)
+            updateShatter() {
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                // Hambatan udara & gravitasi mikro
+                this.vx *= 0.97;
+                this.vy *= 0.97;
+                this.vy += 0.07; 
+
+                // Efek Membumihanguskan (Mengubah warna rgb perlahan ke abu gelap)
+                let targetAsh = 35; // Nilai kegelapan abu
+                this.r += (targetAsh - this.r) * 0.05;
+                this.g += (targetAsh - this.g) * 0.05;
+                this.b += (targetAsh - this.b) * 0.05;
+
+                // Memudarkan partikel abu
+                this.alpha -= 0.007; 
+                if (this.alpha < 0) this.alpha = 0;
+            }
+
+            // Jalur 3: Reverse Animation (Serpihan ditarik balik)
+            updateReverse() {
+                // Rumus Easing (Lerp) untuk mengembalikan posisi secara smooth
+                this.x += (this.origX - this.x) * 0.09;
+                this.y += (this.origY - this.y) * 0.09;
+                
+                // Mengembalikan warna abu-abu menjadi warna emas asli gambar
+                this.r += (this.origR - this.r) * 0.1;
+                this.g += (this.origG - this.g) * 0.1;
+                this.b += (this.origB - this.b) * 0.1;
+                this.alpha += (this.origAlpha - this.alpha) * 0.1;
+            }
+
+            draw() {
+                ctx.fillStyle = `rgba(${this.r}, ${this.g}, ${this.b}, ${this.alpha})`;
+                ctx.fillRect(this.x, this.y, this.size, this.size);
+            }
+        }
+
+        // Fungsi membedah gambar menjadi ribuan partikel warna
+        function createLogoParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Gambar logo tepat di tengah canvas sebelum dipecah
+            const size = 320; // Ukuran logo di dalam canvas
+            const x = (canvas.width - size) / 2;
+            const y = (canvas.height - size) / 2;
+            ctx.drawImage(logoImg, x, y, size, size);
+
+            // Ambil data data gambar (RGBA pixel)
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles = [];
+            
+            // Scan pixel gambar (lompat 3 pixel agar performa mulus & tidak lag)
+            for (let y = 0; y < canvas.height; y += 3) {
+                for (let x = 0; x < canvas.width; x += 3) {
+                    const i = (y * canvas.width + x) * 4;
+                    const alpha = imgData.data[i + 3];
+
+                    if (alpha > 120) { // Jika area tersebut adalah bagian dari logo (bukan transparan)
+                        const r = imgData.data[i];
+                        const g = imgData.data[i + 1];
+                        const b = imgData.data[i + 2];
+                        
+                        particles.push(new Fragment(x, y, r, g, b, alpha));
+                    }
+                }
+            }
+        }
+
+        // Engine Utama Animasi
+        function animate() {
+            if (!logoLoaded) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            animationTimeline++;
+
+            // --- TIMELINE RUNNER ---
+            if (animationTimeline === 1) {
+                currentPhase = 0; // Diam utuh di awal
+            } 
+            else if (animationTimeline === 70) {
+                // KILATAN PETIR & LOGO PECAH MENJADI ABU (Shatter + Disintegration)
+                currentPhase = 1;
+                document.body.classList.add('lightning-flash');
+                setTimeout(() => document.body.classList.remove('lightning-flash'), 350);
+            } 
+            else if (animationTimeline === 200) {
+                // REVERSE TIME! Menyusun kembali serpihan abu
+                currentPhase = 2;
+            } 
+            else if (animationTimeline === 275) {
+                // SELESAI MENYATU & GLOW BERCAHAYA KUAT
+                currentPhase = 3;
+                canvas.classList.add('canvas-glow');
+            } 
+            else if (animationTimeline > 370) {
+                // Loop ulang timeline
+                animationTimeline = 0;
+                canvas.classList.remove('canvas-glow');
+                createLogoParticles();
+            }
+
+            // --- PROSES RENDERING FASE ---
+            if (currentPhase === 0 || currentPhase === 3) {
+                // Tampilkan gambar asli kualitas HD saat diam atau saat bersinar di akhir
+                if (currentPhase === 3) {
+                    ctx.shadowBlur = 20;
+                    ctx.shadowColor = "rgba(212, 175, 55, 0.7)";
+                } else {
+                    ctx.shadowBlur = 0;
+                }
+                const size = 320;
+                const x = (canvas.width - size) / 2;
+                const y = (canvas.height - size) / 2;
+                ctx.drawImage(logoImg, x, y, size, size);
+            } 
+            else {
+                // Tampilkan dan kalkulasi pecahan partikel (Fase Pecah atau Fase Balik)
+                ctx.shadowBlur = 0;
+                particles.forEach(p => {
+                    if (currentPhase === 1) p.updateShatter();
+                    if (currentPhase === 2) p.updateReverse();
+                    p.draw();
+                });
+            }
+
+            requestAnimationFrame(animate);
+        }
+    </script>
+</body>
+</html>
