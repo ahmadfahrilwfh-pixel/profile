@@ -190,64 +190,138 @@
         }
 
         /* --- CATALOG SECTION --- */
-        .catalog-container { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 30px; 
-        }
-        
-        .catalog-desc {
-            text-align: center; color: var(--text-muted); max-width: 700px; margin: -15px auto 30px; font-size: 15px; line-height: 1.6;
-        }
+/* --- CATALOG SECTION --- */
+.catalog-container { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 30px; 
+}
 
-        .catalog-scroll-row {
-            display: flex;
-            overflow-x: auto;
-            gap: 20px;
-            padding-bottom: 15px;
-            scroll-snap-type: x mandatory; 
-            scrollbar-width: thin;
-            scrollbar-color: var(--primary-color) var(--glass-bg);
-        }
+.catalog-desc {
+    text-align: center; 
+    color: var(--text-muted); 
+    max-width: 700px; 
+    margin: -15px auto 30px; 
+    font-size: 15px; 
+    line-height: 1.6;
+}
 
-        .catalog-scroll-row::-webkit-scrollbar { height: 6px; }
-        .catalog-scroll-row::-webkit-scrollbar-track { background: var(--glass-bg); border-radius: 10px; }
-        .catalog-scroll-row::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
+.catalog-scroll-row {
+    display: flex;
+    overflow-x: auto;
+    gap: 20px;
+    padding-bottom: 15px;
+    scroll-snap-type: x mandatory; 
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) var(--glass-bg);
+}
 
-        .catalog-item { 
-            position: relative; 
-            height: 300px; 
-            flex: 0 0 280px;
-            border-radius: 12px; 
-            overflow: hidden; 
-            cursor: pointer; 
-            border: 1px solid var(--glass-border); 
-            background: #111;
-            scroll-snap-align: start;
-        }
-        
-        .catalog-images { display: flex; width: 100%; height: 100%; }
-        .catalog-images img { width: 50%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
-        
-        .catalog-item::after {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(to top, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.4) 50%, transparent 100%); 
-            opacity: 0.9; transition: 0.4s; pointer-events: none;
-        }
-        .catalog-item:hover .catalog-images img { transform: scale(1.08); }
-        .catalog-item:hover::after { opacity: 1; }
-        .item-info { position: absolute; bottom: 15px; left: 15px; z-index: 2; transition: 0.4s; pointer-events: none; padding-right: 15px; }
-        .item-info h3 { font-family: 'Rajdhani', sans-serif; color: var(--primary-color); font-size: 20px; margin-bottom: 4px; }
-        .item-info p { color: #fff; font-size: 12px; opacity: 0.9; line-height: 1.4; }
-        
-        .catalog-category-title { 
-            font-family: 'Rajdhani', sans-serif; 
-            color: var(--text-main); 
-            font-size: 22px; 
-            border-bottom: 1px solid var(--glass-border); 
-            padding-bottom: 8px; 
-            margin-bottom: 10px;
-        }
+.catalog-scroll-row::-webkit-scrollbar { height: 6px; }
+.catalog-scroll-row::-webkit-scrollbar-track { background: var(--glass-bg); border-radius: 10px; }
+.catalog-scroll-row::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
+
+.catalog-item { 
+    position: relative; 
+    height: 360px; /* Sedikit ditinggikan agar proporsi card vertikalnya pas */
+    flex: 0 0 280px;
+    border-radius: 12px; 
+    overflow: hidden; 
+    cursor: pointer; 
+    border: 1px solid var(--glass-border); 
+    background: #111;
+    scroll-snap-align: start;
+}
+
+.catalog-images { 
+    position: relative;
+    width: 100%; 
+    height: 100%; 
+}
+
+/* Gambar Utama (Model) - Memenuhi seluruh background card */
+.catalog-images .img-model { 
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    transition: transform 0.6s ease; 
+}
+
+/* Gambar Kecil (Real/Detail) - Melayang di pojok kanan bawah */
+.catalog-images .img-real {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    width: 85px;
+    height: 85px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    z-index: 4; /* Berada di paling atas luar overlay */
+    transition: transform 0.4s ease, border-color 0.4s ease;
+}
+
+/* Gradient Gelap di bawah agar teks & gambar detail mudah dibaca */
+.catalog-item::after {
+    content: ''; 
+    position: absolute; 
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to top, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.4) 40%, transparent 100%); 
+    opacity: 0.9; 
+    transition: 0.4s; 
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Efek Hover */
+.catalog-item:hover .img-model { 
+    transform: scale(1.05); 
+}
+
+.catalog-item:hover .img-real { 
+    transform: scale(1.08); 
+    border-color: var(--primary-color); /* Berubah warna border saat card di-hover */
+}
+
+.catalog-item:hover::after { 
+    opacity: 1; 
+}
+
+/* Informasi Produk (Pojok Kiri Bawah) */
+.item-info { 
+    position: absolute; 
+    bottom: 15px; 
+    left: 15px; 
+    z-index: 3; 
+    transition: 0.4s; 
+    pointer-events: none; 
+    padding-right: 5px;
+    /* Mencegah teks memanjang ke kanan dan menutupi gambar detail */
+    max-width: calc(100% - 120px); 
+}
+
+.item-info h3 { 
+    font-family: 'Rajdhani', sans-serif; 
+    color: var(--primary-color); 
+    font-size: 20px; 
+    margin-bottom: 4px; 
+}
+
+.item-info p { 
+    color: #fff; 
+    font-size: 12px; 
+    opacity: 0.9; 
+    line-height: 1.4; 
+}
+
+.catalog-category-title { 
+    font-family: 'Rajdhani', sans-serif; 
+    color: var(--text-main); 
+    font-size: 22px; 
+    border-bottom: 1px solid var(--glass-border); 
+    padding-bottom: 8px; 
+    margin-bottom: 10px;
+}
 
        /* --- FABRIC INFO SECTION --- */
         .fabric-info-section {
