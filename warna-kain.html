@@ -77,35 +77,35 @@
             z-index: 1;
         }
 
-        /* 2. Layer Tengah: Warna HTML + Masking */
+/* 2. Layer Tengah: Warna HTML + Masking */
         .layer-color {
             z-index: 2;
-            background-color: #F4F4F6; /* Default Putih Netral */
-            /* Memotong warna agar hanya muncul di area baju */
-            -webkit-mask-image: url('mask.webp');
-            mask-image: url('mask.webp');
+            background-color: #F4F4F6;
+            /* UBAH KE mask.png */
+            -webkit-mask-image: url('mask.png');
+            mask-image: url('mask.png');
             -webkit-mask-size: cover;
             mask-size: cover;
             -webkit-mask-position: center;
             mask-position: center;
             transition: background-color 0.4s ease;
-            mix-blend-mode: multiply; /* Menyatukan warna dengan bayangan foto asli di bawahnya */
+            mix-blend-mode: multiply; 
         }
 
         /* 3. Layer Atas: Tekstur Kain Grayscale */
         .layer-texture {
             background-image: url('texture.webp');
             z-index: 3;
-            /* Memotong tekstur agar hanya muncul di area baju */
+            /* UBAH KE mask.png */
             -webkit-mask-image: url('mask.png');
-            mask-image: url('mask.webp');
+            mask-image: url('mask.png');
             -webkit-mask-size: cover;
             mask-size: cover;
             -webkit-mask-position: center;
             mask-position: center;
-            mix-blend-mode: multiply; /* Menyatukan tekstur rajutan dengan warna di bawahnya */
-            opacity: 0.85; /* Atur ketebalan serat kain di sini */
-            pointer-events: none; /* Agar tidak mengganggu klik */
+            mix-blend-mode: multiply; 
+            opacity: 0.85; 
+            pointer-events: none; 
         }
 
         /* Palette Area */
