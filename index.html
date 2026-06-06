@@ -57,7 +57,7 @@
             transition: background-color 0.5s, color 0.5s;
         }
 
-        /* --- LOADING SCREEN CINEMATIC --- */
+        /* --- LOADING SCREEN CINEMATIC UPDATE --- */
         #loader {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100vh;
@@ -66,11 +66,23 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
             overflow: hidden;
+            /* Transisi keluar premium: Gabungan opacity, zoom meluncur maju, dan blur halus */
+            transition: opacity 0.9s cubic-bezier(0.7, 0, 0.3, 1), 
+                        transform 0.9s cubic-bezier(0.7, 0, 0.3, 1),
+                        filter 0.9s cubic-bezier(0.7, 0, 0.3, 1);
+            transform: scale(1);
+            filter: blur(0px);
         }
 
-        /* Layer Canvas Animasi Terpisah */
+        /* Kelas pemicu hilangnya loader secara fleksibel */
+        #loader.fade-out-cinematic {
+            opacity: 0;
+            transform: scale(1.08);
+            filter: blur(20px);
+            pointer-events: none;
+        }
+
         #loaderCanvas {
             position: absolute;
             top: 0; left: 0;
@@ -80,7 +92,6 @@
             transition: filter 0.5s ease;
         }
 
-        /* Container UI Teks Loader */
         .loader-ui-overlay {
             position: relative;
             z-index: 3;
@@ -90,21 +101,21 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 60px 20px;
-            pointer-events: none; /* Klik tembus ke canvas background */
+            padding: 55px 20px;
+            pointer-events: none;
         }
 
         .welcome-text {
             font-family: 'Rajdhani', sans-serif;
             color: #fff;
-            font-size: 20px;
+            font-size: 21px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 6px;
             text-align: center;
             opacity: 0;
-            animation: fadeInUI 1s ease forwards 0.3s;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            animation: fadeInUI 1.2s ease forwards 0.2s;
+            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.6);
         }
 
         .developed-text {
@@ -113,17 +124,17 @@
             font-size: 14px;
             font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: 4px;
+            letter-spacing: 5px;
             text-align: center;
             opacity: 0;
-            animation: fadeInUI 1s ease forwards 0.5s;
+            animation: fadeInUI 1.2s ease forwards 0.4s;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
         }
 
         @keyframes fadeInUI {
-            to { opacity: 0.85; }
+            to { opacity: 0.9; }
         }
 
-        /* Efek Kilatan Petir di Layar Loader */
         .lightning-flash-screen {
             animation: flashTime 0.35s ease-out forwards;
         }
@@ -136,6 +147,20 @@
 
         .loader-canvas-glow {
             filter: drop-shadow(0 0 35px #d4af37) drop-shadow(0 0 70px rgba(212, 175, 55, 0.5));
+        }
+
+        /* --- STATE AWAL REVEAL HALAMAN UTAMA --- */
+        nav, #home {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        /* Aktif ketika loader selesai bermutasi */
+        body.site-active nav, body.site-active #home {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* --- BACKGROUND ANIMATION MAIN SITE --- */
@@ -226,116 +251,27 @@
         }
 
         /* --- CATALOG SECTION --- */
-        .catalog-container { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 30px; 
-        }
-
-        .catalog-desc {
-            text-align: center; 
-            color: var(--text-muted); 
-            max-width: 700px; 
-            margin: -15px auto 30px; 
-            font-size: 15px; 
-            line-height: 1.6;
-        }
-
-        .catalog-scroll-row {
-            display: flex;
-            overflow-x: auto;
-            gap: 20px;
-            padding-bottom: 15px;
-            scroll-snap-type: x mandatory; 
-            scrollbar-width: thin;
-            scrollbar-color: var(--primary-color) var(--glass-bg);
-        }
-
+        .catalog-container { display: flex; flex-direction: column; gap: 30px; }
+        .catalog-desc { text-align: center; color: var(--text-muted); max-width: 700px; margin: -15px auto 30px; font-size: 15px; line-height: 1.6; }
+        .catalog-scroll-row { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 15px; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--primary-color) var(--glass-bg); }
         .catalog-scroll-row::-webkit-scrollbar { height: 6px; }
         .catalog-scroll-row::-webkit-scrollbar-track { background: var(--glass-bg); border-radius: 10px; }
         .catalog-scroll-row::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
-
-        .catalog-item { 
-            position: relative; 
-            height: 360px; 
-            flex: 0 0 280px;
-            border-radius: 12px; 
-            overflow: hidden; 
-            cursor: pointer; 
-            border: 1px solid var(--glass-border); 
-            background: #111;
-            scroll-snap-align: start;
-        }
-
-        .catalog-images { 
-            position: relative;
-            width: 100%; 
-            height: 100%; 
-        }
-
-        .catalog-images .img-model { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            transition: transform 0.6s ease; 
-        }
-
-        .catalog-images .img-real {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-            width: 85px;
-            height: 85px;
-            object-fit: cover;
-            border-radius: 10px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-            z-index: 4; 
-            transition: transform 0.4s ease, border-color 0.4s ease;
-        }
-
-        .catalog-item::after {
-            content: ''; 
-            position: absolute; 
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: linear-gradient(to top, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.4) 40%, transparent 100%); 
-            opacity: 0.9; 
-            transition: 0.4s; 
-            pointer-events: none;
-            z-index: 2;
-        }
-
+        .catalog-item { position: relative; height: 360px; flex: 0 0 280px; border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid var(--glass-border); background: #111; scroll-snap-align: start; }
+        .catalog-images { position: relative; width: 100%; height: 100%; }
+        .catalog-images .img-model { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .catalog-images .img-real { position: absolute; bottom: 15px; right: 15px; width: 85px; height: 85px; object-fit: cover; border-radius: 10px; border: 2px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5); z-index: 4; transition: transform 0.4s ease, border-color 0.4s ease; }
+        .catalog-item::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to top, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.4) 40%, transparent 100%); opacity: 0.9; transition: 0.4s; pointer-events: none; z-index: 2; }
         .catalog-item:hover .img-model { transform: scale(1.05); }
         .catalog-item:hover .img-real { transform: scale(1.08); border-color: var(--primary-color); }
         .catalog-item:hover::after { opacity: 1; }
-
-        .item-info { 
-            position: absolute; 
-            bottom: 15px; 
-            left: 15px; 
-            z-index: 3; 
-            transition: 0.4s; 
-            pointer-events: none; 
-            padding-right: 5px;
-            max-width: calc(100% - 120px); 
-        }
-
+        .item-info { position: absolute; bottom: 15px; left: 15px; z-index: 3; transition: 0.4s; pointer-events: none; padding-right: 5px; max-width: calc(100% - 120px); }
         .item-info h3 { font-family: 'Rajdhani', sans-serif; color: var(--primary-color); font-size: 20px; margin-bottom: 4px; }
         .item-info p { color: #fff; font-size: 12px; opacity: 0.9; line-height: 1.4; }
-
-        .catalog-category-title { 
-            font-family: 'Rajdhani', sans-serif; 
-            color: var(--text-main); 
-            font-size: 22px; 
-            border-bottom: 1px solid var(--glass-border); 
-            padding-bottom: 8px; 
-            margin-bottom: 10px;
-        }
+        .catalog-category-title { font-family: 'Rajdhani', sans-serif; color: var(--text-main); font-size: 22px; border-bottom: 1px solid var(--glass-border); padding-bottom: 8px; margin-bottom: 10px; }
 
         /* --- FABRIC INFO SECTION --- */
-        .fabric-info-section {
-            background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 15px; padding: 35px; margin-top: 30px; backdrop-filter: blur(10px); box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
+        .fabric-info-section { background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 15px; padding: 35px; margin-top: 30px; backdrop-filter: blur(10px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
         .fabric-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
         .fabric-header h3 { font-family: 'Rajdhani', sans-serif; font-size: 26px; color: var(--primary-color); margin: 0; text-transform: uppercase; letter-spacing: 1px; }
         .fabric-description { color: var(--text-muted); line-height: 1.6; font-size: 14px; margin-bottom: 25px; border-left: 3px solid var(--primary-color); padding-left: 15px; }
@@ -399,7 +335,7 @@
             .fabric-info-section { padding: 20px 15px; } .fabric-header h3 { font-size: 20px; } .fabric-description { font-size: 13px; margin-bottom: 15px; text-align: justify; } .fabric-section-title { font-size: 16px; margin-top: 15px; margin-bottom: 10px; }
             .map-container { height: 250px; border-radius: 10px; } footer { padding: 30px 15px 15px; }
             .modal-content { padding: 15px; border-radius: 12px; } .modal-images { gap: 8px; margin: 10px 0 15px; } .modal-images img { height: 200px; } .img-label { font-size: 10px; padding: 2px 6px; } .wa-btn { font-size: 13px; padding: 10px 15px; width: 100%; justify-content: center; }
-            .welcome-text { font-size: 15px; letter-spacing: 3px; } .developed-text { font-size: 11px; letter-spacing: 2px; }
+            .welcome-text { font-size: 14px; letter-spacing: 4px; } .developed-text { font-size: 11px; letter-spacing: 2px; }
         }
     </style>
 </head>
@@ -699,7 +635,7 @@
 
         let lParticles = [];
         let lTimeline = 0;
-        let lCurrentPhase = 0; // 0: Diam, 1: Shatter, 2: Reverse, 3: Glow, 4: Hiding
+        let lCurrentPhase = 0; // 0: Diam, 1: Shatter, 2: Reverse, 3: Glow, 4: Selesai
         let lLogoLoaded = false;
         let lLogoRect = { x: 0, y: 0, w: 0, h: 0 };
         let lAnimationId;
@@ -719,12 +655,16 @@
             lCtx.font = "16px sans-serif";
             lCtx.textAlign = "center";
             lCtx.fillText("Gagal memuat gambar './logo.webp' di Loading Screen.", loaderCanvas.width / 2, loaderCanvas.height / 2);
-            // Fallback hilangkan loader jika gambar error
-            setTimeout(() => { loaderContainer.style.opacity = '0'; setTimeout(() => loaderContainer.style.display = 'none', 600); }, 2000);
+            setTimeout(() => { 
+                loaderContainer.classList.add('fade-out-cinematic'); 
+                document.body.classList.add('site-active');
+                setTimeout(() => loaderContainer.style.display = 'none', 900); 
+            }, 2000);
         };
 
+        // UKURAN BARU DI-UPGRADE AGAR LOGO UTUH JAUH LEBIH BESAR & MEGAH
         function calculateLoaderLogoPos() {
-            const maxBoundingSize = Math.min(window.innerWidth * 0.7, 300); 
+            const maxBoundingSize = Math.min(window.innerWidth * 0.85, 420); 
             let scale = Math.min(maxBoundingSize / lLogoImg.naturalWidth, maxBoundingSize / lLogoImg.naturalHeight);
             lLogoRect.w = lLogoImg.naturalWidth * scale;
             lLogoRect.h = lLogoImg.naturalHeight * scale;
@@ -738,18 +678,19 @@
                 this.origX = dx; this.origY = dy;
                 this.x = dx; this.y = dy;
                 this.dw = dw; this.dh = dh;
-                this.vx = (Math.random() - 0.5) * 26;
-                this.vy = (Math.random() - 0.5) * 26 - Math.random() * 8; 
+                // Kecepatan dorong batu disesuaikan agar menyebar estetik memenuhi layar luas
+                this.vx = (Math.random() - 0.5) * 20;
+                this.vy = (Math.random() - 0.5) * 20 - Math.random() * 6; 
                 this.angle = 0;
-                this.va = (Math.random() - 0.5) * 0.3; 
+                this.va = (Math.random() - 0.5) * 0.22; 
                 this.alpha = 1;
                 this.burnProgress = 0; 
             }
             updateShatter() {
                 this.x += this.vx; this.y += this.vy; this.angle += this.va;
-                this.vx *= 0.98; this.vy *= 0.98; this.vy += 0.22; 
-                this.burnProgress += (1 - this.burnProgress) * 0.03;
-                this.alpha -= 0.006;
+                this.vx *= 0.985; this.vy *= 0.985; this.vy += 0.12; // Gravitasi mikro mengambang majestik
+                this.burnProgress += (1 - this.burnProgress) * 0.015; // Pembentukan abu diperhalus ketajamannya
+                this.alpha -= 0.0035; // Pengurangan kepekatan abu diperlambat
                 if (this.alpha < 0) this.alpha = 0;
             }
             updateReverse() {
@@ -766,7 +707,7 @@
                 lCtx.globalAlpha = this.alpha;
                 lCtx.drawImage(lLogoImg, this.sx, this.sy, this.sw, this.sh, -this.dw / 2, -this.dh / 2, this.dw, this.dh);
                 if (this.burnProgress > 0) {
-                    lCtx.fillStyle = `rgba(15, 15, 22, ${this.burnProgress * 0.95})`;
+                    lCtx.fillStyle = `rgba(12, 12, 18, ${this.burnProgress * 0.95})`;
                     lCtx.fillRect(-this.dw / 2, -this.dh / 2, this.dw, this.dh);
                 }
                 lCtx.restore();
@@ -799,35 +740,41 @@
             }
         }
 
+        // TIMELINE MODIFIKASI: DIPERLAMBAT TOTAL SEPERTI FLUID CINEMATIC AFTER EFFECTS
         function animateLoader() {
             if (!lLogoLoaded || lCurrentPhase === 4) return;
             lCtx.clearRect(0, 0, loaderCanvas.width, loaderCanvas.height);
             lTimeline++;
 
-            if (lTimeline === 1) { lCurrentPhase = 0; } 
-            else if (lTimeline === 65) {
-                lCurrentPhase = 1; // Sambaran Petir & Meledak
+            if (lTimeline === 1) { 
+                lCurrentPhase = 0; // Tampilan static pembuka awal
+            } 
+            else if (lTimeline === 110) { 
+                lCurrentPhase = 1; // Sambaran Petir & Pecah (Diberikan jeda baca teks intro lebih lama)
                 loaderContainer.classList.add('lightning-flash-screen');
                 setTimeout(() => loaderContainer.classList.remove('lightning-flash-screen'), 350);
             } 
-            else if (lTimeline === 195) { lCurrentPhase = 2; } // Menyatu Kembali
-            else if (lTimeline === 265) {
-                lCurrentPhase = 3; // Utuh & Bersinar
+            else if (lTimeline === 290) { 
+                lCurrentPhase = 2; // Time Reverse Menyatu Kembali (Durasi drift serpihan batu diperpanjang)
+            } 
+            else if (lTimeline === 400) { 
+                lCurrentPhase = 3; // Logo Utuh & Aktivasi Semburan Glow Emas Sinematik
                 loaderCanvas.classList.add('loader-canvas-glow');
             } 
-            else if (lTimeline === 335) {
-                // SINKRONISASI SELESAI: Hilangkan Loader secara Halus & Stop Animasi
+            else if (lTimeline === 520) {
+                // SINKRONISASI TRANSISI: Dieksekusi secara fluid mengalir bebas tanpa lag kaku
                 lCurrentPhase = 4;
-                loaderContainer.style.opacity = '0';
+                loaderContainer.classList.add('fade-out-cinematic'); 
+                document.body.classList.add('site-active'); // Membuka modul antarmuka utama secara perlahan
                 setTimeout(() => {
                     loaderContainer.style.display = 'none';
                     cancelAnimationFrame(lAnimationId);
-                }, 600);
+                }, 950);
                 return;
             }
 
             if (lCurrentPhase === 0 || lCurrentPhase === 3) {
-                if (lCurrentPhase === 3) { lCtx.shadowBlur = 25; lCtx.shadowColor = "rgba(212, 175, 55, 0.85)"; } 
+                if (lCurrentPhase === 3) { lCtx.shadowBlur = 30; lCtx.shadowColor = "rgba(212, 175, 55, 0.9)"; } 
                 else { lCtx.shadowBlur = 0; }
                 lCtx.drawImage(lLogoImg, lLogoRect.x, lLogoRect.y, lLogoRect.w, lLogoRect.h);
             } else {
