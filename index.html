@@ -47,7 +47,12 @@
             --card-bg: rgba(255, 255, 255, 0.9);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            scroll-behavior: smooth; 
+        }
 
         body {
             font-family: 'Montserrat', sans-serif;
@@ -60,14 +65,17 @@
         /* --- LOADING SCREEN CINEMATIC UPDATE --- */
         #loader {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100vh;
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100vh;
             background: #0a0a0f;
             z-index: 9999;
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            /* Transisi keluar premium: Gabungan opacity, zoom meluncur maju, dan blur halus */
+            /* Efek transisi keluar gabungan kustom: Opacity, Zoom out, Blur halus */
             transition: opacity 0.9s cubic-bezier(0.7, 0, 0.3, 1), 
                         transform 0.9s cubic-bezier(0.7, 0, 0.3, 1),
                         filter 0.9s cubic-bezier(0.7, 0, 0.3, 1);
@@ -75,7 +83,7 @@
             filter: blur(0px);
         }
 
-        /* Kelas pemicu hilangnya loader secara fleksibel */
+        /* Trigger ketika animasi penyusunan logo selesai */
         #loader.fade-out-cinematic {
             opacity: 0;
             transform: scale(1.08);
@@ -85,8 +93,10 @@
 
         #loaderCanvas {
             position: absolute;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
+            top: 0; 
+            left: 0;
+            width: 100vw; 
+            height: 100vh;
             display: block;
             z-index: 1;
             transition: filter 0.5s ease;
@@ -149,7 +159,7 @@
             filter: drop-shadow(0 0 35px #d4af37) drop-shadow(0 0 70px rgba(212, 175, 55, 0.5));
         }
 
-        /* --- STATE AWAL REVEAL HALAMAN UTAMA --- */
+        /* --- REVEAL MECHANISM MAIN HOMEPAGE --- */
         nav, #home {
             opacity: 0;
             transform: translateY(25px);
@@ -157,93 +167,207 @@
                         transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
-        /* Aktif ketika loader selesai bermutasi */
         body.site-active nav, body.site-active #home {
             opacity: 1;
             transform: translateY(0);
         }
 
         /* --- BACKGROUND ANIMATION MAIN SITE --- */
-        #canvas-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; }
+        #canvas-container { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh; 
+            z-index: -1; 
+        }
 
         /* --- NAVBAR --- */
         nav {
-            position: fixed; top: 0; width: 100%; padding: 15px 5%;
-            display: flex; justify-content: space-between; align-items: center;
+            position: fixed; 
+            top: 0; 
+            width: 100%; 
+            padding: 15px 5%;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
             background: var(--glass-bg);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px); 
+            -webkit-backdrop-filter: blur(15px);
             border-bottom: 1px solid var(--glass-border);
-            z-index: 1000; transition: 0.3s;
+            z-index: 1000; 
+            transition: 0.3s;
         }
 
         .logo {
-            font-family: 'Rajdhani', sans-serif; font-size: 24px; font-weight: 700;
-            color: var(--primary-color); text-transform: uppercase; letter-spacing: 2px;
+            font-family: 'Rajdhani', sans-serif; 
+            font-size: 24px; 
+            font-weight: 700;
+            color: var(--primary-color); 
+            text-transform: uppercase; 
+            letter-spacing: 2px;
             text-shadow: 0 0 10px var(--primary-glow);
         }
 
         .nav-menu { display: flex; align-items: center; gap: 30px; }
         .nav-links { list-style: none; display: flex; gap: 30px; }
         .nav-links li a {
-            text-decoration: none; color: var(--text-main); font-size: 13px;
-            font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
-            position: relative; transition: 0.3s;
+            text-decoration: none; 
+            color: var(--text-main); 
+            font-size: 13px;
+            font-weight: 600; 
+            letter-spacing: 1px; 
+            text-transform: uppercase;
+            position: relative; 
+            transition: 0.3s;
         }
         .nav-links li a::after {
-            content: ''; position: absolute; bottom: -5px; left: 0;
-            width: 0%; height: 2px; background: var(--primary-color);
-            transition: 0.3s; box-shadow: 0 0 8px var(--primary-color);
+            content: ''; 
+            position: absolute; 
+            bottom: -5px; 
+            left: 0;
+            width: 0%; 
+            height: 2px; 
+            background: var(--primary-color);
+            transition: 0.3s; 
+            box-shadow: 0 0 8px var(--primary-color);
         }
         .nav-links li a:hover::after { width: 100%; }
         .nav-links li a:hover { color: var(--primary-color); }
 
         .controls { display: flex; align-items: center; gap: 20px; }
         .theme-btn, .menu-toggle {
-            background: transparent; border: none; color: var(--text-main);
-            font-size: 18px; cursor: pointer; transition: 0.3s;
+            background: transparent; 
+            border: none; 
+            color: var(--text-main);
+            font-size: 18px; 
+            cursor: pointer; 
+            transition: 0.3s;
         }
         .theme-btn:hover { color: var(--primary-color); transform: rotate(15deg); }
         .menu-toggle { display: none; }
 
         /* --- SECTIONS SETUP --- */
-        .section-title { font-family: 'Rajdhani', sans-serif; font-size: 32px; text-align: center; color: var(--primary-color); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 2px; }
-        section { min-height: auto; padding: 100px 10% 40px; display: flex; flex-direction: column; justify-content: center; }
+        .section-title { 
+            font-family: 'Rajdhani', sans-serif; 
+            font-size: 32px; 
+            text-align: center; 
+            color: var(--primary-color); 
+            margin-bottom: 30px; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+        }
+        section { 
+            min-height: auto; 
+            padding: 100px 10% 40px; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+        }
         
         /* --- HOME SECTION --- */
-        #home { align-items: flex-start; text-align: left; position: relative; padding-top: 140px; padding-bottom: 60px; }
+        #home { 
+            align-items: flex-start; 
+            text-align: left; 
+            position: relative; 
+            padding-top: 140px; 
+            padding-bottom: 60px; 
+        }
         .experience-badge {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 8px 18px; background: var(--glass-bg);
-            border: 1px solid var(--primary-color); border-radius: 30px;
-            color: var(--primary-color); font-weight: 600; font-size: 13px; letter-spacing: 1px;
-            margin-bottom: 25px; box-shadow: 0 0 20px var(--primary-glow);
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px;
+            padding: 8px 18px; 
+            background: var(--glass-bg);
+            border: 1px solid var(--primary-color); 
+            border-radius: 30px;
+            color: var(--primary-color); 
+            font-weight: 600; 
+            font-size: 13px; 
+            letter-spacing: 1px;
+            margin-bottom: 25px; 
+            box-shadow: 0 0 20px var(--primary-glow);
             animation: float 3s ease-in-out infinite;
         }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes float { 
+            0%, 100% { transform: translateY(0); } 
+            50% { transform: translateY(-10px); } 
+        }
 
-        h1 { font-family: 'Rajdhani', sans-serif; font-size: 48px; line-height: 1.1; margin-bottom: 20px; font-weight: 700; text-transform: uppercase; }
-        h1 span { color: var(--primary-color); text-shadow: 0 0 20px var(--primary-glow); }
-        p.subtitle { font-size: 16px; color: var(--text-muted); max-width: 650px; line-height: 1.7; margin-bottom: 35px; }
+        h1 { 
+            font-family: 'Rajdhani', sans-serif; 
+            font-size: 48px; 
+            line-height: 1.1; 
+            margin-bottom: 20px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+        }
+        h1 span { 
+            color: var(--primary-color); 
+            text-shadow: 0 0 20px var(--primary-glow); 
+        }
+        p.subtitle { 
+            font-size: 16px; 
+            color: var(--text-muted); 
+            max-width: 650px; 
+            line-height: 1.7; 
+            margin-bottom: 35px; 
+        }
 
         .btn {
-            padding: 12px 35px; background: transparent; border: 2px solid var(--primary-color);
-            color: var(--primary-color); font-weight: 600; font-size: 15px; letter-spacing: 1px;
-            text-transform: uppercase; cursor: pointer; position: relative; transition: 0.4s;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); text-decoration: none; display: inline-block;
+            padding: 12px 35px; 
+            background: transparent; 
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color); 
+            font-weight: 600; 
+            font-size: 15px; 
+            letter-spacing: 1px;
+            text-transform: uppercase; 
+            cursor: pointer; 
+            position: relative; 
+            transition: 0.4s;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); 
+            text-decoration: none; 
+            display: inline-block;
         }
-        .btn:hover { background: var(--primary-color); color: #fff; box-shadow: 0 0 30px var(--primary-glow); }
+        .btn:hover { 
+            background: var(--primary-color); 
+            color: #fff; 
+            box-shadow: 0 0 30px var(--primary-glow); 
+        }
 
         /* --- ABOUT SECTION --- */
         .about-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
-            background: var(--card-bg); padding: 40px; border-radius: 15px;
-            border: 1px solid var(--glass-border); backdrop-filter: blur(10px);
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 40px; 
+            align-items: center;
+            background: var(--card-bg); 
+            padding: 40px; 
+            border-radius: 15px;
+            border: 1px solid var(--glass-border); 
+            backdrop-filter: blur(10px);
         }
-        .about-text p { line-height: 1.7; color: var(--text-muted); margin-bottom: 15px; font-size: 15px; }
-        .highlight-text { font-size: 17px; font-weight: 800; color: var(--primary-color); display: block; margin: 20px 0; border-left: 4px solid var(--primary-color); padding-left: 15px; line-height: 1.4; }
+        .about-text p { 
+            line-height: 1.7; 
+            color: var(--text-muted); 
+            margin-bottom: 15px; 
+            font-size: 15px; 
+        }
+        .highlight-text { 
+            font-size: 17px; 
+            font-weight: 800; 
+            color: var(--primary-color); 
+            display: block; 
+            margin: 20px 0; 
+            border-left: 4px solid var(--primary-color); 
+            padding-left: 15px; 
+            line-height: 1.4; 
+        }
         
         .about-image {
-            width: 100%; height: 300px;
+            width: 100%; 
+            height: 300px;
             background-image: url('./logo.webp');
             background-size: contain; 
             background-repeat: no-repeat;
@@ -251,43 +375,179 @@
         }
 
         /* --- CATALOG SECTION --- */
-        .catalog-container { display: flex; flex-direction: column; gap: 30px; }
-        .catalog-desc { text-align: center; color: var(--text-muted); max-width: 700px; margin: -15px auto 30px; font-size: 15px; line-height: 1.6; }
-        .catalog-scroll-row { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 15px; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--primary-color) var(--glass-bg); }
+        .catalog-container { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 30px; 
+        }
+
+        .catalog-desc {
+            text-align: center; 
+            color: var(--text-muted); 
+            max-width: 700px; 
+            margin: -15px auto 30px; 
+            font-size: 15px; 
+            line-height: 1.6;
+        }
+
+        .catalog-scroll-row {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding-bottom: 15px;
+            scroll-snap-type: x mandatory; 
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) var(--glass-bg);
+        }
+
         .catalog-scroll-row::-webkit-scrollbar { height: 6px; }
         .catalog-scroll-row::-webkit-scrollbar-track { background: var(--glass-bg); border-radius: 10px; }
         .catalog-scroll-row::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
-        .catalog-item { position: relative; height: 360px; flex: 0 0 280px; border-radius: 12px; overflow: hidden; cursor: pointer; border: 1px solid var(--glass-border); background: #111; scroll-snap-align: start; }
-        .catalog-images { position: relative; width: 100%; height: 100%; }
-        .catalog-images .img-model { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
-        .catalog-images .img-real { position: absolute; bottom: 15px; right: 15px; width: 85px; height: 85px; object-fit: cover; border-radius: 10px; border: 2px solid rgba(255, 255, 255, 0.2); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5); z-index: 4; transition: transform 0.4s ease, border-color 0.4s ease; }
-        .catalog-item::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to top, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.4) 40%, transparent 100%); opacity: 0.9; transition: 0.4s; pointer-events: none; z-index: 2; }
+
+        .catalog-item { 
+            position: relative; 
+            height: 360px; 
+            flex: 0 0 280px;
+            border-radius: 12px; 
+            overflow: hidden; 
+            cursor: pointer; 
+            border: 1px solid var(--glass-border); 
+            background: #111;
+            scroll-snap-align: start;
+        }
+
+        .catalog-images { 
+            position: relative;
+            width: 100%; 
+            height: 100%; 
+        }
+
+        .catalog-images .img-model { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            transition: transform 0.6s ease; 
+        }
+
+        .catalog-images .img-real {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            width: 85px;
+            height: 85px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            z-index: 4; 
+            transition: transform 0.4s ease, border-color 0.4s ease;
+        }
+
+        .catalog-item::after {
+            content: ''; 
+            position: absolute; 
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to top, rgba(10,10,15,0.95) 0%, rgba(10,10,15,0.4) 40%, transparent 100%); 
+            opacity: 0.9; 
+            transition: 0.4s; 
+            pointer-events: none;
+            z-index: 2;
+        }
+
         .catalog-item:hover .img-model { transform: scale(1.05); }
         .catalog-item:hover .img-real { transform: scale(1.08); border-color: var(--primary-color); }
         .catalog-item:hover::after { opacity: 1; }
-        .item-info { position: absolute; bottom: 15px; left: 15px; z-index: 3; transition: 0.4s; pointer-events: none; padding-right: 5px; max-width: calc(100% - 120px); }
+
+        .item-info { 
+            position: absolute; 
+            bottom: 15px; 
+            left: 15px; 
+            z-index: 3; 
+            transition: 0.4s; 
+            pointer-events: none; 
+            padding-right: 5px;
+            max-width: calc(100% - 120px); 
+        }
+
         .item-info h3 { font-family: 'Rajdhani', sans-serif; color: var(--primary-color); font-size: 20px; margin-bottom: 4px; }
         .item-info p { color: #fff; font-size: 12px; opacity: 0.9; line-height: 1.4; }
-        .catalog-category-title { font-family: 'Rajdhani', sans-serif; color: var(--text-main); font-size: 22px; border-bottom: 1px solid var(--glass-border); padding-bottom: 8px; margin-bottom: 10px; }
+
+        .catalog-category-title { 
+            font-family: 'Rajdhani', sans-serif; 
+            color: var(--text-main); 
+            font-size: 22px; 
+            border-bottom: 1px solid var(--glass-border); 
+            padding-bottom: 8px; 
+            margin-bottom: 10px;
+        }
 
         /* --- FABRIC INFO SECTION --- */
-        .fabric-info-section { background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 15px; padding: 35px; margin-top: 30px; backdrop-filter: blur(10px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .fabric-info-section { 
+            background: var(--card-bg); 
+            border: 1px solid var(--glass-border); 
+            border-radius: 15px; 
+            padding: 35px; 
+            margin-top: 30px; 
+            backdrop-filter: blur(10px); 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
+        }
         .fabric-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
         .fabric-header h3 { font-family: 'Rajdhani', sans-serif; font-size: 26px; color: var(--primary-color); margin: 0; text-transform: uppercase; letter-spacing: 1px; }
         .fabric-description { color: var(--text-muted); line-height: 1.6; font-size: 14px; margin-bottom: 25px; border-left: 3px solid var(--primary-color); padding-left: 15px; }
         .fabric-section-title { font-family: 'Rajdhani', sans-serif; font-size: 20px; color: var(--text-main); margin-bottom: 12px; margin-top: 25px; display: flex; align-items: center; gap: 10px; }
-        .fabric-scroll-container { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--primary-color) var(--glass-bg); }
+        
+        .fabric-scroll-container { 
+            display: flex; 
+            gap: 12px; 
+            overflow-x: auto; 
+            padding-bottom: 10px; 
+            scroll-snap-type: x mandatory; 
+            scrollbar-width: thin; 
+            scrollbar-color: var(--primary-color) var(--glass-bg); 
+        }
         .fabric-scroll-container::-webkit-scrollbar { height: 6px; }
         .fabric-scroll-container::-webkit-scrollbar-track { background: var(--glass-bg); border-radius: 10px; }
         .fabric-scroll-container::-webkit-scrollbar-thumb { background-color: var(--primary-color); border-radius: 10px; }
-        .fabric-box-item { flex: 0 0 auto; min-width: 200px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 10px; padding: 15px; scroll-snap-align: start; transition: all 0.3s ease; display: flex; flex-direction: column; gap: 8px; }
+        
+        .fabric-box-item { 
+            flex: 0 0 auto; 
+            min-width: 200px; 
+            background: var(--glass-bg); 
+            border: 1px solid var(--glass-border); 
+            border-radius: 10px; 
+            padding: 15px; 
+            scroll-snap-align: start; 
+            transition: all 0.3s ease; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 8px; 
+        }
         .fabric-box-item:hover { border-color: var(--primary-color); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.15); }
         .fabric-box-icon { font-size: 20px; color: var(--primary-color); }
         .fabric-box-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin: 0; }
         .fabric-box-desc { font-size: 12px; color: var(--text-muted); margin: 0; line-height: 1.4; }
         .fabric-box-stat { min-width: 120px; text-align: center; align-items: center; justify-content: center; }
         .fabric-stat-value { font-size: 32px; font-weight: 700; font-family: 'Rajdhani', sans-serif; color: var(--primary-color); margin: 2px 0; }
-        .color-selection-btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 35px; background: var(--primary-color); color: #fff; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; border: none; border-radius: 30px; cursor: pointer; text-decoration: none; transition: 0.4s; box-shadow: 0 0 20px var(--primary-glow); margin-top: 20px; }
+        
+        .color-selection-btn { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 10px; 
+            padding: 14px 35px; 
+            background: var(--primary-color); 
+            color: #fff; 
+            font-weight: 700; 
+            font-size: 14px; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            border: none; 
+            border-radius: 30px; 
+            cursor: pointer; 
+            text-decoration: none; 
+            transition: 0.4s; 
+            box-shadow: 0 0 20px var(--primary-glow); 
+            margin-top: 20px; 
+        }
         .color-selection-btn:hover { transform: translateY(-3px); box-shadow: 0 0 30px var(--primary-glow); }
 
         /* --- MAPS SECTION --- */
@@ -303,7 +563,10 @@
         .developer-tag { color: var(--primary-color); font-weight: 600; font-size: 13px; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; }
 
         /* --- POPUP MODAL STYLING --- */
-        .modal { visibility: hidden; opacity: 0; position: fixed; z-index: 2000; left: 0; top: 0; width: 100vw; height: 100vh; background-color: rgba(10, 10, 15, 0.85); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; padding: 20px; transition: 0.3s ease; }
+        .modal { 
+            visibility: hidden; opacity: 0; position: fixed; z-index: 2000; left: 0; top: 0; width: 100vw; height: 100vh; 
+            background-color: rgba(10, 10, 15, 0.85); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; padding: 20px; transition: 0.3s ease; 
+        }
         .modal.show { visibility: visible; opacity: 1; }
         .modal-content { background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 15px; padding: 25px 20px; width: 100%; max-width: 600px; position: relative; text-align: center; transform: translateY(-20px); transition: 0.3s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
         .modal.show .modal-content { transform: translateY(0); }
@@ -316,26 +579,64 @@
         .wa-btn { display: inline-flex; align-items: center; gap: 8px; background: #25D366; color: #fff; padding: 12px 25px; border-radius: 30px; font-size: 14px; font-weight: 700; text-decoration: none; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
         .wa-btn:hover { background: #1ebd5a; box-shadow: 0 0 20px rgba(37,211,102,0.4); transform: translateY(-3px); color: white;}
 
-        /* --- MEDIA QUERIES --- */
-        @media (max-width: 1024px) { section { padding: 80px 5% 40px; } h1 { font-size: 42px; } .about-grid { gap: 25px; padding: 30px; } }
+        /* --- MEDIA QUERIES FULL UNMINIFIED --- */
+        @media (max-width: 1024px) { 
+            section { padding: 80px 5% 40px; } 
+            h1 { font-size: 42px; } 
+            .about-grid { gap: 25px; padding: 30px; } 
+        }
+        
         @media (max-width: 768px) {
-            section { padding: 70px 5% 30px; } #home { padding-top: 110px; } h1 { font-size: 34px; } .section-title { font-size: 28px; margin-bottom: 25px; } .menu-toggle { display: block; }
-            .nav-links { position: absolute; top: 100%; left: 0; width: 100%; background: var(--card-bg); flex-direction: column; gap: 0; text-align: center; max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
+            section { padding: 70px 5% 30px; } 
+            #home { padding-top: 110px; } 
+            h1 { font-size: 34px; } 
+            .section-title { font-size: 28px; margin-bottom: 25px; } 
+            .menu-toggle { display: block; }
+            .nav-links { 
+                position: absolute; top: 100%; left: 0; width: 100%; background: var(--card-bg); 
+                flex-direction: column; gap: 0; text-align: center; max-height: 0; overflow: hidden; 
+                transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); 
+            }
             .nav-links.active { max-height: 350px; border-bottom: 1px solid var(--glass-border); }
             .nav-links li { padding: 15px 0; border-top: 1px solid rgba(255,255,255,0.05); }
-            .about-grid { grid-template-columns: 1fr; padding: 25px; gap: 25px; } .about-image { height: 200px; } .map-container { height: 300px; }
+            .about-grid { grid-template-columns: 1fr; padding: 25px; gap: 25px; } 
+            .about-image { height: 200px; } 
+            .map-container { height: 300px; }
         }
+        
         @media (max-width: 480px) {
-            section { padding: 60px 15px 30px; } #home { padding-top: 90px; text-align: center; align-items: center; }
-            h1 { font-size: 28px; text-align: center; width: 100%; margin-bottom: 12px; } p.subtitle { font-size: 14px; text-align: center; margin-bottom: 20px; }
-            .experience-badge { font-size: 11px; padding: 6px 12px; text-align: center; margin-bottom: 15px; } .btn { width: 100%; text-align: center; padding: 12px 15px; font-size: 13px; } .section-title { font-size: 24px; margin-bottom: 20px; }
-            .about-grid { padding: 20px 15px; border-radius: 10px; } .about-text h3 { font-size: 20px; text-align: center; } .about-text p { font-size: 13px; line-height: 1.6; text-align: justify; } .highlight-text { font-size: 14px; padding-left: 10px; margin: 12px 0; text-align: left; }
-            .catalog-desc { font-size: 13px; text-align: justify; margin-bottom: 20px; } .catalog-container { gap: 25px; } .catalog-item { flex: 0 0 240px; height: 250px; } .catalog-scroll-row { gap: 12px; padding-bottom: 10px; } .item-info h3 { font-size: 18px; } .item-info p { font-size: 11px; }
-            .catalog-images .img-real { width: 65px; height: 65px; bottom: 10px; right: 10px; border-radius: 6px; } .item-info { bottom: 10px; left: 10px; max-width: calc(100% - 90px); }
-            .fabric-info-section { padding: 20px 15px; } .fabric-header h3 { font-size: 20px; } .fabric-description { font-size: 13px; margin-bottom: 15px; text-align: justify; } .fabric-section-title { font-size: 16px; margin-top: 15px; margin-bottom: 10px; }
-            .map-container { height: 250px; border-radius: 10px; } footer { padding: 30px 15px 15px; }
-            .modal-content { padding: 15px; border-radius: 12px; } .modal-images { gap: 8px; margin: 10px 0 15px; } .modal-images img { height: 200px; } .img-label { font-size: 10px; padding: 2px 6px; } .wa-btn { font-size: 13px; padding: 10px 15px; width: 100%; justify-content: center; }
-            .welcome-text { font-size: 14px; letter-spacing: 4px; } .developed-text { font-size: 11px; letter-spacing: 2px; }
+            section { padding: 60px 15px 30px; } 
+            #home { padding-top: 90px; text-align: center; align-items: center; }
+            h1 { font-size: 28px; text-align: center; width: 100%; margin-bottom: 12px; } 
+            p.subtitle { font-size: 14px; text-align: center; margin-bottom: 20px; }
+            .experience-badge { font-size: 11px; padding: 6px 12px; text-align: center; margin-bottom: 15px; } 
+            .btn { width: 100%; text-align: center; padding: 12px 15px; font-size: 13px; } 
+            .section-title { font-size: 24px; margin-bottom: 20px; }
+            .about-grid { padding: 20px 15px; border-radius: 10px; } 
+            .about-text h3 { font-size: 20px; text-align: center; } 
+            .about-text p { font-size: 13px; line-height: 1.6; text-align: justify; } 
+            .highlight-text { font-size: 14px; padding-left: 10px; margin: 12px 0; text-align: left; }
+            .catalog-desc { font-size: 13px; text-align: justify; margin-bottom: 20px; } 
+            .catalog-container { gap: 25px; } 
+            .catalog-item { flex: 0 0 240px; height: 250px; } 
+            .catalog-scroll-row { gap: 12px; padding-bottom: 10px; } 
+            .item-info h3 { font-size: 18px; } 
+            .item-info p { font-size: 11px; }
+            .catalog-images .img-real { width: 65px; height: 65px; bottom: 10px; right: 10px; border-radius: 6px; } 
+            .item-info { bottom: 10px; left: 10px; max-width: calc(100% - 90px); }
+            .fabric-info-section { padding: 20px 15px; } 
+            .fabric-header h3 { font-size: 20px; } 
+            .fabric-description { font-size: 13px; margin-bottom: 15px; text-align: justify; } 
+            .fabric-section-title { font-size: 16px; margin-top: 15px; margin-bottom: 10px; }
+            .map-container { height: 250px; border-radius: 10px; } 
+            footer { padding: 30px 15px 15px; }
+            .modal-content { padding: 15px; border-radius: 12px; } 
+            .modal-images { gap: 8px; margin: 10px 0 15px; } 
+            .modal-images img { height: 200px; } 
+            .img-label { font-size: 10px; padding: 2px 6px; } 
+            .wa-btn { font-size: 13px; padding: 10px 15px; width: 100%; justify-content: center; }
+            .welcome-text { font-size: 14px; letter-spacing: 4px; } 
+            .developed-text { font-size: 11px; letter-spacing: 2px; }
         }
     </style>
 </head>
@@ -565,23 +866,54 @@
                 <i class="fas fa-gem" style="font-size: 30px; color: var(--primary-color);"></i>
                 <h3>Cotton Combed Pique Diamond</h3>
             </div>
-            <p class="fabric-description">Merupakan lini material unggulan terbuat dari <strong>100% Cotton Combed Asli</strong> dengan corak rajutan berlian <i>(diamond)</i> yang menawan. Kain ini memiliki fitur sirkulasi udara luar biasa, tekstur super lembut, dan kemudahan dalam perawatan. Sangat direkomendasikan sebagai bahan baku utama pembuatan seragam kaos polo premium. Set kain sudah meliputi <strong>Kerah & Manset</strong> dengan warna senada yang presisi.</p>
+            <p class="fabric-description">Merupakan lini material unggulan terbuat dari <strong>100% Cotton Combed Asli</strong> dengan corak rajutan berlian <i>(diamond)</i> yang menawan. Kain ini memiliki fitur sirkulasi udara luar biasa, tekstur super lembut, and kemudahan dalam perawatan. Sangat direkomendasikan sebagai bahan baku utama pembuatan seragam kaos polo premium. Set kain sudah meliputi <strong>Kerah & Manset</strong> dengan warna senada yang presisi.</p>
 
             <div class="fabric-section-title"><i class="fas fa-star" style="color: var(--primary-color);"></i> Keunggulan Kain Kami</div>
             <div class="fabric-scroll-container">
-                <div class="fabric-box-item"><i class="fas fa-award fabric-box-icon"></i><h4 class="fabric-box-title">Kualitas Premium</h4><p class="fabric-box-desc">Grade kain di atas rata-rata Pique Cotton standar, menjamin keawetan jangka panjang.</p></div>
-                <div class="fabric-box-item"><i class="fas fa-compress-alt fabric-box-icon"></i><h4 class="fabric-box-title">Anti Susut / Menciut</h4><p class="fabric-box-desc">Tingkat penyusutan pasca-cuci sangat minimal, bentuk baju tetap stabil meski dicuci berkali-kali.</p></div>
-                <div class="fabric-box-item"><i class="fas fa-wind fabric-box-icon"></i><h4 class="fabric-box-title">Sensasi Sejuk (Breathable)</h4><p class="fabric-box-desc">Tidak gerah di bawah terik matahari, mengunci kenyamanan berkat sirkulasi rajutan yang baik.</p></div>
-                <div class="fabric-box-item"><i class="fas fa-vector-square fabric-box-icon"></i><h4 class="fabric-box-title">Motif Eksklusif</h4><p class="fabric-box-desc">Meninggalkan kesan mewah melalui corak rajut berlian yang jarang ditemui di pasaran umum.</p></div>
+                <div class="fabric-box-item">
+                    <i class="fas fa-award fabric-box-icon"></i>
+                    <h4 class="fabric-box-title">Kualitas Premium</h4>
+                    <p class="fabric-box-desc">Grade kain di atas rata-rata Pique Cotton standar, menjamin keawetan jangka panjang.</p>
+                </div>
+                <div class="fabric-box-item">
+                    <i class="fas fa-compress-alt fabric-box-icon"></i>
+                    <h4 class="fabric-box-title">Anti Susut / Menciut</h4>
+                    <p class="fabric-box-desc">Tingkat penyusutan pasca-cuci sangat minimal, bentuk baju tetap stabil meski dicuci berkali-kali.</p>
+                </div>
+                <div class="fabric-box-item">
+                    <i class="fas fa-wind fabric-box-icon"></i>
+                    <h4 class="fabric-box-title">Sensasi Sejuk (Breathable)</h4>
+                    <p class="fabric-box-desc">Tidak gerah di bawah terik matahari, mengunci kenyamanan berkat sirkulasi rajutan yang baik.</p>
+                </div>
+                <div class="fabric-box-item">
+                    <i class="fas fa-vector-square fabric-box-icon"></i>
+                    <h4 class="fabric-box-title">Motif Eksklusif</h4>
+                    <p class="fabric-box-desc">Meninggalkan kesan mewah melalui corak rajut berlian yang jarang ditemui di pasaran umum.</p>
+                </div>
             </div>
 
             <div class="fabric-section-title"><i class="fas fa-cogs" style="color: var(--primary-color);"></i> Spesifikasi Teknis (1 Kg Kain)</div>
             <div class="fabric-scroll-container">
-                <div class="fabric-box-item"><h4 class="fabric-box-title">Lebar Kain</h4><p class="fabric-box-desc"><strong>45" (Tubular)</strong><br>Bentuk melingkar (nyarung), memudahkan pola potong.</p></div>
-                <div class="fabric-box-item"><h4 class="fabric-box-title">Ketebalan Benang</h4><p class="fabric-box-desc"><strong>30s</strong><br>Standar paling ideal untuk iklim tropis Indonesia.</p></div>
-                <div class="fabric-box-item"><h4 class="fabric-box-title">Gramasi</h4><p class="fabric-box-desc"><strong>± 180 - 190 gsm</strong><br>Ketebalan optimal, kain kokoh namun tidak berat.</p></div>
-                <div class="fabric-box-item"><h4 class="fabric-box-title">Panjang Efektif</h4><p class="fabric-box-desc"><strong>± 2,30 - 2,43 Meter</strong><br>Estimasi bentang panjang per 1 kilogram bahan baku.</p></div>
-                <div class="fabric-box-item"><h4 class="fabric-box-title">Paket Aksesoris</h4><p class="fabric-box-desc"><strong>± 4 Kerah & 4 Manset</strong><br>Tersedia pelengkap setelan warna untuk ±4 buah polo.</p></div>
+                <div class="fabric-box-item">
+                    <h4 class="fabric-box-title">Lebar Kain</h4>
+                    <p class="fabric-box-desc"><strong>45" (Tubular)</strong><br>Bentuk melingkar (nyarung), memudahkan pola potong.</p>
+                </div>
+                <div class="fabric-box-item">
+                    <h4 class="fabric-box-title">Ketebalan Benang</h4>
+                    <p class="fabric-box-desc"><strong>30s</strong><br>Standar paling ideal untuk iklim tropis Indonesia.</p>
+                </div>
+                <div class="fabric-box-item">
+                    <h4 class="fabric-box-title">Gramasi</h4>
+                    <p class="fabric-box-desc"><strong>± 180 - 190 gsm</strong><br>Ketebalan optimal, kain kokoh namun tidak berat.</p>
+                </div>
+                <div class="fabric-box-item">
+                    <h4 class="fabric-box-title">Panjang Efektif</h4>
+                    <p class="fabric-box-desc"><strong>± 2,30 - 2,43 Meter</strong><br>Estimasi bentang panjang per 1 kilogram bahan baku.</p>
+                </div>
+                <div class="fabric-box-item">
+                    <h4 class="fabric-box-title">Paket Aksesoris</h4>
+                    <p class="fabric-box-desc"><strong>± 4 Kerah & 4 Manset</strong><br>Tersedia pelengkap setelan warna untuk ±4 buah polo.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -612,17 +944,23 @@
             <span class="close-modal">×</span>
             <h3 id="modalTitle" style="color: var(--primary-color); font-family: 'Rajdhani', sans-serif; font-size: 22px; margin-bottom: 5px;">Judul Produk</h3>
             <div class="modal-images">
-                <div class="img-container"><span class="img-label">Model Preview</span><img id="modalImg1" src="" alt="Model"></div>
-                <div class="img-container"><span class="img-label">Real Pick</span><img id="modalImg2" src="" alt="Real Pick"></div>
+                <div class="img-container">
+                    <span class="img-label">Model Preview</span>
+                    <img id="modalImg1" src="" alt="Model">
+                </div>
+                <div class="img-container">
+                    <span class="img-label">Real Pick</span>
+                    <img id="modalImg2" src="" alt="Real Pick">
+                </div>
             </div>
             <a id="modalWaBtn" href="#" target="_blank" class="wa-btn"><i class="fab fa-whatsapp"></i> Dapatkan Penawaran</a>
         </div>
     </div>
 
     <script>
-        // ==========================================
-        // --- ENGINE 1: CINEMATIC LOGO LOADER ---
-        // ==========================================
+        // ==================================================
+        // --- ENGINE 1: CINEMATIC LOGO LOADER EXTENDED ---
+        // ==================================================
         const loaderCanvas = document.getElementById('loaderCanvas');
         const lCtx = loaderCanvas.getContext('2d', { willReadFrequently: true });
         const loaderContainer = document.getElementById('loader');
@@ -658,11 +996,11 @@
             setTimeout(() => { 
                 loaderContainer.classList.add('fade-out-cinematic'); 
                 document.body.classList.add('site-active');
-                setTimeout(() => loaderContainer.style.display = 'none', 900); 
+                setTimeout(() => loaderContainer.style.display = 'none', 950); 
             }, 2000);
         };
 
-        // UKURAN BARU DI-UPGRADE AGAR LOGO UTUH JAUH LEBIH BESAR & MEGAH
+        // KORDINAT DILUASKAN (MAX-WIDTH 420PX) AGAR LOGO LEBIH BESAR & MEGAH
         function calculateLoaderLogoPos() {
             const maxBoundingSize = Math.min(window.innerWidth * 0.85, 420); 
             let scale = Math.min(maxBoundingSize / lLogoImg.naturalWidth, maxBoundingSize / lLogoImg.naturalHeight);
@@ -678,7 +1016,6 @@
                 this.origX = dx; this.origY = dy;
                 this.x = dx; this.y = dy;
                 this.dw = dw; this.dh = dh;
-                // Kecepatan dorong batu disesuaikan agar menyebar estetik memenuhi layar luas
                 this.vx = (Math.random() - 0.5) * 20;
                 this.vy = (Math.random() - 0.5) * 20 - Math.random() * 6; 
                 this.angle = 0;
@@ -688,9 +1025,9 @@
             }
             updateShatter() {
                 this.x += this.vx; this.y += this.vy; this.angle += this.va;
-                this.vx *= 0.985; this.vy *= 0.985; this.vy += 0.12; // Gravitasi mikro mengambang majestik
-                this.burnProgress += (1 - this.burnProgress) * 0.015; // Pembentukan abu diperhalus ketajamannya
-                this.alpha -= 0.0035; // Pengurangan kepekatan abu diperlambat
+                this.vx *= 0.985; this.vy *= 0.985; this.vy += 0.12; 
+                this.burnProgress += (1 - this.burnProgress) * 0.015; 
+                this.alpha -= 0.0035; 
                 if (this.alpha < 0) this.alpha = 0;
             }
             updateReverse() {
@@ -740,32 +1077,31 @@
             }
         }
 
-        // TIMELINE MODIFIKASI: DIPERLAMBAT TOTAL SEPERTI FLUID CINEMATIC AFTER EFFECTS
+        // TIMELINE DIPERPANJANG TOTAL AGAR GERAKAN FLUID DAN MEWAH
         function animateLoader() {
             if (!lLogoLoaded || lCurrentPhase === 4) return;
             lCtx.clearRect(0, 0, loaderCanvas.width, loaderCanvas.height);
             lTimeline++;
 
             if (lTimeline === 1) { 
-                lCurrentPhase = 0; // Tampilan static pembuka awal
+                lCurrentPhase = 0; 
             } 
             else if (lTimeline === 110) { 
-                lCurrentPhase = 1; // Sambaran Petir & Pecah (Diberikan jeda baca teks intro lebih lama)
+                lCurrentPhase = 1; 
                 loaderContainer.classList.add('lightning-flash-screen');
                 setTimeout(() => loaderContainer.classList.remove('lightning-flash-screen'), 350);
             } 
             else if (lTimeline === 290) { 
-                lCurrentPhase = 2; // Time Reverse Menyatu Kembali (Durasi drift serpihan batu diperpanjang)
+                lCurrentPhase = 2; 
             } 
             else if (lTimeline === 400) { 
-                lCurrentPhase = 3; // Logo Utuh & Aktivasi Semburan Glow Emas Sinematik
+                lCurrentPhase = 3; 
                 loaderCanvas.classList.add('loader-canvas-glow');
             } 
             else if (lTimeline === 520) {
-                // SINKRONISASI TRANSISI: Dieksekusi secara fluid mengalir bebas tanpa lag kaku
                 lCurrentPhase = 4;
                 loaderContainer.classList.add('fade-out-cinematic'); 
-                document.body.classList.add('site-active'); // Membuka modul antarmuka utama secara perlahan
+                document.body.classList.add('site-active'); 
                 setTimeout(() => {
                     loaderContainer.style.display = 'none';
                     cancelAnimationFrame(lAnimationId);
@@ -794,9 +1130,9 @@
         });
 
 
-        // ==========================================
-        // --- ENGINE 2: SITE INTERFACES & BACKDROP -
-        // ==========================================
+        // ==================================================
+        // --- ENGINE 2: SITE INTERFACES & BACKDROP BACK ---
+        // ==================================================
         const menuToggle = document.getElementById('menuToggle');
         const navLinks = document.getElementById('navLinks');
         menuToggle.addEventListener('click', () => { navLinks.classList.toggle('active'); });
