@@ -21,7 +21,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png" />
     <link rel="manifest" href="./favicon/site.webmanifest" />
 
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -57,52 +57,88 @@
             transition: background-color 0.5s, color 0.5s;
         }
 
-        /* --- LOADING SCREEN --- */
+        /* --- LOADING SCREEN CINEMATIC --- */
         #loader {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100vh;
             background: #0a0a0f;
             z-index: 9999;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            color: var(--primary-color);
-            transition: opacity 0.5s ease-out;
-            padding: 20px;
+            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            overflow: hidden;
         }
 
-        .loader-logo {
-            width: 150px; 
-            margin-bottom: 20px;
-            animation: pulse 1.5s infinite alternate;
-            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.4));
+        /* Layer Canvas Animasi Terpisah */
+        #loaderCanvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            display: block;
+            z-index: 1;
+            transition: filter 0.5s ease;
         }
 
-        #loader h2 {
+        /* Container UI Teks Loader */
+        .loader-ui-overlay {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 60px 20px;
+            pointer-events: none; /* Klik tembus ke canvas background */
+        }
+
+        .welcome-text {
             font-family: 'Rajdhani', sans-serif;
-            font-size: 24px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin-bottom: 8px;
-            text-align: center;
-            color: var(--primary-color);
-        }
-
-        #loader p {
-            font-size: 13px;
             color: #fff;
-            letter-spacing: 2px;
-            opacity: 0.8;
-            margin-top: 5px;
+            font-size: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeInUI 1s ease forwards 0.3s;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
-        @keyframes pulse {
-            0% { transform: scale(0.95); }
-            100% { transform: scale(1.05); }
+        .developed-text {
+            font-family: 'Rajdhani', sans-serif;
+            color: var(--primary-color);
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-align: center;
+            opacity: 0;
+            animation: fadeInUI 1s ease forwards 0.5s;
         }
 
-        /* --- BACKGROUND ANIMATION --- */
+        @keyframes fadeInUI {
+            to { opacity: 0.85; }
+        }
+
+        /* Efek Kilatan Petir di Layar Loader */
+        .lightning-flash-screen {
+            animation: flashTime 0.35s ease-out forwards;
+        }
+        @keyframes flashTime {
+            0% { background-color: #0a0a0f; }
+            15% { background-color: #ffffff; }
+            30% { background-color: #d4af37; }
+            100% { background-color: #0a0a0f; }
+        }
+
+        .loader-canvas-glow {
+            filter: drop-shadow(0 0 35px #d4af37) drop-shadow(0 0 70px rgba(212, 175, 55, 0.5));
+        }
+
+        /* --- BACKGROUND ANIMATION MAIN SITE --- */
         #canvas-container { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; }
 
         /* --- NAVBAR --- */
@@ -237,7 +273,6 @@
             height: 100%; 
         }
 
-        /* Gambar Utama (Model) */
         .catalog-images .img-model { 
             width: 100%; 
             height: 100%; 
@@ -245,7 +280,6 @@
             transition: transform 0.6s ease; 
         }
 
-        /* Gambar Kecil (Real/Detail) */
         .catalog-images .img-real {
             position: absolute;
             bottom: 15px;
@@ -260,7 +294,6 @@
             transition: transform 0.4s ease, border-color 0.4s ease;
         }
 
-        /* Gradient Gelap di bawah */
         .catalog-item::after {
             content: ''; 
             position: absolute; 
@@ -272,21 +305,10 @@
             z-index: 2;
         }
 
-        /* Efek Hover */
-        .catalog-item:hover .img-model { 
-            transform: scale(1.05); 
-        }
+        .catalog-item:hover .img-model { transform: scale(1.05); }
+        .catalog-item:hover .img-real { transform: scale(1.08); border-color: var(--primary-color); }
+        .catalog-item:hover::after { opacity: 1; }
 
-        .catalog-item:hover .img-real { 
-            transform: scale(1.08); 
-            border-color: var(--primary-color); 
-        }
-
-        .catalog-item:hover::after { 
-            opacity: 1; 
-        }
-
-        /* Informasi Produk */
         .item-info { 
             position: absolute; 
             bottom: 15px; 
@@ -298,19 +320,8 @@
             max-width: calc(100% - 120px); 
         }
 
-        .item-info h3 { 
-            font-family: 'Rajdhani', sans-serif; 
-            color: var(--primary-color); 
-            font-size: 20px; 
-            margin-bottom: 4px; 
-        }
-
-        .item-info p { 
-            color: #fff; 
-            font-size: 12px; 
-            opacity: 0.9; 
-            line-height: 1.4; 
-        }
+        .item-info h3 { font-family: 'Rajdhani', sans-serif; color: var(--primary-color); font-size: 20px; margin-bottom: 4px; }
+        .item-info p { color: #fff; font-size: 12px; opacity: 0.9; line-height: 1.4; }
 
         .catalog-category-title { 
             font-family: 'Rajdhani', sans-serif; 
@@ -323,232 +334,83 @@
 
         /* --- FABRIC INFO SECTION --- */
         .fabric-info-section {
-            background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 15px;
-            padding: 35px;
-            margin-top: 30px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 15px; padding: 35px; margin-top: 30px; backdrop-filter: blur(10px); box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
-
-        .fabric-header {
-            display: flex; align-items: center; gap: 15px; margin-bottom: 15px;
-        }
-
-        .fabric-header h3 {
-            font-family: 'Rajdhani', sans-serif; font-size: 26px; color: var(--primary-color);
-            margin: 0; text-transform: uppercase; letter-spacing: 1px;
-        }
-
-        .fabric-description {
-            color: var(--text-muted); line-height: 1.6; font-size: 14px;
-            margin-bottom: 25px; border-left: 3px solid var(--primary-color); padding-left: 15px;
-        }
-
-        .fabric-section-title {
-            font-family: 'Rajdhani', sans-serif; font-size: 20px; color: var(--text-main);
-            margin-bottom: 12px; margin-top: 25px; display: flex; align-items: center; gap: 10px;
-        }
-
-        .fabric-scroll-container {
-            display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px;
-            scroll-snap-type: x mandatory; scrollbar-width: thin;
-            scrollbar-color: var(--primary-color) var(--glass-bg);
-        }
-
+        .fabric-header { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+        .fabric-header h3 { font-family: 'Rajdhani', sans-serif; font-size: 26px; color: var(--primary-color); margin: 0; text-transform: uppercase; letter-spacing: 1px; }
+        .fabric-description { color: var(--text-muted); line-height: 1.6; font-size: 14px; margin-bottom: 25px; border-left: 3px solid var(--primary-color); padding-left: 15px; }
+        .fabric-section-title { font-family: 'Rajdhani', sans-serif; font-size: 20px; color: var(--text-main); margin-bottom: 12px; margin-top: 25px; display: flex; align-items: center; gap: 10px; }
+        .fabric-scroll-container { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 10px; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--primary-color) var(--glass-bg); }
         .fabric-scroll-container::-webkit-scrollbar { height: 6px; }
         .fabric-scroll-container::-webkit-scrollbar-track { background: var(--glass-bg); border-radius: 10px; }
         .fabric-scroll-container::-webkit-scrollbar-thumb { background-color: var(--primary-color); border-radius: 10px; }
-
-        .fabric-box-item {
-            flex: 0 0 auto; min-width: 200px; background: var(--glass-bg);
-            border: 1px solid var(--glass-border); border-radius: 10px; padding: 15px;
-            scroll-snap-align: start; transition: all 0.3s ease;
-            display: flex; flex-direction: column; gap: 8px;
-        }
-
-        .fabric-box-item:hover {
-            border-color: var(--primary-color); transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.15);
-        }
-
+        .fabric-box-item { flex: 0 0 auto; min-width: 200px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 10px; padding: 15px; scroll-snap-align: start; transition: all 0.3s ease; display: flex; flex-direction: column; gap: 8px; }
+        .fabric-box-item:hover { border-color: var(--primary-color); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.15); }
         .fabric-box-icon { font-size: 20px; color: var(--primary-color); }
         .fabric-box-title { font-size: 14px; font-weight: 600; color: var(--text-main); margin: 0; }
         .fabric-box-desc { font-size: 12px; color: var(--text-muted); margin: 0; line-height: 1.4; }
-        
         .fabric-box-stat { min-width: 120px; text-align: center; align-items: center; justify-content: center; }
         .fabric-stat-value { font-size: 32px; font-weight: 700; font-family: 'Rajdhani', sans-serif; color: var(--primary-color); margin: 2px 0; }
-
-        .color-selection-btn {
-            display: inline-flex; align-items: center; gap: 10px; padding: 14px 35px;
-            background: var(--primary-color); color: #fff; font-weight: 700;
-            font-size: 14px; text-transform: uppercase; letter-spacing: 1px;
-            border: none; border-radius: 30px; cursor: pointer; text-decoration: none;
-            transition: 0.4s; box-shadow: 0 0 20px var(--primary-glow); margin-top: 20px;
-        }
-
-        .color-selection-btn:hover {
-            transform: translateY(-3px); box-shadow: 0 0 30px var(--primary-glow);
-        }
+        .color-selection-btn { display: inline-flex; align-items: center; gap: 10px; padding: 14px 35px; background: var(--primary-color); color: #fff; font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; border: none; border-radius: 30px; cursor: pointer; text-decoration: none; transition: 0.4s; box-shadow: 0 0 20px var(--primary-glow); margin-top: 20px; }
+        .color-selection-btn:hover { transform: translateY(-3px); box-shadow: 0 0 30px var(--primary-glow); }
 
         /* --- MAPS SECTION --- */
-        .map-container {
-            width: 100%; height: 350px; border-radius: 15px; overflow: hidden;
-            border: 1px solid var(--glass-border); box-shadow: 0 0 20px rgba(0,0,0,0.3);
-        }
+        .map-container { width: 100%; height: 350px; border-radius: 15px; overflow: hidden; border: 1px solid var(--glass-border); box-shadow: 0 0 20px rgba(0,0,0,0.3); }
 
         /* --- FOOTER --- */
         footer { background: var(--card-bg); border-top: 1px solid var(--glass-border); padding: 50px 10% 20px; text-align: center; }
         .social-links { margin: 20px 0; display: flex; justify-content: center; gap: 15px; }
-        .social-links a {
-            display: flex; align-items: center; justify-content: center; width: 45px; height: 45px;
-            border-radius: 50%; background: var(--glass-bg); color: var(--text-main); font-size: 18px;
-            text-decoration: none; border: 1px solid var(--glass-border); transition: 0.4s;
-        }
+        .social-links a { display: flex; align-items: center; justify-content: center; width: 45px; height: 45px; border-radius: 50%; background: var(--glass-bg); color: var(--text-main); font-size: 18px; text-decoration: none; border: 1px solid var(--glass-border); transition: 0.4s; }
         .social-links a:hover { background: var(--primary-color); color: #fff; box-shadow: 0 0 20px var(--primary-glow); transform: translateY(-5px); }
-        
-        .footer-bottom {
-            margin-top: 30px; padding-top: 15px; border-top: 1px solid var(--glass-border);
-            display: flex; flex-direction: column; gap: 8px;
-        }
+        .footer-bottom { margin-top: 30px; padding-top: 15px; border-top: 1px solid var(--glass-border); display: flex; flex-direction: column; gap: 8px; }
         .copyright { color: var(--text-muted); font-size: 13px; }
         .developer-tag { color: var(--primary-color); font-weight: 600; font-size: 13px; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; }
 
-       /* --- POPUP MODAL STYLING --- */
-.modal {
-    visibility: hidden; opacity: 0; position: fixed; z-index: 2000; left: 0; top: 0; width: 100vw; height: 100vh;
-    background-color: rgba(10, 10, 15, 0.85); backdrop-filter: blur(8px);
-    display: flex; justify-content: center; align-items: center; padding: 20px; transition: 0.3s ease;
-}
-.modal.show { visibility: visible; opacity: 1; }
-.modal-content {
-    background: var(--card-bg); border: 1px solid var(--glass-border);
-    border-radius: 15px; padding: 25px 20px; width: 100%; max-width: 600px;
-    position: relative; text-align: center; transform: translateY(-20px); transition: 0.3s ease;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-}
-.modal.show .modal-content { transform: translateY(0); }
-.close-modal {
-    position: absolute; top: 12px; right: 18px; color: var(--text-muted);
-    font-size: 26px; cursor: pointer; transition: 0.3s; line-height: 1; z-index: 10;
-}
-.close-modal:hover { color: var(--primary-color); }
-
-.modal-images { display: flex; gap: 10px; margin: 15px 0 20px; }
-.img-container { flex: 1; position: relative; background: #050508; border-radius: 8px; overflow: hidden; }
-.img-label {
-    position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.7); color: #fff;
-    padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; border: 1px solid var(--glass-border);
-    z-index: 5;
-}
-.modal-images img {
-    width: 100%; 
-    height: 280px; /* Dinaikkan sedikit agar gambar terlihat lebih besar & detail */
-    object-fit: contain; /* Mengubah cover menjadi contain agar gambar tampil penuh tanpa terpotong */
-    background: #050508; /* Memberi warna dasar gelap jika gambar terlalu ramping/lebar */
-    border-radius: 8px; 
-    border: 1px solid var(--glass-border);
-    display: block;
-}
-
-.wa-btn {
-    display: inline-flex; align-items: center; gap: 8px; background: #25D366; color: #fff;
-    padding: 12px 25px; border-radius: 30px; font-size: 14px; font-weight: 700; text-decoration: none;
-    transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;
-}
-.wa-btn:hover { background: #1ebd5a; box-shadow: 0 0 20px rgba(37,211,102,0.4); transform: translateY(-3px); color: white;}
+        /* --- POPUP MODAL STYLING --- */
+        .modal { visibility: hidden; opacity: 0; position: fixed; z-index: 2000; left: 0; top: 0; width: 100vw; height: 100vh; background-color: rgba(10, 10, 15, 0.85); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; padding: 20px; transition: 0.3s ease; }
+        .modal.show { visibility: visible; opacity: 1; }
+        .modal-content { background: var(--card-bg); border: 1px solid var(--glass-border); border-radius: 15px; padding: 25px 20px; width: 100%; max-width: 600px; position: relative; text-align: center; transform: translateY(-20px); transition: 0.3s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+        .modal.show .modal-content { transform: translateY(0); }
+        .close-modal { position: absolute; top: 12px; right: 18px; color: var(--text-muted); font-size: 26px; cursor: pointer; transition: 0.3s; line-height: 1; z-index: 10; }
+        .close-modal:hover { color: var(--primary-color); }
+        .modal-images { display: flex; gap: 10px; margin: 15px 0 20px; }
+        .img-container { flex: 1; position: relative; background: #050508; border-radius: 8px; overflow: hidden; }
+        .img-label { position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.7); color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; border: 1px solid var(--glass-border); z-index: 5; }
+        .modal-images img { width: 100%; height: 280px; object-fit: contain; background: #050508; border-radius: 8px; border: 1px solid var(--glass-border); display: block; }
+        .wa-btn { display: inline-flex; align-items: center; gap: 8px; background: #25D366; color: #fff; padding: 12px 25px; border-radius: 30px; font-size: 14px; font-weight: 700; text-decoration: none; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; }
+        .wa-btn:hover { background: #1ebd5a; box-shadow: 0 0 20px rgba(37,211,102,0.4); transform: translateY(-3px); color: white;}
 
         /* --- MEDIA QUERIES --- */
-        @media (max-width: 1024px) {
-            section { padding: 80px 5% 40px; }
-            h1 { font-size: 42px; }
-            .about-grid { gap: 25px; padding: 30px; }
-        }
-
+        @media (max-width: 1024px) { section { padding: 80px 5% 40px; } h1 { font-size: 42px; } .about-grid { gap: 25px; padding: 30px; } }
         @media (max-width: 768px) {
-            section { padding: 70px 5% 30px; }
-            #home { padding-top: 110px; } 
-
-            h1 { font-size: 34px; }
-            .section-title { font-size: 28px; margin-bottom: 25px; }
-            .menu-toggle { display: block; }
-            
-            .nav-links {
-                position: absolute; top: 100%; left: 0; width: 100%;
-                background: var(--card-bg); flex-direction: column; gap: 0;
-                text-align: center; max-height: 0; overflow: hidden; 
-                transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            }
+            section { padding: 70px 5% 30px; } #home { padding-top: 110px; } h1 { font-size: 34px; } .section-title { font-size: 28px; margin-bottom: 25px; } .menu-toggle { display: block; }
+            .nav-links { position: absolute; top: 100%; left: 0; width: 100%; background: var(--card-bg); flex-direction: column; gap: 0; text-align: center; max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); }
             .nav-links.active { max-height: 350px; border-bottom: 1px solid var(--glass-border); }
             .nav-links li { padding: 15px 0; border-top: 1px solid rgba(255,255,255,0.05); }
-            
-            .about-grid { grid-template-columns: 1fr; padding: 25px; gap: 25px; }
-            .about-image { height: 200px; }
-            .map-container { height: 300px; }
+            .about-grid { grid-template-columns: 1fr; padding: 25px; gap: 25px; } .about-image { height: 200px; } .map-container { height: 300px; }
         }
-
         @media (max-width: 480px) {
-            section { padding: 60px 15px 30px; }
-            #home { padding-top: 90px; text-align: center; align-items: center; }
-            
-            h1 { font-size: 28px; text-align: center; width: 100%; margin-bottom: 12px; }
-            p.subtitle { font-size: 14px; text-align: center; margin-bottom: 20px; }
-            
-            .experience-badge { font-size: 11px; padding: 6px 12px; text-align: center; margin-bottom: 15px; }
-            .btn { width: 100%; text-align: center; padding: 12px 15px; font-size: 13px; }
-            .section-title { font-size: 24px; margin-bottom: 20px; }
-            
-            .about-grid { padding: 20px 15px; border-radius: 10px; }
-            .about-text h3 { font-size: 20px; text-align: center; }
-            .about-text p { font-size: 13px; line-height: 1.6; text-align: justify; }
-            .highlight-text { font-size: 14px; padding-left: 10px; margin: 12px 0; text-align: left; }
-            
-            .catalog-desc { font-size: 13px; text-align: justify; margin-bottom: 20px; }
-            .catalog-container { gap: 25px; }
-            .catalog-item { flex: 0 0 240px; height: 250px; }
-            .catalog-scroll-row { gap: 12px; padding-bottom: 10px; }
-            .item-info h3 { font-size: 18px; }
-            .item-info p { font-size: 11px; }
-
-            /* Menyesuaikan gambar detail agar pas di layar HP */
-            .catalog-images .img-real {
-                width: 65px;
-                height: 65px;
-                bottom: 10px;
-                right: 10px;
-                border-radius: 6px;
-            }
-            .item-info {
-                bottom: 10px;
-                left: 10px;
-                max-width: calc(100% - 90px);
-            }
-
-            .fabric-info-section { padding: 20px 15px; }
-            .fabric-header h3 { font-size: 20px; }
-            .fabric-description { font-size: 13px; margin-bottom: 15px; text-align: justify; }
-            .fabric-section-title { font-size: 16px; margin-top: 15px; margin-bottom: 10px; }
-
-            .map-container { height: 250px; border-radius: 10px; }
-            footer { padding: 30px 15px 15px; }
-
-            /* Modal Mobile Responsive */
-            .modal-content { padding: 15px; border-radius: 12px; }
-            .modal-images { gap: 8px; margin: 10px 0 15px; }
-            .modal-images img { height: 200px; }
-            .img-label { font-size: 10px; padding: 2px 6px; }
-            .wa-btn { font-size: 13px; padding: 10px 15px; width: 100%; justify-content: center; }
+            section { padding: 60px 15px 30px; } #home { padding-top: 90px; text-align: center; align-items: center; }
+            h1 { font-size: 28px; text-align: center; width: 100%; margin-bottom: 12px; } p.subtitle { font-size: 14px; text-align: center; margin-bottom: 20px; }
+            .experience-badge { font-size: 11px; padding: 6px 12px; text-align: center; margin-bottom: 15px; } .btn { width: 100%; text-align: center; padding: 12px 15px; font-size: 13px; } .section-title { font-size: 24px; margin-bottom: 20px; }
+            .about-grid { padding: 20px 15px; border-radius: 10px; } .about-text h3 { font-size: 20px; text-align: center; } .about-text p { font-size: 13px; line-height: 1.6; text-align: justify; } .highlight-text { font-size: 14px; padding-left: 10px; margin: 12px 0; text-align: left; }
+            .catalog-desc { font-size: 13px; text-align: justify; margin-bottom: 20px; } .catalog-container { gap: 25px; } .catalog-item { flex: 0 0 240px; height: 250px; } .catalog-scroll-row { gap: 12px; padding-bottom: 10px; } .item-info h3 { font-size: 18px; } .item-info p { font-size: 11px; }
+            .catalog-images .img-real { width: 65px; height: 65px; bottom: 10px; right: 10px; border-radius: 6px; } .item-info { bottom: 10px; left: 10px; max-width: calc(100% - 90px); }
+            .fabric-info-section { padding: 20px 15px; } .fabric-header h3 { font-size: 20px; } .fabric-description { font-size: 13px; margin-bottom: 15px; text-align: justify; } .fabric-section-title { font-size: 16px; margin-top: 15px; margin-bottom: 10px; }
+            .map-container { height: 250px; border-radius: 10px; } footer { padding: 30px 15px 15px; }
+            .modal-content { padding: 15px; border-radius: 12px; } .modal-images { gap: 8px; margin: 10px 0 15px; } .modal-images img { height: 200px; } .img-label { font-size: 10px; padding: 2px 6px; } .wa-btn { font-size: 13px; padding: 10px 15px; width: 100%; justify-content: center; }
+            .welcome-text { font-size: 15px; letter-spacing: 3px; } .developed-text { font-size: 11px; letter-spacing: 2px; }
         }
     </style>
 </head>
 <body>
 
     <div id="loader">
-        <img src="./logo.webp" alt="Logo DJ Djavu" class="loader-logo">
-        <h2>DJAVU INDONESIA</h2>
-        <p>developed by Amdf</p>
+        <canvas id="loaderCanvas"></canvas>
+        <div class="loader-ui-overlay">
+            <h2 class="welcome-text">Welcome to CV. DJAVU INDONESIA</h2>
+            <p class="developed-text">Developed by Amdf</p>
+        </div>
     </div>
 
     <canvas id="canvas-container"></canvas>
@@ -578,7 +440,6 @@
         <div class="experience-badge">
             <i class="fas fa-award"></i> Ahli Manufaktur Garment Profesional
         </div>
-        
         <h1>Kualitas Premium<br><span>Untuk Identitas Anda</span></h1>
         <p class="subtitle">CV. Djavu Indonesia hadir sebagai mitra strategis dalam mewujudkan seragam berkualitas tinggi. Memadukan teknologi jahit presisi, material kain pilihan, dan tenaga ahli berpengalaman untuk memastikan setiap helai pakaian tampil sempurna dan nyaman dikenakan sepanjang hari.</p>
         <a href="#catalog" class="btn">Lihat Portofolio</a>
@@ -590,9 +451,7 @@
             <div class="about-text">
                 <h3 style="color: var(--primary-color); margin-bottom: 12px; font-family: 'Rajdhani', sans-serif; font-size: 24px;">CV. Djavu Indonesia</h3>
                 <p>Berawal dari dedikasi untuk menghadirkan produk garmen terbaik, CV. Djavu Indonesia bertransformasi menjadi penyedia jasa konveksi terpercaya. Kami memahami bahwa seragam bukan sekadar pakaian, melainkan representasi visual dari profesionalisme instansi Anda.</p>
-                
                 <span class="highlight-text">Spesialis Manufaktur Kaos Sablon Premium, Kemeja PDL Lapangan, Jas Almamater, dan Pakaian Dinas Harian (PDH).</span>
-                
                 <p>Setiap proses produksi kami jalankan dengan standar <em>Quality Control</em> yang ketat. Mulai dari pemilihan bahan baku, pemotongan kain presisi, jahitan yang rapi, ketajaman sablon/bordir, hingga tahap <em>finishing</em> akhir. Kami menjamin ketepatan waktu dan hasil nyata yang memuaskan.</p>
             </div>
             <div class="about-image" title="Logo CV Djavu Indonesia"></div>
@@ -604,7 +463,6 @@
         <p class="catalog-desc">Jelajahi berbagai lini produk unggulan kami yang dirancang khusus untuk memenuhi standar ketahanan kerja lapangan, mobilitas harian, serta estetika modern gaya korporat instansi Anda.</p>
         
         <div class="catalog-container">
-            
             <h3 class="catalog-category-title">Jas & Pakaian Formal</h3>
             <div class="catalog-scroll-row">
                 <div class="catalog-item" data-title="Jas Almamater / Blazer" data-img1="./1.webp" data-img2="./real_1.webp">
@@ -764,7 +622,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
         <div class="fabric-info-section">
@@ -772,114 +629,42 @@
                 <i class="fas fa-gem" style="font-size: 30px; color: var(--primary-color);"></i>
                 <h3>Cotton Combed Pique Diamond</h3>
             </div>
-            
-            <p class="fabric-description">
-                Merupakan lini material unggulan terbuat dari <strong>100% Cotton Combed Asli</strong> dengan corak rajutan berlian <i>(diamond)</i> yang menawan. Kain ini memiliki fitur sirkulasi udara luar biasa, tekstur super lembut, dan kemudahan dalam perawatan. Sangat direkomendasikan sebagai bahan baku utama pembuatan seragam kaos polo premium. Set kain sudah meliputi <strong>Kerah & Manset</strong> dengan warna senada yang presisi.
-            </p>
+            <p class="fabric-description">Merupakan lini material unggulan terbuat dari <strong>100% Cotton Combed Asli</strong> dengan corak rajutan berlian <i>(diamond)</i> yang menawan. Kain ini memiliki fitur sirkulasi udara luar biasa, tekstur super lembut, dan kemudahan dalam perawatan. Sangat direkomendasikan sebagai bahan baku utama pembuatan seragam kaos polo premium. Set kain sudah meliputi <strong>Kerah & Manset</strong> dengan warna senada yang presisi.</p>
 
             <div class="fabric-section-title"><i class="fas fa-star" style="color: var(--primary-color);"></i> Keunggulan Kain Kami</div>
             <div class="fabric-scroll-container">
-                <div class="fabric-box-item">
-                    <i class="fas fa-award fabric-box-icon"></i>
-                    <h4 class="fabric-box-title">Kualitas Premium</h4>
-                    <p class="fabric-box-desc">Grade kain di atas rata-rata Pique Cotton standar, menjamin keawetan jangka panjang.</p>
-                </div>
-                <div class="fabric-box-item">
-                    <i class="fas fa-compress-alt fabric-box-icon"></i>
-                    <h4 class="fabric-box-title">Anti Susut / Menciut</h4>
-                    <p class="fabric-box-desc">Tingkat penyusutan pasca-cuci sangat minimal, bentuk baju tetap stabil meski dicuci berkali-kali.</p>
-                </div>
-                <div class="fabric-box-item">
-                    <i class="fas fa-wind fabric-box-icon"></i>
-                    <h4 class="fabric-box-title">Sensasi Sejuk (Breathable)</h4>
-                    <p class="fabric-box-desc">Tidak gerah di bawah terik matahari, mengunci kenyamanan berkat sirkulasi rajutan yang baik.</p>
-                </div>
-                <div class="fabric-box-item">
-                    <i class="fas fa-vector-square fabric-box-icon"></i>
-                    <h4 class="fabric-box-title">Motif Eksklusif</h4>
-                    <p class="fabric-box-desc">Meninggalkan kesan mewah melalui corak rajut berlian yang jarang ditemui di pasaran umum.</p>
-                </div>
+                <div class="fabric-box-item"><i class="fas fa-award fabric-box-icon"></i><h4 class="fabric-box-title">Kualitas Premium</h4><p class="fabric-box-desc">Grade kain di atas rata-rata Pique Cotton standar, menjamin keawetan jangka panjang.</p></div>
+                <div class="fabric-box-item"><i class="fas fa-compress-alt fabric-box-icon"></i><h4 class="fabric-box-title">Anti Susut / Menciut</h4><p class="fabric-box-desc">Tingkat penyusutan pasca-cuci sangat minimal, bentuk baju tetap stabil meski dicuci berkali-kali.</p></div>
+                <div class="fabric-box-item"><i class="fas fa-wind fabric-box-icon"></i><h4 class="fabric-box-title">Sensasi Sejuk (Breathable)</h4><p class="fabric-box-desc">Tidak gerah di bawah terik matahari, mengunci kenyamanan berkat sirkulasi rajutan yang baik.</p></div>
+                <div class="fabric-box-item"><i class="fas fa-vector-square fabric-box-icon"></i><h4 class="fabric-box-title">Motif Eksklusif</h4><p class="fabric-box-desc">Meninggalkan kesan mewah melalui corak rajut berlian yang jarang ditemui di pasaran umum.</p></div>
             </div>
 
             <div class="fabric-section-title"><i class="fas fa-cogs" style="color: var(--primary-color);"></i> Spesifikasi Teknis (1 Kg Kain)</div>
             <div class="fabric-scroll-container">
-                <div class="fabric-box-item">
-                    <h4 class="fabric-box-title">Lebar Kain</h4>
-                    <p class="fabric-box-desc"><strong>45" (Tubular)</strong><br>Bentuk melingkar (nyarung), memudahkan pola potong.</p>
-                </div>
-                <div class="fabric-box-item">
-                    <h4 class="fabric-box-title">Ketebalan Benang</h4>
-                    <p class="fabric-box-desc"><strong>30s</strong><br>Standar paling ideal untuk iklim tropis Indonesia.</p>
-                </div>
-                <div class="fabric-box-item">
-                    <h4 class="fabric-box-title">Gramasi</h4>
-                    <p class="fabric-box-desc"><strong>± 180 - 190 gsm</strong><br>Ketebalan optimal, kain kokoh namun tidak berat.</p>
-                </div>
-                <div class="fabric-box-item">
-                    <h4 class="fabric-box-title">Panjang Efektif</h4>
-                    <p class="fabric-box-desc"><strong>± 2,30 - 2,43 Meter</strong><br>Estimasi bentang panjang per 1 kilogram bahan baku.</p>
-                </div>
-                <div class="fabric-box-item">
-                    <h4 class="fabric-box-title">Paket Aksesoris</h4>
-                    <p class="fabric-box-desc"><strong>± 4 Kerah & 4 Manset</strong><br>Tersedia pelengkap setelan warna untuk ±4 buah polo.</p>
-                </div>
+                <div class="fabric-box-item"><h4 class="fabric-box-title">Lebar Kain</h4><p class="fabric-box-desc"><strong>45" (Tubular)</strong><br>Bentuk melingkar (nyarung), memudahkan pola potong.</p></div>
+                <div class="fabric-box-item"><h4 class="fabric-box-title">Ketebalan Benang</h4><p class="fabric-box-desc"><strong>30s</strong><br>Standar paling ideal untuk iklim tropis Indonesia.</p></div>
+                <div class="fabric-box-item"><h4 class="fabric-box-title">Gramasi</h4><p class="fabric-box-desc"><strong>± 180 - 190 gsm</strong><br>Ketebalan optimal, kain kokoh namun tidak berat.</p></div>
+                <div class="fabric-box-item"><h4 class="fabric-box-title">Panjang Efektif</h4><p class="fabric-box-desc"><strong>± 2,30 - 2,43 Meter</strong><br>Estimasi bentang panjang per 1 kilogram bahan baku.</p></div>
+                <div class="fabric-box-item"><h4 class="fabric-box-title">Paket Aksesoris</h4><p class="fabric-box-desc"><strong>± 4 Kerah & 4 Manset</strong><br>Tersedia pelengkap setelan warna untuk ±4 buah polo.</p></div>
             </div>
-
-            <div class="fabric-section-title"><i class="fas fa-tshirt" style="color: var(--primary-color);"></i> Estimasi Hasil Kaos Polo (per 1 Kg)</div>
-            <div class="fabric-scroll-container">
-                <div class="fabric-box-item fabric-box-stat">
-                    <h4 class="fabric-box-title">Ukuran S</h4>
-                    <div class="fabric-stat-value">6</div>
-                    <p class="fabric-box-desc">Potong Baju</p>
-                </div>
-                <div class="fabric-box-item fabric-box-stat">
-                    <h4 class="fabric-box-title">Ukuran M</h4>
-                    <div class="fabric-stat-value">5</div>
-                    <p class="fabric-box-desc">Potong Baju</p>
-                </div>
-                <div class="fabric-box-item fabric-box-stat">
-                    <h4 class="fabric-box-title">Ukuran L</h4>
-                    <div class="fabric-stat-value">4</div>
-                    <p class="fabric-box-desc">Potong Baju</p>
-                </div>
-                <div class="fabric-box-item fabric-box-stat">
-                    <h4 class="fabric-box-title">Ukuran XL</h4>
-                    <div class="fabric-stat-value">3</div>
-                    <p class="fabric-box-desc">Potong Baju</p>
-                </div>
-            </div>
-
-            <a href="warna-kain.html" class="color-selection-btn">
-                <i class="fas fa-palette"></i> Eksplorasi Pilihan Warna Kain
-            </a>
         </div>
     </section>
 
     <section id="location">
         <h2 class="section-title">Lokasi Workshop</h2>
         <div class="map-container">
-            <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d213.95154383471382!2d110.58480573485252!3d-7.743230401419015!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a444cc535a423%3A0xd5e989bd81a8b3c1!2sQ'Mutan%20Itik%20-%20Kancing!5e1!3m2!1sid!2sid!4v1780682131589!5m2!1sid!2sid" 
-                width="100%" 
-                height="100%" 
-                style="border:0;" 
-                allowfullscreen="" 
-                loading="lazy" 
-                referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d213.95154383471382!2d110.58480573485252!3d-7.743230401419015!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a444cc535a423%3A0xd5e989bd81a8b3c1!2sQ'Mutan%20Itik%20-%20Kancing!5e1!3m2!1sid!2sid!4v1780682131589!5m2!1sid!2sid" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
     </section>
 
     <footer id="contact">
         <h2 class="section-title" style="margin-bottom: 15px;">Hubungi Kami</h2>
         <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 14px;">Wujudkan seragam impian dengan konsultasi desain dan penawaran harga gratis bersama CV. Djavu Indonesia.</p>
-        
         <div class="social-links">
             <a href="https://wa.me/6281369602596" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
             <a href="https://instagram.com/djavuind.id" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
             <a href="mailto:info@djavuind.id" target="_blank" title="Email"><i class="far fa-envelope"></i></a>
         </div>
-        
         <div class="footer-bottom">
             <div class="copyright">© 2026 CV. Djavu Indonesia. All Rights Reserved.</div>
             <div class="developer-tag">developed by Ahmad Fahril</div>
@@ -890,67 +675,203 @@
         <div class="modal-content">
             <span class="close-modal">×</span>
             <h3 id="modalTitle" style="color: var(--primary-color); font-family: 'Rajdhani', sans-serif; font-size: 22px; margin-bottom: 5px;">Judul Produk</h3>
-            
             <div class="modal-images">
-                <div class="img-container">
-                    <span class="img-label">Model Preview</span>
-                    <img id="modalImg1" src="" alt="Model">
-                </div>
-                <div class="img-container">
-                    <span class="img-label">Real Pick</span>
-                    <img id="modalImg2" src="" alt="Real Pick">
-                </div>
+                <div class="img-container"><span class="img-label">Model Preview</span><img id="modalImg1" src="" alt="Model"></div>
+                <div class="img-container"><span class="img-label">Real Pick</span><img id="modalImg2" src="" alt="Real Pick"></div>
             </div>
-
-            <a id="modalWaBtn" href="#" target="_blank" class="wa-btn">
-                <i class="fab fa-whatsapp"></i> Dapatkan Penawaran
-            </a>
+            <a id="modalWaBtn" href="#" target="_blank" class="wa-btn"><i class="fab fa-whatsapp"></i> Dapatkan Penawaran</a>
         </div>
     </div>
 
     <script>
-        // --- 1. LOADING SCREEN LOGIC ---
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                const loader = document.getElementById('loader');
-                loader.style.opacity = '0';
-                setTimeout(() => { loader.style.display = 'none'; }, 500);
-            }, 2000); 
+        // ==========================================
+        // --- ENGINE 1: CINEMATIC LOGO LOADER ---
+        // ==========================================
+        const loaderCanvas = document.getElementById('loaderCanvas');
+        const lCtx = loaderCanvas.getContext('2d', { willReadFrequently: true });
+        const loaderContainer = document.getElementById('loader');
+
+        function resizeLoaderCanvas() {
+            loaderCanvas.width = window.innerWidth;
+            loaderCanvas.height = window.innerHeight;
+        }
+        resizeLoaderCanvas();
+
+        let lParticles = [];
+        let lTimeline = 0;
+        let lCurrentPhase = 0; // 0: Diam, 1: Shatter, 2: Reverse, 3: Glow, 4: Hiding
+        let lLogoLoaded = false;
+        let lLogoRect = { x: 0, y: 0, w: 0, h: 0 };
+        let lAnimationId;
+
+        const lLogoImg = new Image();
+        lLogoImg.src = './logo.webp';
+
+        lLogoImg.onload = function() {
+            lLogoLoaded = true;
+            calculateLoaderLogoPos();
+            createLoaderParticles();
+            animateLoader();
+        };
+
+        lLogoImg.onerror = function() {
+            lCtx.fillStyle = '#ffffff';
+            lCtx.font = "16px sans-serif";
+            lCtx.textAlign = "center";
+            lCtx.fillText("Gagal memuat gambar './logo.webp' di Loading Screen.", loaderCanvas.width / 2, loaderCanvas.height / 2);
+            // Fallback hilangkan loader jika gambar error
+            setTimeout(() => { loaderContainer.style.opacity = '0'; setTimeout(() => loaderContainer.style.display = 'none', 600); }, 2000);
+        };
+
+        function calculateLoaderLogoPos() {
+            const maxBoundingSize = Math.min(window.innerWidth * 0.7, 300); 
+            let scale = Math.min(maxBoundingSize / lLogoImg.naturalWidth, maxBoundingSize / lLogoImg.naturalHeight);
+            lLogoRect.w = lLogoImg.naturalWidth * scale;
+            lLogoRect.h = lLogoImg.naturalHeight * scale;
+            lLogoRect.x = (loaderCanvas.width - lLogoRect.w) / 2;
+            lLogoRect.y = (loaderCanvas.height - lLogoRect.h) / 2;
+        }
+
+        class StoneFragment {
+            constructor(sx, sy, sw, sh, dx, dy, dw, dh) {
+                this.sx = sx; this.sy = sy; this.sw = sw; this.sh = sh;
+                this.origX = dx; this.origY = dy;
+                this.x = dx; this.y = dy;
+                this.dw = dw; this.dh = dh;
+                this.vx = (Math.random() - 0.5) * 26;
+                this.vy = (Math.random() - 0.5) * 26 - Math.random() * 8; 
+                this.angle = 0;
+                this.va = (Math.random() - 0.5) * 0.3; 
+                this.alpha = 1;
+                this.burnProgress = 0; 
+            }
+            updateShatter() {
+                this.x += this.vx; this.y += this.vy; this.angle += this.va;
+                this.vx *= 0.98; this.vy *= 0.98; this.vy += 0.22; 
+                this.burnProgress += (1 - this.burnProgress) * 0.03;
+                this.alpha -= 0.006;
+                if (this.alpha < 0) this.alpha = 0;
+            }
+            updateReverse() {
+                this.x += (this.origX - this.x) * 0.08;
+                this.y += (this.origY - this.y) * 0.08;
+                this.angle += (0 - this.angle) * 0.08;
+                this.burnProgress += (0 - this.burnProgress) * 0.08;
+                this.alpha += (1 - this.alpha) * 0.08;
+            }
+            draw() {
+                lCtx.save();
+                lCtx.translate(this.x + this.dw / 2, this.y + this.dh / 2);
+                lCtx.rotate(this.angle);
+                lCtx.globalAlpha = this.alpha;
+                lCtx.drawImage(lLogoImg, this.sx, this.sy, this.sw, this.sh, -this.dw / 2, -this.dh / 2, this.dw, this.dh);
+                if (this.burnProgress > 0) {
+                    lCtx.fillStyle = `rgba(15, 15, 22, ${this.burnProgress * 0.95})`;
+                    lCtx.fillRect(-this.dw / 2, -this.dh / 2, this.dw, this.dh);
+                }
+                lCtx.restore();
+            }
+        }
+
+        function createLoaderParticles() {
+            lCtx.clearRect(0, 0, loaderCanvas.width, loaderCanvas.height);
+            lCtx.drawImage(lLogoImg, lLogoRect.x, lLogoRect.y, lLogoRect.w, lLogoRect.h);
+            const imgData = lCtx.getImageData(lLogoRect.x, lLogoRect.y, lLogoRect.w, lLogoRect.h);
+            lCtx.clearRect(0, 0, loaderCanvas.width, loaderCanvas.height);
+
+            const cols = 10; const rows = 10;
+            const srcBlockW = lLogoImg.naturalWidth / cols; const srcBlockH = lLogoImg.naturalHeight / rows;
+            const destBlockW = lLogoRect.w / cols; const destBlockH = lLogoRect.h / rows;
+            lParticles = [];
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    let checkX = Math.floor((c + 0.5) * destBlockW);
+                    let checkY = Math.floor((r + 0.5) * destBlockH);
+                    let pixelIndex = (checkY * Math.floor(lLogoRect.w) + checkX) * 4;
+                    if (imgData.data[pixelIndex + 3] > 30) {
+                        lParticles.push(new StoneFragment(
+                            c * srcBlockW, r * srcBlockH, srcBlockW, srcBlockH,
+                            lLogoRect.x + c * destBlockW, lLogoRect.y + r * destBlockH, destBlockW, destBlockH
+                        ));
+                    }
+                }
+            }
+        }
+
+        function animateLoader() {
+            if (!lLogoLoaded || lCurrentPhase === 4) return;
+            lCtx.clearRect(0, 0, loaderCanvas.width, loaderCanvas.height);
+            lTimeline++;
+
+            if (lTimeline === 1) { lCurrentPhase = 0; } 
+            else if (lTimeline === 65) {
+                lCurrentPhase = 1; // Sambaran Petir & Meledak
+                loaderContainer.classList.add('lightning-flash-screen');
+                setTimeout(() => loaderContainer.classList.remove('lightning-flash-screen'), 350);
+            } 
+            else if (lTimeline === 195) { lCurrentPhase = 2; } // Menyatu Kembali
+            else if (lTimeline === 265) {
+                lCurrentPhase = 3; // Utuh & Bersinar
+                loaderCanvas.classList.add('loader-canvas-glow');
+            } 
+            else if (lTimeline === 335) {
+                // SINKRONISASI SELESAI: Hilangkan Loader secara Halus & Stop Animasi
+                lCurrentPhase = 4;
+                loaderContainer.style.opacity = '0';
+                setTimeout(() => {
+                    loaderContainer.style.display = 'none';
+                    cancelAnimationFrame(lAnimationId);
+                }, 600);
+                return;
+            }
+
+            if (lCurrentPhase === 0 || lCurrentPhase === 3) {
+                if (lCurrentPhase === 3) { lCtx.shadowBlur = 25; lCtx.shadowColor = "rgba(212, 175, 55, 0.85)"; } 
+                else { lCtx.shadowBlur = 0; }
+                lCtx.drawImage(lLogoImg, lLogoRect.x, lLogoRect.y, lLogoRect.w, lLogoRect.h);
+            } else {
+                lCtx.shadowBlur = 0;
+                lParticles.forEach(p => {
+                    if (lCurrentPhase === 1) p.updateShatter();
+                    if (lCurrentPhase === 2) p.updateReverse();
+                    p.draw();
+                });
+            }
+            lAnimationId = requestAnimationFrame(animateLoader);
+        }
+
+        window.addEventListener('resize', () => {
+            resizeLoaderCanvas();
+            if (lLogoLoaded) { calculateLoaderLogoPos(); createLoaderParticles(); }
         });
 
-        // --- 2. MOBILE MENU LOGIC ---
+
+        // ==========================================
+        // --- ENGINE 2: SITE INTERFACES & BACKDROP -
+        // ==========================================
         const menuToggle = document.getElementById('menuToggle');
         const navLinks = document.getElementById('navLinks');
-        menuToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
-
+        menuToggle.addEventListener('click', () => { navLinks.classList.toggle('active'); });
         document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-            });
+            link.addEventListener('click', () => { navLinks.classList.remove('active'); });
         });
 
-        // --- 3. THEME TOGGLE LOGIC ---
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = themeToggle.querySelector('i');
         let canvasFadeColor = 'rgba(10, 10, 15, 0.2)'; 
 
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('light-mode');
-            
             if (document.body.classList.contains('light-mode')) {
-                themeIcon.classList.remove('fa-sun');
-                themeIcon.classList.add('fa-moon');
+                themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon');
                 canvasFadeColor = 'rgba(244, 246, 249, 0.2)'; 
             } else {
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
+                themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun');
                 canvasFadeColor = 'rgba(10, 10, 15, 0.2)';
             }
         });
 
-        // --- 4. MODAL POPUP LOGIC ---
         const modal = document.getElementById('productModal');
         const closeModalBtn = document.querySelector('.close-modal');
         const modalTitle = document.getElementById('modalTitle');
@@ -963,52 +884,32 @@
                 const title = item.getAttribute('data-title');
                 const img1 = item.getAttribute('data-img1');
                 const img2 = item.getAttribute('data-img2');
-
-                modalTitle.textContent = title;
-                modalImg1.src = img1;
-                modalImg2.src = img2;
-
+                modalTitle.textContent = title; modalImg1.src = img1; modalImg2.src = img2;
                 const waText = encodeURIComponent(`Halo admin CV. Djavu Indonesia, saya tertarik dan ingin mendapatkan penawaran untuk produk: ${title}.`);
                 modalWaBtn.href = `https://wa.me/6281369602596?text=${waText}`;
-
                 modal.classList.add('show');
             });
         });
+        closeModalBtn.addEventListener('click', () => { modal.classList.remove('show'); });
+        window.addEventListener('click', (e) => { if (e.target === modal) { modal.classList.remove('show'); } });
 
-        closeModalBtn.addEventListener('click', () => {
-            modal.classList.remove('show');
-        });
-
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('show');
-            }
-        });
-
-        // --- 5. CANVAS BACKGROUND ANIMATION ---
+        // --- BACKGROUND AMBIENT PARTICLES (MAIN SITE) ---
         const canvas = document.getElementById('canvas-container');
         const ctx = canvas.getContext('2d');
         let width, height, particles;
 
-        function init() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
+        function initMainParticles() {
+            width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight;
             particles = [];
-            
             const baseDivisor = width < 768 ? 45 : 25;
             const particleCount = Math.floor(width / baseDivisor); 
-            
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
+            for (let i = 0; i < particleCount; i++) { particles.push(new Particle()); }
         }
 
         class Particle {
             constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.8;
-                this.vy = (Math.random() - 0.5) * 0.8;
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.8; this.vy = (Math.random() - 0.5) * 0.8;
                 this.baseRadius = Math.random() * 1.5 + 0.5;
             }
             update() {
@@ -1017,44 +918,30 @@
                 if (this.y < 0 || this.y > height) this.vy *= -1;
             }
             draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.baseRadius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(212, 175, 55, 0.8)';
-                ctx.fill();
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.baseRadius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(212, 175, 55, 0.8)'; ctx.fill();
             }
         }
 
-        function animate() {
-            ctx.fillStyle = canvasFadeColor;
-            ctx.fillRect(0, 0, width, height);
-
+        function animateMainSite() {
+            ctx.fillStyle = canvasFadeColor; ctx.fillRect(0, 0, width, height);
             const connectionDistance = width < 480 ? 70 : 110;
-
             for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-
+                particles[i].update(); particles[i].draw();
                 for (let j = i; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
+                    const dx = particles[i].x - particles[j].x; const dy = particles[i].y - particles[j].y;
                     const distance = Math.sqrt(dx * dx + dy * dy);
-
                     if (distance < connectionDistance) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(212, 175, 55, ${1 - distance/connectionDistance})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
+                        ctx.beginPath(); ctx.strokeStyle = `rgba(212, 175, 55, ${1 - distance/connectionDistance})`;
+                        ctx.lineWidth = 0.5; ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
                     }
                 }
             }
-            requestAnimationFrame(animate);
+            requestAnimationFrame(animateMainSite);
         }
-
-        window.addEventListener('resize', init);
-        init();
-        animate();
+        window.addEventListener('resize', initMainParticles);
+        initMainParticles();
+        animateMainSite();
     </script>
 </body>
 </html>
