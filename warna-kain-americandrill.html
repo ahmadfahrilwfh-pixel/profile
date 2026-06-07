@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mockup Model Realistis - American Drill Orlando</title>
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .disclaimer-full {
+            width: 100%;
+            background-color: #fff3cd;
+            color: #856404;
+            border-left: 5px solid #ffeeba;
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .model-section {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .mockup-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 3 / 4; 
+            background-color: #eaeaea;
+            border-radius: 8px;
+            overflow: hidden;
+            position: sticky;
+            top: 20px;
+        }
+
+        .layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .layer-base {
+            background-image: url('model-base.webp');
+            z-index: 1;
+        }
+
+        .layer-color {
+            z-index: 2;
+            background-color: #F5F5F5;
+            -webkit-mask-image: url('mask.png');
+            mask-image: url('mask.png');
+            -webkit-mask-size: cover;
+            mask-size: cover;
+            -webkit-mask-position: center;
+            mask-position: center;
+            transition: background-color 0.4s ease;
+            mix-blend-mode: multiply; 
+        }
+
+        .layer-texture {
+            background-image: url('texture.webp');
+            z-index: 3;
+            -webkit-mask-image: url('mask.png');
+            mask-image: url('mask.png');
+            -webkit-mask-size: cover;
+            mask-size: cover;
+            -webkit-mask-position: center;
+            mask-position: center;
+            mix-blend-mode: multiply; 
+            opacity: 0.85; 
+            pointer-events: none; 
+        }
+
+        .palette-section {
+            flex: 1.5;
+            min-width: 350px;
+        }
+
+        .color-info {
+            background: #f1f3f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            position: sticky;
+            top: 20px;
+            z-index: 10;
+        }
+
+        .color-info h3 { margin: 0 0 5px 0; font-size: 22px; }
+        .color-info p { margin: 0; color: #6c757d; font-size: 14px; }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 15px;
+            max-height: 600px;
+            overflow-y: auto;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+
+        .color-grid::-webkit-scrollbar {
+            width: 8px;
+        }
+        .color-grid::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+            border-radius: 8px;
+        }
+        .color-grid::-webkit-scrollbar-thumb {
+            background: #c1c1c1; 
+            border-radius: 8px;
+        }
+        .color-grid::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8; 
+        }
+
+        .color-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px 5px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .color-item:hover {
+            background-color: #ebebeb;
+        }
+
+        .color-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #e9ecef;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            margin-bottom: 8px;
+        }
+
+        .color-item.active {
+            background-color: #e2e6ea;
+        }
+
+        .color-item.active .color-circle {
+            border: 3px solid #000;
+            transform: scale(1.15);
+        }
+
+        .color-label { font-size: 11px; text-align: center; font-weight: 500; line-height: 1.2; margin-bottom: 3px; }
+        .color-code { font-size: 10px; color: #6c757d; text-align: center; font-weight: bold;}
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="disclaimer-full">
+        ⚠️ <strong>DISCLAIMER:</strong> Tampilan ini hanya simulasi ilustrasi. Warna pada monitor/HP bisa berbeda. Untuk akurasi presisi 100%, silakan cek fisik kain di workshop. Data warna diambil dari Katalog American Drill Orlando (Total 120+ Warna).
+    </div>
+
+    <div class="model-section">
+        <div class="mockup-wrapper">
+            <div class="layer layer-base"></div>
+            <div class="layer layer-color" id="baju-color"></div>
+            <div class="layer layer-texture"></div>
+        </div>
+    </div>
+
+    <div class="palette-section">
+        <div class="color-info">
+            <h3 id="display-name">Putih Bersih</h3>
+            <p id="display-cat">Kode: 191 (Putih)</p>
+        </div>
+        <div class="color-grid" id="color-grid"></div>
+    </div>
+</div>
+
+<script>
+    // Data RGB presisi estimasi dari American Drill Orlando (Gambar 1 - 5 LENGKAP)
+    const colors = [
+        // --- GAMBAR 1 ---
+        { name: "Putih Bersih", code: "191", desc: "Putih", hex: "#F5F5F5" },
+        { name: "Putih Tulang", code: "192", desc: "Putih", hex: "#F0EAD6" },
+        { name: "Krem Pucat", code: "111", desc: "Krem", hex: "#EBE3D5" },
+        { name: "Krem", code: "112", desc: "Krem", hex: "#DFD3C3" },
+        { name: "Krem Sedang", code: "113", desc: "Krem", hex: "#D4C4B7" },
+        { name: "Krem Tua", code: "115", desc: "Krem", hex: "#C2A88D" },
+        { name: "Cokelat Muda", code: "109", desc: "Cokelat", hex: "#B89B7A" },
+        { name: "Cokelat Pramuka Muda", code: "148", desc: "Cokelat", hex: "#9E7B54" },
+        { name: "Cokelat Karamel", code: "159", desc: "Cokelat", hex: "#8A633B" },
+        { name: "Cokelat Pramuka", code: "073", desc: "Cokelat", hex: "#634122" },
+        { name: "Cokelat Kopi", code: "393", desc: "Cokelat", hex: "#4A3121" },
+        { name: "Cokelat Tua", code: "215", desc: "Cokelat", hex: "#3B261D" },
+        { name: "Hitam Kecokelatan", code: "116", desc: "Hitam", hex: "#2E211B" },
+        { name: "Cokelat Tembaga", code: "414", desc: "Cokelat", hex: "#8F4A32" },
+        { name: "Cokelat Kemerahan", code: "314", desc: "Cokelat", hex: "#6E3524" },
+        { name: "Cokelat Bata Tua", code: "315", desc: "Cokelat", hex: "#5C2E21" },
+        { name: "Cokelat Marun", code: "515", desc: "Cokelat", hex: "#4A221C" },
+        { name: "Abu Muda Pucat", code: "161", desc: "Abu-abu", hex: "#E0E0E0" },
+        { name: "Abu-abu Terang", code: "618", desc: "Abu-abu", hex: "#D1D3D4" },
+        { name: "Abu-abu Sedang", code: "166", desc: "Abu-abu", hex: "#A7A9AC" },
+        { name: "Abu-abu Gelap", code: "262", desc: "Abu-abu", hex: "#808285" },
+        { name: "Abu-abu Kecokelatan", code: "384", desc: "Abu-abu", hex: "#726E65" },
+        { name: "Abu-abu Arang", code: "060", desc: "Abu-abu", hex: "#414042" },
+        { name: "Hitam Solid", code: "725", desc: "Hitam", hex: "#1A1A1A" },
+
+        // --- GAMBAR 2 ---
+        { name: "Kuning Pucat", code: "053", desc: "Kuning", hex: "#FFF2CC" },
+        { name: "Kuning Terang", code: "154", desc: "Kuning", hex: "#FFEA00" },
+        { name: "Kuning Kenari", code: "514", desc: "Kuning", hex: "#FFD700" },
+        { name: "Kuning Emas", code: "1015", desc: "Kuning", hex: "#FFAA00" },
+        { name: "Kuning Kunyit", code: "715", desc: "Kuning", hex: "#D48800" },
+        { name: "Oranye Terang", code: "714", desc: "Oranye", hex: "#FF6600" },
+        { name: "Oranye Tua", code: "814", desc: "Oranye", hex: "#CC5200" },
+        { name: "Salem Muda", code: "018", desc: "Merah", hex: "#FFC2B3" },
+        { name: "Pink Pucat", code: "121", desc: "Pink", hex: "#FFD1DC" },
+        { name: "Pink Terang", code: "122", desc: "Pink", hex: "#FF66CC" },
+        { name: "Pink Tua / Fanta", code: "123", desc: "Pink", hex: "#E60073" },
+        { name: "Ungu Muda", code: "149", desc: "Ungu", hex: "#CDB4DB" },
+        { name: "Ungu Terang", code: "249", desc: "Ungu", hex: "#9933FF" },
+        { name: "Ungu Tua", code: "349", desc: "Ungu", hex: "#4B0082" },
+        { name: "Merah Muda", code: "013", desc: "Merah", hex: "#FF4D4D" },
+        { name: "Merah Bendera", code: "113", desc: "Merah", hex: "#CC0000" },
+        { name: "Merah Darah", code: "213", desc: "Merah", hex: "#A30000" },
+        { name: "Merah Hati", code: "114", desc: "Merah", hex: "#800000" },
+        { name: "Maroon Terang", code: "214", desc: "Merah", hex: "#660000" },
+        { name: "Maroon Gelap", code: "314", desc: "Merah", hex: "#4D0000" },
+        { name: "Merah Bata Muda", code: "413", desc: "Merah", hex: "#CC5233" },
+        { name: "Merah Bata", code: "513", desc: "Merah", hex: "#A6381C" },
+        { name: "Merah Kecokelatan", code: "613", desc: "Merah", hex: "#802511" },
+        { name: "Cokelat Marun Gelap", code: "713", desc: "Merah", hex: "#59190B" },
+
+        // --- GAMBAR 3 ---
+        { name: "Biru Es Pucat", code: "023", desc: "Biru", hex: "#E0F7FA" },
+        { name: "Biru Langit Muda", code: "123", desc: "Biru", hex: "#B3E5FC" },
+        { name: "Biru Langit", code: "223", desc: "Biru", hex: "#81D4FA" },
+        { name: "Biru Laut Muda", code: "323", desc: "Biru", hex: "#4FC3F7" },
+        { name: "Biru Laut Terang", code: "544", desc: "Biru", hex: "#29B6F6" },
+        { name: "Biru Elektrik", code: "644", desc: "Biru", hex: "#03A9F4" },
+        { name: "Biru Benhur", code: "315", desc: "Biru", hex: "#0288D1" },
+        { name: "Biru BCA", code: "524", desc: "Biru", hex: "#01579B" },
+        { name: "Biru Navy Muda", code: "040", desc: "Biru", hex: "#1A237E" },
+        { name: "Biru Navy Gelap", code: "124", desc: "Biru", hex: "#0D47A1" },
+        { name: "Biru Dongker Pekat", code: "234", desc: "Biru", hex: "#000033" },
+        { name: "Biru Nyaris Hitam", code: "039", desc: "Biru", hex: "#0B0C10" },
+        { name: "Biru Tosca Muda", code: "134", desc: "Biru", hex: "#80DEEA" },
+        { name: "Biru Tosca", code: "234", desc: "Biru", hex: "#26C6DA" },
+        { name: "Biru Tosca Tua", code: "334", desc: "Biru", hex: "#0097A7" },
+        { name: "Hijau Tosca Terang", code: "434", desc: "Hijau", hex: "#00838F" },
+        { name: "Hijau Tosca Gelap", code: "533", desc: "Hijau", hex: "#006064" },
+        { name: "Biru Kehijauan", code: "634", desc: "Biru", hex: "#004D40" },
+        { name: "Hijau Mint Muda", code: "022", desc: "Hijau", hex: "#B2DFDB" },
+        { name: "Hijau Mint", code: "122", desc: "Hijau", hex: "#80CBC4" },
+        { name: "Hijau Pastel", code: "222", desc: "Hijau", hex: "#4DB6AC" },
+        { name: "Hijau Terang", code: "322", desc: "Hijau", hex: "#26A69A" },
+        { name: "Hijau Daun Sedang", code: "606", desc: "Hijau", hex: "#00897B" },
+        { name: "Hijau Botol", code: "543", desc: "Hijau", hex: "#00695C" },
+
+        // --- GAMBAR 4 ---
+        { name: "Hijau Pucat", code: "705", desc: "Hijau", hex: "#C8E6C9" },
+        { name: "Hijau Stabilo", code: "713", desc: "Hijau", hex: "#76FF03" },
+        { name: "Hijau Daun Terang", code: "688", desc: "Hijau", hex: "#00E676" },
+        { name: "Hijau Rumput", code: "146", desc: "Hijau", hex: "#4CAF50" },
+        { name: "Hijau Zaitun Muda", code: "206", desc: "Hijau", hex: "#8BC34A" },
+        { name: "Hijau Lumut", code: "246", desc: "Hijau", hex: "#689F38" },
+        { name: "Hijau Army Muda", code: "346", desc: "Hijau", hex: "#558B2F" },
+        { name: "Hijau Army", code: "523", desc: "Hijau", hex: "#33691E" },
+        { name: "Hijau Zaitun Gelap", code: "623", desc: "Hijau", hex: "#2E3B32" },
+        { name: "Hijau Botol Gelap", code: "749", desc: "Hijau", hex: "#1B2A1E" },
+        { name: "Hitam Kehijauan", code: "849", desc: "Hitam", hex: "#111A13" },
+        { name: "Kuning Gading", code: "054", desc: "Kuning", hex: "#F5F5DC" },
+        { name: "Khaki Pucat", code: "155", desc: "Krem", hex: "#F0E68C" },
+        { name: "Khaki Sedang", code: "255", desc: "Krem", hex: "#BDB76B" },
+        { name: "Cokelat Pasir", code: "355", desc: "Cokelat", hex: "#D2B48C" },
+        { name: "Cokelat Gurun", code: "455", desc: "Cokelat", hex: "#DEB887" },
+        { name: "Cokelat Kayu", code: "555", desc: "Cokelat", hex: "#CD853F" },
+        { name: "Cokelat Tembaga Muda", code: "655", desc: "Cokelat", hex: "#D2691E" },
+        { name: "Cokelat Tanah", code: "755", desc: "Cokelat", hex: "#A0522D" },
+        { name: "Cokelat Mahoni", code: "855", desc: "Cokelat", hex: "#8B4513" },
+        { name: "Abu-abu Kebiruan Muda", code: "162", desc: "Abu-abu", hex: "#B0C4DE" },
+        { name: "Abu-abu Kebiruan", code: "263", desc: "Abu-abu", hex: "#778899" },
+        { name: "Baja Gelap", code: "363", desc: "Abu-abu", hex: "#708090" },
+        { name: "Hitam Kebiruan", code: "463", desc: "Hitam", hex: "#2F4F4F" },
+
+        // --- GAMBAR 5 ---
+        { name: "Putih Susu", code: "193", desc: "Putih", hex: "#FDFFF5" },
+        { name: "Krem Vanila", code: "114", desc: "Krem", hex: "#F3E5AB" },
+        { name: "Emas Tua", code: "1016", desc: "Kuning", hex: "#B8860B" },
+        { name: "Oker", code: "1017", desc: "Kuning", hex: "#CC7722" },
+        { name: "Terakota", code: "415", desc: "Merah", hex: "#E2725B" },
+        { name: "Salmon", code: "019", desc: "Pink", hex: "#FA8072" },
+        { name: "Merah Tomat", code: "115", desc: "Merah", hex: "#FF6347" },
+        { name: "Merah Karmin", code: "215", desc: "Merah", hex: "#960018" },
+        { name: "Merah Rubi", code: "315", desc: "Merah", hex: "#E0115F" },
+        { name: "Anggur / Wine", code: "415", desc: "Merah", hex: "#722F37" },
+        { name: "Plum Muda", code: "150", desc: "Ungu", hex: "#DDA0DD" },
+        { name: "Plum Tua", code: "250", desc: "Ungu", hex: "#8E4585" },
+        { name: "Indigo Muda", code: "141", desc: "Biru", hex: "#6666FF" },
+        { name: "Indigo Sedang", code: "241", desc: "Biru", hex: "#4B0082" },
+        { name: "Indigo Tua", code: "341", desc: "Biru", hex: "#310062" },
+        { name: "Biru Kolam", code: "125", desc: "Biru", hex: "#00BFFF" },
+        { name: "Biru Bunga Koral", code: "225", desc: "Biru", hex: "#5F9EA0" },
+        { name: "Teal Terang", code: "325", desc: "Biru", hex: "#008080" },
+        { name: "Teal Gelap", code: "425", desc: "Biru", hex: "#004040" },
+        { name: "Hijau Apel", code: "147", desc: "Hijau", hex: "#8DB600" },
+        { name: "Hijau Zaitun Gelap Sekali", code: "624", desc: "Hijau", hex: "#3B3C36" },
+        { name: "Abu-abu Tikus", code: "264", desc: "Abu-abu", hex: "#696969" },
+        { name: "Abu-abu Batu", code: "364", desc: "Abu-abu", hex: "#555555" },
+        { name: "Hitam Vantablack", code: "726", desc: "Hitam", hex: "#050505" }
+    ];
+
+    const grid = document.getElementById('color-grid');
+    const colorLayer = document.getElementById('baju-color');
+    const displayName = document.getElementById('display-name');
+    const displayCat = document.getElementById('display-cat');
+
+    function applyColor(colorObj, btnElement) {
+        colorLayer.style.backgroundColor = colorObj.hex;
+        displayName.textContent = colorObj.name;
+        displayCat.textContent = `Kode: ${colorObj.code} (${colorObj.desc})`;
+        document.querySelectorAll('.color-item').forEach(el => el.classList.remove('active'));
+        btnElement.classList.add('active');
+    }
+
+    colors.forEach((color, index) => {
+        const item = document.createElement('div');
+        item.className = `color-item ${index === 0 ? 'active' : ''}`;
+        item.innerHTML = `
+            <div class="color-circle" style="background-color: ${color.hex};"></div>
+            <div class="color-label">${color.name}</div>
+            <div class="color-code">${color.code}</div>
+        `;
+        item.addEventListener('click', () => applyColor(color, item));
+        grid.appendChild(item);
+    });
+</script>
+</body>
+</html>
