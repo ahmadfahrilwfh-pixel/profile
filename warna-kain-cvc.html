@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mockup Model Realistis - CVC Pique Hexagon</title>
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        /* Judul Baru */
+        .title-header {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 5px;
+            color: #22293B; /* Menyesuaikan dengan tema Navy/Dark CVC */
+        }
+        
+        .title-header h2 {
+            margin: 0;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .title-header p {
+            margin: 5px 0 15px 0;
+            font-size: 16px;
+            font-style: italic;
+            color: #555;
+        }
+
+        /* Disclaimer Area */
+        .disclaimer-full {
+            width: 100%;
+            background-color: #fff3cd;
+            color: #856404;
+            border-left: 5px solid #ffeeba;
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        /* Mockup Area */
+        .model-section {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Stacking Context untuk 3 Layer WebP */
+        .mockup-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 3 / 4; /* Sesuaikan rasio dengan foto model Anda */
+            background-color: #eaeaea;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* 1. Layer Paling Bawah: Foto Asli Model (Pakai Baju Putih) */
+        .layer-base {
+            background-image: url('model-base.webp');
+            z-index: 1;
+        }
+
+        /* 2. Layer Tengah: Warna HTML + Masking */
+        .layer-color {
+            z-index: 2;
+            background-color: #F4F4F6;
+            /* UBAH KE mask.png */
+            -webkit-mask-image: url('mask.png');
+            mask-image: url('mask.png');
+            -webkit-mask-size: cover;
+            mask-size: cover;
+            -webkit-mask-position: center;
+            mask-position: center;
+            transition: background-color 0.4s ease;
+            mix-blend-mode: multiply; 
+        }
+
+        /* 3. Layer Atas: Tekstur Kain Grayscale */
+        .layer-texture {
+            background-image: url('texture-cvc.webp');
+            z-index: 3;
+            /* UBAH KE mask.png */
+            -webkit-mask-image: url('mask.png');
+            mask-image: url('mask.png');
+            -webkit-mask-size: cover;
+            mask-size: cover;
+            -webkit-mask-position: center;
+            mask-position: center;
+            mix-blend-mode: multiply; 
+            opacity: 0.85; 
+            pointer-events: none; 
+            background-repeat: repeat;
+            background-size: 30px;
+        }
+
+        /* Palette Area */
+        .palette-section {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .color-info {
+            background: #f1f3f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .color-info h3 { margin: 0 0 5px 0; font-size: 22px; }
+        .color-info p { margin: 0; color: #6c757d; font-size: 14px; }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 15px;
+        }
+
+        .color-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .color-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #e9ecef;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            margin-bottom: 8px;
+        }
+
+        .color-item.active .color-circle {
+            border: 3px solid #000;
+            transform: scale(1.15);
+        }
+
+        .color-label { font-size: 11px; text-align: center; font-weight: 500; }
+        .color-code { font-size: 10px; color: #6c757d; text-align: center; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <div class="title-header">
+        <h2>CVC Pique Hexagon</h2>
+        <p>Polished Look, Lasting Comfort</p>
+    </div>
+
+    <div class="disclaimer-full">
+        ⚠️ <strong>DISCLAIMER:</strong> Tampilan ini hanya simulasi ilustrasi. Warna pada monitor/HP bisa berbeda. Untuk akurasi presisi 100%, silakan cek fisik kain di workshop.
+    </div>
+
+    <div class="model-section">
+        <div class="mockup-wrapper">
+            <div class="layer layer-base"></div>
+            <div class="layer layer-color" id="baju-color"></div>
+            <div class="layer layer-texture"></div>
+        </div>
+    </div>
+
+    <div class="palette-section">
+        <div class="color-info">
+            <h3 id="display-name">Putih Netral</h3>
+            <p id="display-cat">Kategori: P (Putih)</p>
+        </div>
+        <div class="color-grid" id="color-grid"></div>
+    </div>
+</div>
+
+<script>
+
+    // Data RGB presisi dari CVC Pique Hexagon
+    const colors = [
+        // --- Referensi Gambar 1 ---
+        { name: "Burgundy", code: "T", desc: "Tua", hex: "#5C2032" },
+        { name: "Maroon", code: "T", desc: "Tua", hex: "#4A1B22" },
+        { name: "Ruby Red", code: "T", desc: "Tua", hex: "#991D26" },
+        { name: "Merah Cabe", code: "T", desc: "Tua", hex: "#CC2229" },
+        { name: "Fuchsia", code: "T", desc: "Tua", hex: "#BE2669" },
+        
+        { name: "Dusty Rose", code: "S", desc: "Sedang", hex: "#A37B7E" },
+        { name: "Autumn Orange", code: "T", desc: "Tua", hex: "#8B4A2D" },
+        { name: "Orange Bata", code: "T", desc: "Tua", hex: "#BA4A21" },
+        { name: "Orange", code: "S", desc: "Sedang", hex: "#E36319" },
+        { name: "Kuning Kenari", code: "S", desc: "Sedang", hex: "#EDC715" },
+        
+        { name: "Mustard T", code: "T", desc: "Tua", hex: "#C68A24" },
+        { name: "Dark Mustard", code: "T", desc: "Tua", hex: "#946726" },
+        { name: "Almond Brown", code: "S", desc: "Sedang", hex: "#9B795A" },
+        { name: "Toffee", code: "T", desc: "Tua", hex: "#5D4033" },
+        { name: "Coklat Kopi", code: "T", desc: "Tua", hex: "#332822" },
+        
+        { name: "Light Brown", code: "M", desc: "Muda", hex: "#B1A696" },
+        { name: "Beige", code: "M", desc: "Muda", hex: "#D3CAAC" },
+        { name: "Hijau TNI", code: "T", desc: "Tua", hex: "#26492C" },
+        { name: "Mineral Green", code: "S", desc: "Sedang", hex: "#52746C" },
+        { name: "Olive Green", code: "S", desc: "Sedang", hex: "#757B5A" },
+        
+        { name: "Seafoam Green", code: "M", desc: "Muda", hex: "#A2B7AC" },
+        { name: "Hijau Pucuk", code: "S", desc: "Sedang", hex: "#79B944" },
+        { name: "Hijau Fuji", code: "T", desc: "Tua", hex: "#18933E" },
+        { name: "Hijau Botol", code: "T", desc: "Tua", hex: "#143522" },
+        { name: "Tosca", code: "T", desc: "Tua", hex: "#276C63" },
+        
+        { name: "Mineral Blue Tua", code: "T", desc: "Tua", hex: "#3A5E6F" },
+        { name: "Ocean Blue", code: "T", desc: "Tua", hex: "#294F7D" },
+        { name: "Steel Blue Tua", code: "T", desc: "Tua", hex: "#3B658A" },
+        { name: "Sky Blue", code: "M", desc: "Muda", hex: "#79A7D0" },
+        { name: "Biru Muda", code: "M", desc: "Muda", hex: "#62A4D8" },
+
+        // --- Referensi Gambar 2 ---
+        { name: "Turkis Muda", code: "M", desc: "Muda", hex: "#3DC0E6" },
+        { name: "Turkis", code: "T", desc: "Tua", hex: "#1C6FB2" },
+        { name: "Benhur Special 2", code: "TS2", desc: "Tua Special 2", hex: "#2B43A6" },
+        { name: "Navy", code: "T", desc: "Tua", hex: "#1A1D36" },
+        { name: "Ungu Tua", code: "T", desc: "Tua", hex: "#3B1B47" },
+        
+        { name: "Lilac", code: "M", desc: "Muda", hex: "#BA84BA" },
+        { name: "Hitam Reaktif Special", code: "TS", desc: "Tua Special", hex: "#1A1A1A" },
+        { name: "Twotone Hitam", code: "T", desc: "Tua", hex: "#2A2A2A" },
+        { name: "Abu Tua", code: "T", desc: "Tua", hex: "#4D4D4D" },
+        { name: "Misty M71 Putih Bluish", code: "MS", desc: "Misty Sedang", hex: "#A8B0B8" },
+        
+        { name: "Misty M71B Putih Bluish", code: "MS", desc: "Misty Sedang", hex: "#939CA6" },
+        { name: "Abu Muda", code: "M", desc: "Muda", hex: "#CCD0D5" },
+        { name: "Putih Netral", code: "P", desc: "Putih", hex: "#FFFFFF" },
+        { name: "Putih Bluish", code: "P", desc: "Putih", hex: "#EAF0F8" }
+    ];
+
+    const grid = document.getElementById('color-grid');
+    const colorLayer = document.getElementById('baju-color');
+    const displayName = document.getElementById('display-name');
+    const displayCat = document.getElementById('display-cat');
+
+    function applyColor(colorObj, btnElement) {
+        // Ganti warna layer masking
+        colorLayer.style.backgroundColor = colorObj.hex;
+        
+        // Update teks
+        displayName.textContent = colorObj.name;
+        displayCat.textContent = `Kategori: ${colorObj.code} (${colorObj.desc})`;
+
+        // Update UI tombol aktif
+        document.querySelectorAll('.color-item').forEach(el => el.classList.remove('active'));
+        btnElement.classList.add('active');
+    }
+
+    // Render tombol
+    colors.forEach((color, index) => {
+        const item = document.createElement('div');
+        item.className = `color-item ${index === 0 ? 'active' : ''}`;
+        item.innerHTML = `
+            <div class="color-circle" style="background-color: ${color.hex};"></div>
+            <div class="color-label">${color.name}</div>
+            <div class="color-code">(${color.code})</div>
+        `;
+        item.addEventListener('click', () => applyColor(color, item));
+        grid.appendChild(item);
+    });
+</script>
+
+</body>
+</html>
