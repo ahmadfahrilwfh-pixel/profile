@@ -625,34 +625,30 @@
     });
 
     // SISTEM ROTASI WARNA OTOMATIS
+// SISTEM ROTASI AUTOMATIC COLOR
     function startAutoRotation() {
-        if (autoTimer) clearInterval(autoTimer);
-        autoTimer = setInterval(() => {
+        if (rotationTimer) clearInterval(rotationTimer);
+        rotationTimer = setInterval(() => {
             if (!isAutoMode) return;
 
-            // Ambil hanya element warna yang saat ini tampil di layar (tidak tersembunyi oleh filter pencarian)
+            // Ambil warna yang saat ini sedang aktif & tidak tersembunyi oleh filter search
             const allItems = document.querySelectorAll('.color-item');
             const visibleItems = Array.from(allItems).filter(el => el.style.display !== 'none');
 
             if (visibleItems.length === 0) return;
 
-            // Cari index aktif saat ini di antara warna yang terlihat
             let currentActiveIndex = visibleItems.findIndex(el => el.classList.contains('active'));
             let nextIndex = (currentActiveIndex + 1) % visibleItems.length;
 
             const nextItem = visibleItems[nextIndex];
-            const colorDataIndex = parseInt(nextItem.getAttribute('data-index'));
-            const colorObj = colors[colorDataIndex];
-
-            if (colorObj) {
-                applyColor(colorObj, nextItem);
-                
-                // Kondisi Opsional: Scroll otomatis grid mengikuti alur warna (gently) jika mode otomatis jalan
-                nextItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
-        }, 3000); // Berganti warna setiap 3 detik
+            const originalColorIndex = parseInt(nextItem.getAttribute('data-index'));
+            
+            // Warna baju tetap berganti secara otomatis
+            applyColor(colors[originalColorIndex], nextItem);
+            
+            // Baris scrollIntoView sudah dihapus agar scroll dikendalikan penuh oleh user
+        }, 2500); // Ganti warna tiap 2.5 detik
     }
-
     function stopAutoRotation() {
         if (autoTimer) {
             clearInterval(autoTimer);
