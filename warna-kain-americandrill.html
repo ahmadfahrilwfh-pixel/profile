@@ -593,7 +593,7 @@
     const btnManual = document.getElementById('btn-manual');
 
     let isAutoMode = true; // Default otomatis aktif pertama kali
-    let autoTimer = null;
+    let autoTimer = null; // Memastikan menggunakan variabel autoTimer
 
     function applyColor(colorObj, btnElement) {
         colorLayer.style.backgroundColor = colorObj.hex;
@@ -625,10 +625,9 @@
     });
 
     // SISTEM ROTASI WARNA OTOMATIS
-// SISTEM ROTASI AUTOMATIC COLOR
     function startAutoRotation() {
-        if (rotationTimer) clearInterval(rotationTimer);
-        rotationTimer = setInterval(() => {
+        if (autoTimer) clearInterval(autoTimer); // SUDAH DIPERBAIKI: Menggunakan autoTimer
+        autoTimer = setInterval(() => { // SUDAH DIPERBAIKI: Menggunakan autoTimer
             if (!isAutoMode) return;
 
             // Ambil warna yang saat ini sedang aktif & tidak tersembunyi oleh filter search
@@ -646,9 +645,9 @@
             // Warna baju tetap berganti secara otomatis
             applyColor(colors[originalColorIndex], nextItem);
             
-            // Baris scrollIntoView sudah dihapus agar scroll dikendalikan penuh oleh user
         }, 2500); // Ganti warna tiap 2.5 detik
     }
+
     function stopAutoRotation() {
         if (autoTimer) {
             clearInterval(autoTimer);
