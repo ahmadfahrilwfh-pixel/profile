@@ -7,6 +7,7 @@
     <style>
         :root {
             --bg-color: #f8f9fa;
+            --primary-dark: #22293B;
         }
 
         body {
@@ -15,9 +16,10 @@
             margin: 0;
             padding: 20px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            box-sizing: border-box;
         }
 
         /* PERUBAHAN: Memperluas container utama agar layout berasa lapang dan premium */
@@ -39,7 +41,7 @@
             width: 100%;
             text-align: center;
             margin-bottom: 5px;
-            color: #22293B; 
+            color: var(--primary-dark); 
         }
         
         .title-header h2 {
@@ -66,6 +68,82 @@
             font-size: 14px;
             margin-bottom: 10px;
             box-sizing: border-box;
+        }
+
+        /* Fitur Kontrol Baru (Pencarian & Toggle) */
+        .control-panel {
+            background: #fdfdfd;
+            border: 1px solid #e9ecef;
+            padding: 18px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid #ced4da;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+            margin-bottom: 14px;
+            transition: border-color 0.2s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-dark);
+        }
+
+        .toggle-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .switch-label {
+            font-size: 13.5px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .toggle-buttons {
+            display: flex;
+            background: #e9ecef;
+            padding: 3px;
+            border-radius: 6px;
+        }
+
+        .toggle-btn {
+            border: none;
+            background: transparent;
+            padding: 6px 14px;
+            font-size: 12.5px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #6c757d;
+        }
+
+        .toggle-btn.active {
+            background: var(--primary-dark);
+            color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+        }
+
+        .control-note {
+            margin: 10px 0 0 0;
+            font-size: 11.5px;
+            color: #6c757d;
+            line-height: 1.4;
+            background: #f1f3f5;
+            padding: 8px 12px;
+            border-radius: 4px;
+            border-left: 3px solid #6c757d;
         }
 
         /* PERUBAHAN: Menyesuaikan min-width luar agar seimbang dengan ukuran maksimal mockup */
@@ -139,7 +217,7 @@
 
         /* Palette Area */
         .palette-section {
-            flex: 1.3; /* Memberikan porsi kolom sedikit lebih lebar agar muat banyak rid warna */
+            flex: 1.3; /* Memberikan porsi kolom sedikit lebih lebar agar muat banyak grid warna */
             min-width: 320px;
         }
 
@@ -149,9 +227,6 @@
             border-radius: 8px;
             margin-bottom: 20px;
             text-align: center;
-            position: sticky;
-            top: 20px;
-            z-index: 10;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
@@ -163,7 +238,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
             gap: 14px;
-            max-height: 540px; /* Sejajar secara visual dengan tinggi komponen mockup */
+            max-height: 400px; /* Disesuaikan agar harmonis dengan panel baru */
             overflow-y: auto;  /* Memunculkan scrollbar vertikal tipis jika baris warna melimpah */
             padding-right: 5px;
         }
@@ -200,6 +275,34 @@
         .color-label { font-size: 11px; text-align: center; font-weight: 500; color: #333; }
         .color-code { font-size: 10px; color: #6c757d; text-align: center; }
 
+        /* FOOTER COMPONENT STYLING */
+        .footer-bottom {
+            width: 100%;
+            max-width: 1150px;
+            margin-top: 35px;
+            background-color: var(--primary-dark);
+            color: #e2e8f0;
+            padding: 20px 25px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            box-sizing: border-box;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .footer-bottom .copyright {
+            font-weight: 500;
+        }
+
+        .footer-bottom .developer-tag {
+            font-weight: 400;
+            letter-spacing: 0.3px;
+        }
+
         /* Penyesuaian Responsif untuk Layar HP */
         @media (max-width: 992px) {
             .container {
@@ -211,6 +314,11 @@
             }
             .color-grid {
                 max-height: none; /* Di HP biarkan memanjang ke bawah secara natural */
+            }
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
             }
         }
     </style>
@@ -235,11 +343,35 @@
     </div>
 
     <div class="palette-section">
+        <div class="control-panel">
+            <div class="search-box">
+                <input type="text" id="color-search" placeholder="🔍 Cari warna berdasarkan nama, kode, atau kelompok...">
+            </div>
+            <div class="toggle-box">
+                <span class="switch-label">Metode Simulasi:</span>
+                <div class="toggle-buttons">
+                    <button id="btn-auto" class="toggle-btn">Otomatis</button>
+                    <button id="btn-manual" class="toggle-btn">Manual</button>
+                </div>
+            </div>
+            <div class="control-note">
+                <strong>Keterangan:</strong> Sistem diset secara <strong>Otomatis</strong> berganti warna secara berkala. Anda bisa mengubah ke mode <strong>Manual</strong> lewat tombol di atas, atau langsung klik pada bulatan warna di bawah untuk memilih sendiri.
+            </div>
+        </div>
+
         <div class="color-info">
             <h3 id="display-name">Putih Bersih</h3>
             <p id="display-cat">Kode: 191 (Putih)</p>
         </div>
         <div class="color-grid" id="color-grid"></div>
+    </div>
+</div>
+
+<div class="footer-bottom">
+    <div class="copyright">© 2026 CV. Djavu Indonesia. All Rights Reserved.</div>
+    <div class="developer-tag">
+        developed by Ahmad Fahril 
+        <span class="version-tag" style="opacity: 0.6; font-size: 0.85em; margin-left: 5px; font-family: monospace; color: #ffffff;" title="System Core Release">v1.9.4</span>
     </div>
 </div>
 
@@ -381,6 +513,14 @@
     const colorLayer = document.getElementById('baju-color');
     const displayName = document.getElementById('display-name');
     const displayCat = document.getElementById('display-cat');
+    
+    // Inisialisasi Elemen Kontrol Baru
+    const searchInput = document.getElementById('color-search');
+    const btnAuto = document.getElementById('btn-auto');
+    const btnManual = document.getElementById('btn-manual');
+
+    let isAutoMode = true; // Default otomatis aktif pertama kali
+    let autoTimer = null;
 
     function applyColor(colorObj, btnElement) {
         colorLayer.style.backgroundColor = colorObj.hex;
@@ -390,17 +530,98 @@
         btnElement.classList.add('active');
     }
 
+    // Render Grid Warna Dasar dengan Data Atribut Tambahan untuk Search & Safe Indexing
     colors.forEach((color, index) => {
         const item = document.createElement('div');
         item.className = `color-item ${index === 0 ? 'active' : ''}`;
+        item.setAttribute('data-index', index);
+        item.setAttribute('data-searchable', `${color.name.toLowerCase()} ${color.code} ${color.desc.toLowerCase()}`);
+        
         item.innerHTML = `
             <div class="color-circle" style="background-color: ${color.hex};"></div>
             <div class="color-label">${color.name}</div>
             <div class="color-code">${color.code}</div>
         `;
-        item.addEventListener('click', () => applyColor(color, item));
+        
+        item.addEventListener('click', () => {
+            // Jika user memilih manual lewat list warna, otomatis hentikan mode putar otomatis
+            setSimulationMode(false);
+            applyColor(color, item);
+        });
         grid.appendChild(item);
     });
+
+    // SISTEM ROTASI WARNA OTOMATIS
+    function startAutoRotation() {
+        if (autoTimer) clearInterval(autoTimer);
+        autoTimer = setInterval(() => {
+            if (!isAutoMode) return;
+
+            // Ambil hanya element warna yang saat ini tampil di layar (tidak tersembunyi oleh filter pencarian)
+            const allItems = document.querySelectorAll('.color-item');
+            const visibleItems = Array.from(allItems).filter(el => el.style.display !== 'none');
+
+            if (visibleItems.length === 0) return;
+
+            // Cari index aktif saat ini di antara warna yang terlihat
+            let currentActiveIndex = visibleItems.findIndex(el => el.classList.contains('active'));
+            let nextIndex = (currentActiveIndex + 1) % visibleItems.length;
+
+            const nextItem = visibleItems[nextIndex];
+            const colorDataIndex = parseInt(nextItem.getAttribute('data-index'));
+            const colorObj = colors[colorDataIndex];
+
+            if (colorObj) {
+                applyColor(colorObj, nextItem);
+                
+                // Kondisi Opsional: Scroll otomatis grid mengikuti alur warna (gently) jika mode otomatis jalan
+                nextItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }, 3000); // Berganti warna setiap 3 detik
+    }
+
+    function stopAutoRotation() {
+        if (autoTimer) {
+            clearInterval(autoTimer);
+            autoTimer = null;
+        }
+    }
+
+    // Mengatur Mode Jalannya Simulasi (True = Otomatis, False = Manual)
+    function setSimulationMode(autoMode) {
+        isAutoMode = autoMode;
+        if (isAutoMode) {
+            btnAuto.classList.add('active');
+            btnManual.classList.remove('active');
+            startAutoRotation();
+        } else {
+            btnAuto.classList.remove('active');
+            btnManual.classList.add('active');
+            stopAutoRotation();
+        }
+    }
+
+    // Event Listener untuk Tombol Toggle Mode
+    btnAuto.addEventListener('click', () => setSimulationMode(true));
+    btnManual.addEventListener('click', () => setSimulationMode(false));
+
+    // LOGIKA FILTER PENCARIAN WARNA
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        const items = document.querySelectorAll('.color-item');
+
+        items.forEach(item => {
+            const searchContent = item.getAttribute('data-searchable');
+            if (searchContent.includes(query)) {
+                item.style.display = 'flex';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+
+    // Mulai sistem pertama kali dengan mode default Otomatis
+    setSimulationMode(true);
 </script>
 </body>
 </html>
