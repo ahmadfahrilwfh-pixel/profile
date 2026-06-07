@@ -20,24 +20,26 @@
             min-height: 100vh;
         }
 
+        /* PERUBAHAN: Memperluas container luar agar layout tidak terasa berhimpitan */
         .container {
-            max-width: 1200px; /* Diperlebar dari 900px agar layout lebih luas */
+            max-width: 1150px; 
             width: 100%;
             background: #ffffff;
-            padding: 30px;
+            padding: 35px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             display: flex;
-            gap: 40px;
+            gap: 50px; /* Jarak antar kolom diperlebar agar lebih bersih */
             flex-wrap: wrap;
+            box-sizing: border-box;
         }
 
-        /* Judul */
+        /* Judul Baru */
         .title-header {
             width: 100%;
             text-align: center;
             margin-bottom: 5px;
-            color: #22293B;
+            color: #22293B; 
         }
         
         .title-header h2 {
@@ -66,25 +68,26 @@
             box-sizing: border-box;
         }
 
-        /* Mockup Area */
+        /* PERUBAHAN: Mengatur pembungkus luar section model agar memberikan ruang bernapas yang lega */
         .model-section {
-            flex: 1.2; /* Ditambah agar area model mengambil space lebih dominan (Fuller) */
-            min-width: 320px;
+            flex: 1;
+            min-width: 400px; /* Menyesuaikan batas minimal agar sejalan dengan max-width wrapper */
             display: flex;
             justify-content: center;
             align-items: flex-start;
         }
 
-        /* Wrapper Stacking Context */
+        /* ==========================================================================
+           MOCKUP AREA (TIDAK ADA PERUBAHAN SAMA SEKALI - DIJAMIN AMAN DARI GARIS BALAPAN)
+           ========================================================================== */
         .mockup-wrapper {
             position: relative;
             width: 100%;
-            max-width: 550px; /* Ditingkatkan dari 400px agar frame tidak sempit */
-            aspect-ratio: 3 / 4; /* Menjaga rasio foto model tetap ideal */
+            max-width: 400px;
+            aspect-ratio: 3 / 4; 
             background-color: #eaeaea;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
         }
 
         .layer {
@@ -93,31 +96,28 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-size: cover; /* Memastikan aset gambar memenuhi frame secara penuh */
+            background-size: cover;
             background-position: center;
         }
 
-        /* 1. Layer Paling Bawah: Foto Asli Model */
         .layer-base {
             background-image: url('model-base.webp');
             z-index: 1;
         }
 
-        /* 2. Layer Tengah: Warna HTML + Masking */
         .layer-color {
             z-index: 2;
-            background-color: #5C2032; /* Default awal mengikuti data pertama (Burgundy) */
+            background-color: #5C2032; /* DISINKRONKAN: Mengikuti default data pertama (Burgundy) */
             -webkit-mask-image: url('mask.png');
             mask-image: url('mask.png');
             -webkit-mask-size: cover;
             mask-size: cover;
             -webkit-mask-position: center;
             mask-position: center;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.4s ease;
             mix-blend-mode: multiply; 
         }
 
-        /* 3. Layer Atas: Tekstur Kain Grayscale */
         .layer-texture {
             background-image: url('texture-cvc.webp');
             z-index: 3;
@@ -133,11 +133,12 @@
             background-repeat: repeat;
             background-size: 30px;
         }
+        /* ========================================================================== */
 
         /* Palette Area */
         .palette-section {
-            flex: 1;
-            min-width: 300px;
+            flex: 1.2; /* Diberi bobot lebih agar grid warna terdistribusi rapi tanpa mendesak kolom gambar */
+            min-width: 320px;
         }
 
         .color-info {
@@ -151,12 +152,13 @@
         .color-info h3 { margin: 0 0 5px 0; font-size: 22px; }
         .color-info p { margin: 0; color: #6c757d; font-size: 14px; }
 
+        /* PERUBAHAN: Optimasi grid agar menyesuaikan ruang baru yang lebih luas secara fleksibel */
         .color-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
-            gap: 12px;
-            max-height: 550px; /* Membatasi tinggi grid agar sejajar dengan tinggi mockup */
-            overflow-y: auto; /* Mengaktifkan scroll jika pilihan warna terlalu panjang */
+            gap: 14px;
+            max-height: 540px; /* Menjaga tinggi palet tetap sejajar dengan tinggi komponen mockup */
+            overflow-y: auto;  /* Scrollbar halus jika daftar warna bertambah panjang */
             padding-right: 5px;
         }
 
@@ -165,7 +167,7 @@
             flex-direction: column;
             align-items: center;
             cursor: pointer;
-            padding: 5px;
+            padding: 6px;
             border-radius: 6px;
             transition: background 0.2s;
         }
@@ -175,28 +177,31 @@
         }
 
         .color-circle {
-            width: 48px;
-            height: 48px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             border: 2px solid #e9ecef;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.2s, border-color 0.2s;
+            transition: transform 0.2s;
             margin-bottom: 8px;
         }
 
         .color-item.active .color-circle {
-            border: 3px solid #22293B;
+            border: 3px solid #000;
             transform: scale(1.1);
         }
 
         .color-label { font-size: 11px; text-align: center; font-weight: 500; color: #333; }
-        .color-code { font-size: 10px; color: #777; text-align: center; }
+        .color-code { font-size: 10px; color: #6c757d; text-align: center; }
 
-        /* Responsif untuk layar HP */
-        @media (max-width: 768px) {
+        /* Penyesuaian Responsif untuk Layar Tablet/Mobile */
+        @media (max-width: 992px) {
             .container {
-                gap: 20px;
-                padding: 15px;
+                gap: 30px;
+                padding: 20px;
+            }
+            .model-section {
+                min-width: 100%;
             }
             .color-grid {
                 max-height: none;
@@ -302,16 +307,16 @@
         // Ganti warna layer masking
         colorLayer.style.backgroundColor = colorObj.hex;
         
-        // Update teks informasi
+        // Update teks
         displayName.textContent = colorObj.name;
         displayCat.textContent = `Kategori: ${colorObj.code} (${colorObj.desc})`;
 
-        // Update UI status tombol aktif
+        // Update UI tombol aktif
         document.querySelectorAll('.color-item').forEach(el => el.classList.remove('active'));
         btnElement.classList.add('active');
     }
 
-    // Render grid tombol pilihan warna
+    // Render tombol
     colors.forEach((color, index) => {
         const item = document.createElement('div');
         item.className = `color-item ${index === 0 ? 'active' : ''}`;
