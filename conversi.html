@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ekstraktor Teks Gambar (OCR Massal)</title>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 { text-align: center; color: #2c3e50; }
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .upload-section { margin-bottom: 20px; }
+        input[type="file"] { display: block; margin-bottom: 15px; }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover { background-color: #2980b9; }
+        button:disabled { background-color: #95a5a6; cursor: not-allowed; }
+        .status {
+            margin: 15px 0;
+            font-weight: bold;
+            color: #d35400;
+        }
+        textarea {
+            width: 100%;
+            height: 400px;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: monospace;
+            resize: vertical;
+        }
+        .info {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            background: #e8f8f5;
+            padding: 10px;
+            border-left: 4px solid #1abc9c;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Konversi Gambar ke Teks</h1>
+    
+    <div class="container">
+        <div class="info">
+            <strong>Catatan:</strong> Maksimal 50 gambar. Sistem akan memproses satu per satu agar *browser* tidak berat. Bahasa yang didukung: <b>Indonesia & Inggris</b>. Semakin besar ukuran file, semakin lama waktu prosesnya.
+        </div>
+
+        <div class="upload-section">
+            <input type="file" id="imageInput" multiple accept="image/*">
+            <button id="processBtn" onclick="mulaiProses()">Mulai Ekstrak Teks</button>
+            <button id="copyBtn" onclick="copyTeks()" style="background-color: #2ecc71; display: none;">Salin Hasil</button>
+        </div>
+
+        <div class="status" id="statusText">Menunggu gambar diunggah...</div>
+
+        <textarea id="resultText" placeholder="Hasil ekstraksi teks akan muncul di sini..."></textarea>
+    </div>
+
+    <script>
+        async function mulaiProses() {
+            const input = document.getElementById('imageInput');
+            const statusText = document.getElementById('statusText');
+            const resultText = document.getElementById('resultText');
+            const processBtn = document.getElementById('processBtn');
+            const copyBtn = document.getElementById('copyBtn');
+
+            const files = input.files;
+
+            if (files.length === 0) {
+                alert("Pilih gambar terlebih dahulu!");
+                return;
+            }
+
+            if (files.length > 50) {
+                alert("Maksimal 50 gambar dalam satu waktu agar perangkat tidak crash.");
+                return;
+            }
+
+            // Mematikan tombol selama proses
+            processBtn.disabled = true;
+            input.disabled = true;
+            resultText.value = "";
+            copyBtn.style.display = "none";
+
+            // Loop untuk memproses gambar satu per satu (Antrean)
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                statusText.innerHTML = `⏳ Memproses gambar ${i + 1} dari ${files.length}... <br> <small>File: ${file.name}</small>`;
+                
+                try {
+                    // Menggunakan Tesseract.js (ind = Indonesia, eng = Inggris)
+                    const { data: { text } } = await Tesseract.recognize(file, 'ind+eng', {
+                        logger: m => {
+                            if(m.status === "recognizing text"){
+                                statusText.innerHTML = `⏳ Memproses gambar ${i + 1} dari ${files.length}... (${Math.round(m.progress * 100)}%)<br><small>File: ${file.name}</small>`;
+                            }
+                        }
+                    });
+
+                    // Menambahkan hasil ke kotak teks
+                    resultText.value += `\n========== FILE: ${file.name} ==========\n`;
+                    resultText.value += text ? text : "[Teks tidak terdeteksi atau gambar kurang jelas]\n";
+                    resultText.value += `========================================\n\n`;
+
+                } catch (error) {
+                    resultText.value += `\n========== FILE: ${file.name} ==========\n[GAGAL MEMPROSES GAMBAR INI]\n========================================\n\n`;
+                    console.error("Error pada file: ", file.name, error);
+                }
+            }
+
+            statusText.innerHTML = "✅ Selesai! Semua gambar berhasil diproses.";
+            processBtn.disabled = false;
+            input.disabled = false;
+            copyBtn.style.display = "inline-block";
+        }
+
+        function copyTeks() {
+            const resultText = document.getElementById('resultText');
+            resultText.select();
+            document.execCommand('copy');
+            alert("Teks berhasil disalin!");
+        }
+    </script>
+
+</body>
+</html>
